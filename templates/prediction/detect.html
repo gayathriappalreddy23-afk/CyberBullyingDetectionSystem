@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}Cyberbullying Detection | CyberBullying Detection System{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/prediction.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-page prediction-page py-4">
+    <section class="page-header">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-8">
+                <p class="eyebrow">Cyberbullying Detection</p>
+                <h1>Cyberbullying Detection</h1>
+                <p>Analyze text using our AI-powered detection system and identify potentially harmful content.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <span class="badge bg-primary bg-opacity-10 text-primary p-3 rounded-4">
+                    <i class="bi bi-shield-lock-fill fs-4"></i>
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <section class="row justify-content-center">
+        <div class="col-xl-8 col-lg-10">
+            <article class="prediction-card">
+                <h2>Analyze Your Text</h2>
+                <p class="lead">Enter a message, comment, or post below to check whether it may contain cyberbullying content.</p>
+
+                {% if form.errors %}
+                    <div class="alert alert-danger alert-validation" role="alert">
+                        <strong>Unable to analyze text.</strong>
+                        <ul class="mb-0">
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-validation" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form id="detectionForm" method="post" novalidate>
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="detectionText" class="form-label">Enter text to analyze</label>
+                        <textarea id="detectionText" name="text" class="form-control" placeholder="Type or paste the message you want to analyze..." maxlength="1000" aria-describedby="textCounter"></textarea>
+                    </div>
+                    <div class="counter-row">
+                        <p id="inputFeedback" class="counter-text"></p>
+                        <p id="textCounter" class="counter-text">0 / 1000 characters</p>
+                    </div>
+                    <div class="form-actions">
+                        <button id="detectSubmit" type="submit" class="btn btn-primary btn-detect">
+                            <i class="bi bi-search-heart me-2"></i>Detect Cyberbullying
+                        </button>
+                        <button id="detectClear" type="button" class="btn btn-outline-secondary">Clear</button>
+                    </div>
+                </form>
+
+                <div class="help-box mt-4" role="note">
+                    <strong>Privacy & Safety</strong>
+                    Only submit text that you are permitted to analyze. Avoid entering passwords, personal identification numbers, or other sensitive information.
+                </div>
+            </article>
+
+            <article class="row row-cols-1 row-cols-md-3 feature-grid mt-4">
+                <div class="col">
+                    <div class="feature-card">
+                        <h3>Text Analysis</h3>
+                        <p>The system analyzes the submitted text to understand its context and tone.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="feature-card">
+                        <h3>NLP Processing</h3>
+                        <p>The text is processed using Natural Language Processing techniques.</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="feature-card">
+                        <h3>AI Prediction</h3>
+                        <p>The trained model predicts the content category and reports confidence.</p>
+                    </div>
+                </div>
+            </article>
+
+            <article class="preview-card mt-4">
+                <h2>Prediction Result</h2>
+                <p class="mb-0">Your prediction result will appear after analysis. The backend will process the text and return the result view.</p>
+            </article>
+
+            <article class="history-card mt-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2>Recent Detection History</h2>
+                    <span class="text-muted small">Optional backend-provided history</span>
+                </div>
+                {% if recent_predictions %}
+                    <div class="table-responsive">
+                        <table class="history-table w-100">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Text Preview</th>
+                                    <th scope="col">Prediction</th>
+                                    <th scope="col">Confidence</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for prediction in recent_predictions %}
+                                    <tr>
+                                        <td class="preview-text" title="{{ prediction.text|truncatechars:80 }}">{{ prediction.text|truncatechars:60 }}</td>
+                                        <td>{{ prediction.category|default:'N/A' }}</td>
+                                        <td>{{ prediction.confidence|default:'0' }}%</td>
+                                        <td>{{ prediction.created_at|date:'M d, Y' }}</td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-outline-primary">View</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-secondary alert-empty-state" role="status">
+                        <i class="bi bi-clock-history me-2"></i>
+                        No previous detections found.
+                    </div>
+                {% endif %}
+            </article>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/prediction.js' %}"></script>
+{% endblock %}

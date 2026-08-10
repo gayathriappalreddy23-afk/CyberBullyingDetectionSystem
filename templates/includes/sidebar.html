@@ -1,0 +1,335 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --sidebar-bg: #111827;
+    --text-primary: #f3f4f6;
+    --text-secondary: #9ca3af;
+    --accent: #6366f1;
+    --danger: #ef4444;
+    --success: #10b981;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --hover-bg: rgba(255, 255, 255, 0.05);
+}
+
+.premium-sidebar {
+    font-family: 'Outfit', sans-serif;
+    width: 280px;
+    height: 100vh;
+    background: linear-gradient(180deg, #111827 0%, #0f172a 100%);
+    border-right: 1px solid var(--border-color);
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+.premium-sidebar::-webkit-scrollbar { width: 6px; }
+.premium-sidebar::-webkit-scrollbar-track { background: transparent; }
+.premium-sidebar::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 10px;
+}
+.premium-sidebar::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+.sidebar-header {
+    padding: 24px 20px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    font-size: 28px;
+    filter: drop-shadow(0px 2px 4px rgba(99, 102, 241, 0.3));
+}
+
+.brand-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin: 0;
+    line-height: 1.2;
+    background: linear-gradient(to right, #ffffff, #d1d5db);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.brand-tagline {
+    font-size: 0.75rem;
+    color: var(--accent);
+    font-weight: 500;
+    margin-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 20px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.nav-section-title {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin: 16px 0 8px 12px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border-radius: 12px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, rgba(99,102,241,0.1) 0%, transparent 100%);
+    transition: width 0.3s ease;
+    z-index: 0;
+}
+
+.nav-item:hover::before, .nav-item.active::before { width: 100%; }
+.nav-item:hover, .nav-item.active {
+    color: var(--text-primary);
+    background: var(--hover-bg);
+    transform: translateX(4px);
+}
+
+.nav-item.active {
+    border-left: 3px solid var(--accent);
+    background: linear-gradient(90deg, rgba(99,102,241,0.15) 0%, transparent 100%);
+}
+
+.nav-icon {
+    font-size: 1.2rem;
+    margin-right: 12px;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.nav-item:hover .nav-icon { transform: scale(1.15) rotate(-5deg); }
+.nav-text { z-index: 1; }
+
+.badge {
+    margin-left: auto;
+    background: var(--danger);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+}
+
+.sidebar-footer-section {
+    padding: 20px;
+    border-top: 1px solid var(--border-color);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.user-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.user-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.user-avatar-container { position: relative; }
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--sidebar-bg);
+    box-shadow: 0 0 0 2px var(--accent);
+}
+
+.status-dot {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    background: var(--success);
+    border: 2px solid var(--sidebar-bg);
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+}
+
+.user-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.user-role {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.logout-action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.logout-action:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+}
+
+.app-version {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    opacity: 0.6;
+}
+</style>
+
+<aside class="premium-sidebar">
+    <!-- Header / Logo -->
+    <div class="sidebar-header">
+        <div class="logo-icon">🛡️</div>
+        <div class="brand-info">
+            <h1 class="brand-name">CyberBullying</h1>
+            <span class="brand-name">Detection</span>
+            <span class="brand-tagline">AI Powered Monitoring</span>
+        </div>
+    </div>
+
+    <!-- Navigation Links -->
+    <nav class="sidebar-nav">
+        
+        <div class="nav-section-title">Main Menu</div>
+        <a href="/dashboard" class="nav-item active">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-text">Dashboard</span>
+        </a>
+        <a href="/profile" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span class="nav-text">Profile</span>
+        </a>
+        
+        <div class="nav-section-title">Content</div>
+        <a href="/posts/create" class="nav-item">
+            <span class="nav-icon">📝</span>
+            <span class="nav-text">Create Post</span>
+        </a>
+        <a href="/posts" class="nav-item">
+            <span class="nav-icon">📄</span>
+            <span class="nav-text">View Posts</span>
+        </a>
+        <a href="/comments" class="nav-item">
+            <span class="nav-icon">💬</span>
+            <span class="nav-text">Comments</span>
+        </a>
+
+        <div class="nav-section-title">AI Engine</div>
+        <a href="/detect" class="nav-item">
+            <span class="nav-icon">🤖</span>
+            <span class="nav-text">Detect Cyberbullying</span>
+        </a>
+        <a href="/history" class="nav-item">
+            <span class="nav-icon">📜</span>
+            <span class="nav-text">Prediction History</span>
+        </a>
+        
+        <div class="nav-section-title">Insights</div>
+        <a href="/reports" class="nav-item">
+            <span class="nav-icon">📊</span>
+            <span class="nav-text">Reports</span>
+        </a>
+        <a href="/analytics" class="nav-item">
+            <span class="nav-icon">📈</span>
+            <span class="nav-text">Analytics</span>
+        </a>
+
+        <div class="nav-section-title">Settings</div>
+        <a href="/notifications" class="nav-item">
+            <span class="nav-icon">🔔</span>
+            <span class="nav-text">Notifications</span>
+        </a>
+        <a href="/settings" class="nav-item">
+            <span class="nav-icon">⚙️</span>
+            <span class="nav-text">Settings</span>
+        </a>
+        <a href="/support" class="nav-item">
+            <span class="nav-icon">❓</span>
+            <span class="nav-text">Help & Support</span>
+        </a>
+        <a href="/logout" class="nav-item">
+            <span class="nav-icon">🚪</span>
+            <span class="nav-text">Logout</span>
+        </a>
+    </nav>
+
+    <!-- Footer / User Card -->
+    <div class="sidebar-footer-section">
+        <div class="user-card">
+            <div class="user-avatar-container">
+                <img src="https://ui-avatars.com/api/?name=John+Doe&background=6366f1&color=fff&rounded=true" alt="John Doe" class="user-avatar">
+                <div class="status-dot" title="Online"></div>
+            </div>
+            <div class="user-details">
+                <span class="user-name">John Doe</span>
+                <span class="user-role">Moderator</span>
+            </div>
+            <a href="/logout" class="logout-action" title="Logout">
+                🚪
+            </a>
+        </div>
+        <div class="app-version">Version 1.0</div>
+    </div>
+</aside>

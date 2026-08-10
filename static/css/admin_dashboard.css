@@ -1,0 +1,363 @@
+:root {
+    --primary: #2563EB;
+    --secondary: #4F46E5;
+    --success: #16A34A;
+    --warning: #F59E0B;
+    --danger: #DC2626;
+    --background: #F8FAFC;
+    --text: #1E293B;
+    --muted: #64748B;
+    --border: #E2E8F0;
+    --card-bg: #FFFFFF;
+}
+
+.admin-dashboard {
+    background: var(--background);
+}
+
+.admin-dashboard .dashboard-page {
+    max-width: 1480px;
+    margin: 0 auto;
+}
+
+.admin-dashboard .welcome-card,
+.admin-dashboard .stat-card,
+.admin-dashboard .panel-card,
+.admin-dashboard .table-card,
+.admin-dashboard .status-card,
+.admin-dashboard .profile-card,
+.admin-dashboard .filter-panel {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 1.25rem;
+}
+
+.admin-dashboard .welcome-card {
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(79, 70, 229, 0.1));
+}
+
+.admin-dashboard .eyebrow {
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+}
+
+.admin-dashboard .welcome-card h1 {
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    margin-bottom: 0.5rem;
+}
+
+.admin-dashboard .welcome-card p {
+    color: var(--muted);
+    max-width: 720px;
+}
+
+.admin-dashboard .role-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: 999px;
+    padding: 0.65rem 1rem;
+    background: rgba(79, 70, 229, 0.12);
+    color: var(--secondary);
+    font-weight: 700;
+}
+
+.admin-dashboard .stat-card,
+.admin-dashboard .panel-card,
+.admin-dashboard .table-card,
+.admin-dashboard .profile-card {
+    padding: 1.5rem;
+}
+
+.admin-dashboard .stat-card {
+    transition: transform 0.24s ease, box-shadow 0.24s ease;
+}
+
+.admin-dashboard .stat-card:hover,
+.admin-dashboard .panel-card:hover,
+.admin-dashboard .status-card:hover,
+.admin-dashboard .profile-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+}
+
+.admin-dashboard .stat-label {
+    color: var(--muted);
+    margin-bottom: 0.45rem;
+    font-size: 0.95rem;
+}
+
+.admin-dashboard .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.admin-dashboard .stat-icon {
+    width: 52px;
+    height: 52px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+    font-size: 1.35rem;
+}
+
+.admin-dashboard .text-primary-soft {
+    color: var(--primary);
+    background: rgba(37, 99, 235, 0.12);
+}
+
+.admin-dashboard .text-secondary-soft {
+    color: var(--secondary);
+    background: rgba(79, 70, 229, 0.12);
+}
+
+.admin-dashboard .text-success-soft {
+    color: var(--success);
+    background: rgba(22, 163, 74, 0.12);
+}
+
+.admin-dashboard .text-warning-soft {
+    color: var(--warning);
+    background: rgba(245, 158, 11, 0.12);
+}
+
+.admin-dashboard .text-danger-soft {
+    color: var(--danger);
+    background: rgba(220, 38, 38, 0.12);
+}
+
+.admin-dashboard .quick-actions .btn {
+    text-align: left;
+    border-radius: 1rem;
+    font-weight: 600;
+}
+
+.admin-dashboard .filter-panel {
+    margin-bottom: 1.5rem;
+}
+
+.admin-dashboard .filter-panel .form-control,
+.admin-dashboard .filter-panel .form-select {
+    border-radius: 0.85rem;
+}
+
+.admin-dashboard .table-card {
+    overflow-x: auto;
+}
+
+.admin-dashboard .table thead th {
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    font-weight: 700;
+}
+
+.admin-dashboard .table tbody tr:hover {
+    background: rgba(37, 99, 235, 0.04);
+}
+
+.admin-dashboard .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.admin-dashboard .status-badge.pending {
+    background: rgba(245, 158, 11, 0.12);
+    color: var(--warning);
+}
+
+.admin-dashboard .status-badge.under-review {
+    background: rgba(79, 70, 229, 0.12);
+    color: var(--secondary);
+}
+
+.admin-dashboard .status-badge.resolved {
+    background: rgba(22, 163, 74, 0.12);
+    color: var(--success);
+}
+
+.admin-dashboard .status-badge.rejected {
+    background: rgba(148, 163, 184, 0.12);
+    color: #334155;
+}
+
+.admin-dashboard .status-badge.escalated {
+    background: rgba(37, 99, 235, 0.12);
+    color: var(--primary);
+}
+
+.admin-dashboard .summary-card {
+    border-radius: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.admin-dashboard .summary-card .summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.admin-dashboard .summary-card .summary-item:last-child {
+    border-bottom: 0;
+}
+
+.admin-dashboard .summary-item strong {
+    font-size: 1.05rem;
+}
+
+.admin-dashboard .summary-label {
+    color: var(--muted);
+}
+
+.admin-dashboard .chart-wrapper {
+    min-height: 340px;
+    position: relative;
+}
+
+.admin-dashboard .activity-timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.admin-dashboard .activity-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.admin-dashboard .activity-item:last-child {
+    border-bottom: 0;
+}
+
+.admin-dashboard .activity-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--primary);
+    margin-top: 0.6rem;
+}
+
+.admin-dashboard .activity-details {
+    min-width: 0;
+}
+
+.admin-dashboard .activity-title {
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+}
+
+.admin-dashboard .activity-meta {
+    color: var(--muted);
+    font-size: 0.92rem;
+}
+
+.admin-dashboard .profile-card .profile-avatar {
+    width: 92px;
+    height: 92px;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    border: 2px solid rgba(37, 99, 235, 0.18);
+}
+
+.admin-dashboard .profile-card .profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.admin-dashboard .profile-card h3 {
+    margin-bottom: 0.35rem;
+}
+
+.admin-dashboard .profile-card .profile-role {
+    color: var(--muted);
+    margin-bottom: 1rem;
+}
+
+.admin-dashboard .profile-info {
+    gap: 0.35rem;
+}
+
+.admin-dashboard .system-status-card {
+    padding: 1rem 1.25rem;
+}
+
+.admin-dashboard .system-status-card .status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.admin-dashboard .system-status-card .status-row:last-child {
+    border-bottom: 0;
+}
+
+.admin-dashboard .system-status-card .status-label {
+    color: var(--muted);
+}
+
+.admin-dashboard .system-status-card .status-value {
+    font-weight: 700;
+}
+
+.admin-dashboard .empty-state {
+    min-height: 160px;
+    border: 1px dashed var(--border);
+    border-radius: 1rem;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    color: var(--muted);
+    padding: 1.5rem;
+}
+
+.admin-dashboard .empty-state i {
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+    color: var(--primary);
+}
+
+@media (max-width: 1199px) {
+    .admin-dashboard .welcome-card,
+    .admin-dashboard .stat-card,
+    .admin-dashboard .panel-card,
+    .admin-dashboard .profile-card,
+    .admin-dashboard .status-card {
+        padding: 1.3rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .admin-dashboard .welcome-card h1 {
+        font-size: 2rem;
+    }
+
+    .admin-dashboard .chart-wrapper {
+        min-height: 260px;
+    }
+
+    .admin-dashboard .activity-item {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-dashboard .summary-card .summary-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

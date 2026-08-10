@@ -1,0 +1,441 @@
+{% extends "base.html" %}
+
+{% block title %}Moderator Dashboard | CyberBullying Detection System{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/moderator_dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-page moderator-dashboard" data-safe-count="{{ safe_content_count|default:0 }}" data-bullying-count="{{ bullying_content_count|default:0 }}" data-under-review-count="{{ under_review_count|default:0 }}">
+    <section class="welcome-card shadow-sm rounded-4 mb-4" aria-labelledby="moderator-welcome-title">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-8">
+                <p class="eyebrow">Moderator Dashboard</p>
+                <h1 id="moderator-welcome-title">Welcome, {% if user and user.username %}{{ user.username }}{% else %}Moderator{% endif %}</h1>
+                <p>Review reported content and help maintain a safe online community.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <span class="badge-role" aria-label="User role: Moderator">
+                    <i class="bi bi-person-badge"></i>
+                    Moderator
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <section class="row g-4 mb-4" aria-label="moderation statistics">
+        <div class="col-sm-6 col-xl-3">
+            <article class="stat-card shadow-sm rounded-4 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="stat-label">Pending Reports</p>
+                        <h3 class="stat-value">{{ pending_reports_count|default:0 }}</h3>
+                    </div>
+                    <div class="stat-icon text-warning-soft">
+                        <i class="bi bi-flag-fill"></i>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <article class="stat-card shadow-sm rounded-4 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="stat-label">Flagged Content</p>
+                        <h3 class="stat-value">{{ flagged_content_count|default:0 }}</h3>
+                    </div>
+                    <div class="stat-icon text-danger-soft">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <article class="stat-card shadow-sm rounded-4 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="stat-label">Reviewed Today</p>
+                        <h3 class="stat-value">{{ reviewed_today_count|default:0 }}</h3>
+                    </div>
+                    <div class="stat-icon text-success-soft">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <article class="stat-card shadow-sm rounded-4 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="stat-label">Escalated Cases</p>
+                        <h3 class="stat-value">{{ escalated_cases_count|default:0 }}</h3>
+                    </div>
+                    <div class="stat-icon text-primary-soft">
+                        <i class="bi bi-arrow-up-right-circle-fill"></i>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="row g-4 mb-4">
+        <div class="col-12">
+            <form id="moderationFiltersForm" class="panel-card filter-panel shadow-sm rounded-4">
+                <div class="row gy-3 gx-3 align-items-end">
+                    <div class="col-md-4">
+                        <label class="form-label" for="moderationSearch">Search content</label>
+                        <input id="moderationSearch" type="search" class="form-control" placeholder="Search reports, comments, users">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label" for="filterStatus">Status</label>
+                        <select id="filterStatus" class="form-select">
+                            <option value="">All statuses</option>
+                            <option value="pending">Pending Review</option>
+                            <option value="approved">Approved</option>
+                            <option value="removed">Removed</option>
+                            <option value="escalated">Escalated</option>
+                            <option value="false_positive">False Positive</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label" for="filterPriority">Priority</label>
+                        <select id="filterPriority" class="form-select">
+                            <option value="">All priorities</option>
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label" for="filterType">Content type</label>
+                        <select id="filterType" class="form-select">
+                            <option value="">All content</option>
+                            <option value="post">Post</option>
+                            <option value="comment">Comment</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label" for="filterResult">Detection result</label>
+                        <select id="filterResult" class="form-select">
+                            <option value="">All results</option>
+                            <option value="safe">Safe</option>
+                            <option value="cyberbullying">Cyberbullying</option>
+                            <option value="under_review">Under Review</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12 col-lg-8"></div>
+                    <div class="col-md-6 col-lg-2 d-grid">
+                        <button type="button" class="btn btn-primary">Search</button>
+                    </div>
+                    <div class="col-md-6 col-lg-2 d-grid">
+                        <button id="moderationFiltersReset" type="button" class="btn btn-outline-secondary">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="row g-4 mb-4">
+        <div class="col-12 col-xl-8">
+            <article class="panel-card shadow-sm rounded-4 p-4 quick-actions">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="panel-title mb-0">Quick Moderation</h2>
+                </div>
+                <div class="row g-3">
+                    <div class="col-sm-6 col-lg-3">
+                        <a href="#" class="btn btn-outline-primary w-100">
+                            <i class="bi bi-list-stars me-2"></i>Review Reports
+                        </a>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <a href="#" class="btn btn-outline-warning w-100">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>Review Flagged Content
+                        </a>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <a href="#" class="btn btn-outline-success w-100">
+                            <i class="bi bi-bar-chart-fill me-2"></i>View Prediction History
+                        </a>
+                    </div>
+                    <div class="col-sm-6 col-lg-3">
+                        <a href="#" class="btn btn-outline-secondary w-100">
+                            <i class="bi bi-clock-history me-2"></i>View Moderation History
+                        </a>
+                    </div>
+                </div>
+                <p class="text-muted small mt-3 mb-0">TODO: replace these links with actual named routes when backend URLs are available.</p>
+            </article>
+        </div>
+        <div class="col-12 col-xl-4">
+            <article class="profile-card shadow-sm rounded-4">
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <div class="profile-avatar">
+                        {% if user and user.profile_image %}
+                            <img src="{{ user.profile_image.url }}" alt="{{ user.username }} profile image">
+                        {% else %}
+                            <img src="https://ui-avatars.com/api/?name={{ user.username|default:'Moderator' }}&background=2563EB&color=fff" alt="Moderator avatar">
+                        {% endif %}
+                    </div>
+                    <div>
+                        <h3>{{ user.username|default:'Moderator' }}</h3>
+                        <p class="profile-role">Moderator</p>
+                        <span class="profile-status">
+                            <i class="bi bi-shield-check"></i>
+                            Access level active
+                        </span>
+                    </div>
+                </div>
+                <p class="mb-1"><strong>Email</strong></p>
+                <p class="text-muted mb-3">{% if user and user.email %}{{ user.email }}{% else %}Email not available{% endif %}</p>
+                <p class="mb-1"><strong>Last login</strong></p>
+                <p class="text-muted mb-3">{% if user and user.last_login %}{{ user.last_login }}{% else %}Not recorded{% endif %}</p>
+                <a href="#" class="btn btn-primary w-100">View Profile</a>
+            </article>
+        </div>
+    </section>
+
+    <section class="row g-4 mb-4">
+        <div class="col-12">
+            <article class="panel-card table-card shadow-sm rounded-4 p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="panel-title mb-0">Pending Reports</h2>
+                    <span class="text-muted small">Review items assigned to you</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">Report ID</th>
+                                <th scope="col">Content</th>
+                                <th scope="col">Report Reason</th>
+                                <th scope="col">Reported By</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Priority</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if pending_reports %}
+                                {% for report in pending_reports %}
+                                    <tr>
+                                        <td>#{{ report.id }}</td>
+                                        <td class="text-truncate" style="max-width: 240px;">{{ report.content|default:'Unknown content' }}</td>
+                                        <td>{{ report.reason|default:'Not specified' }}</td>
+                                        <td>{{ report.reported_by|default:'Anonymous' }}</td>
+                                        <td>{{ report.created_at|date:'M d, Y' }}</td>
+                                        <td>
+                                            {% if report.priority == 'high' %}
+                                                <span class="priority-badge high" aria-label="High priority">High Priority</span>
+                                            {% elif report.priority == 'medium' %}
+                                                <span class="priority-badge medium" aria-label="Medium priority">Medium Priority</span>
+                                            {% else %}
+                                                <span class="priority-badge low" aria-label="Low priority">Low Priority</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if report.status == 'approved' %}
+                                                <span class="status-badge approved">Approved</span>
+                                            {% elif report.status == 'removed' %}
+                                                <span class="status-badge flagged">Removed</span>
+                                            {% elif report.status == 'escalated' %}
+                                                <span class="status-badge escalated">Escalated</span>
+                                            {% elif report.status == 'false_positive' %}
+                                                <span class="status-badge false-positive">False Positive</span>
+                                            {% else %}
+                                                <span class="status-badge pending">Pending Review</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-2 flex-wrap">
+                                                <a href="#" class="btn btn-sm btn-outline-primary">Review</a>
+                                                <a href="#" class="btn btn-sm btn-outline-secondary">View Details</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="8">
+                                        <div class="empty-state">
+                                            <i class="bi bi-check2-circle"></i>
+                                            <p>No pending reports to review.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="row g-4 mb-4">
+        <div class="col-xl-6">
+            <article class="panel-card flagged-card shadow-sm rounded-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="panel-title mb-0">Flagged Content</h2>
+                    <span class="text-muted small">Recent items waiting review</span>
+                </div>
+                {% if flagged_content %}
+                    {% for item in flagged_content %}
+                        <div class="flagged-card">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <p class="card-label mb-1"><span class="badge bg-primary">{{ item.content_type|default:'Content' }}</span></p>
+                                    <p class="mb-2 text-truncate">{{ item.preview|default:item.content|default:'No preview available' }}</p>
+                                </div>
+                                <span class="priority-badge {% if item.priority == 'high' %}high{% elif item.priority == 'medium' %}medium{% else %}low{% endif %}">{{ item.priority|capfirst|default:'Low' }} Priority</span>
+                            </div>
+                            <div class="row gy-2 gx-3 align-items-center">
+                                <div class="col-sm-6 col-lg-4">
+                                    <p class="mb-1 text-muted">AI Result</p>
+                                    <strong>{{ item.prediction|default:'Under Review' }}</strong>
+                                </div>
+                                <div class="col-sm-6 col-lg-2">
+                                    <p class="mb-1 text-muted">Confidence</p>
+                                    <strong>{{ item.confidence|default:'N/A' }}{% if item.confidence %}%{% endif %}</strong>
+                                </div>
+                                <div class="col-sm-6 col-lg-2">
+                                    <p class="mb-1 text-muted">Reports</p>
+                                    <strong>{{ item.report_count|default:0 }}</strong>
+                                </div>
+                                <div class="col-sm-6 col-lg-2">
+                                    <p class="mb-1 text-muted">Date</p>
+                                    <strong>{{ item.created_at|date:'M d, Y' }}</strong>
+                                </div>
+                                <div class="col-sm-12 col-lg-2 text-sm-end">
+                                    <span class="status-badge {% if item.status == 'approved' %}approved{% elif item.status == 'removed' %}flagged{% elif item.status == 'escalated' %}escalated{% elif item.status == 'false_positive' %}false-positive{% else %}pending{% endif %}">
+                                        {% if item.status == 'approved' %}Approved{% elif item.status == 'removed' %}Removed{% elif item.status == 'escalated' %}Escalated{% elif item.status == 'false_positive' %}False Positive{% else %}Pending Review{% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="mt-3 d-flex gap-2 flex-wrap">
+                                <button type="button" class="btn btn-sm btn-outline-primary confirm-action" data-action-label="Review content" data-item-label="{{ item.content_type|default:'content item' }}">Review</button>
+                                <a href="#" class="btn btn-sm btn-outline-secondary">Details</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <i class="bi bi-flag"></i>
+                        <p>No flagged content available.</p>
+                    </div>
+                {% endif %}
+            </article>
+        </div>
+
+        <div class="col-xl-6">
+            <article class="panel-card chart-panel shadow-sm rounded-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="panel-title mb-0">AI Detection Overview</h2>
+                    <span class="text-muted small">Current classification distribution</span>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="moderationDetectionChart" aria-label="AI detection summary chart"></canvas>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="row g-4 mb-4">
+        <div class="col-xl-6">
+            <article class="panel-card shadow-sm rounded-4 p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="panel-title mb-0">Recent Moderation Activity</h2>
+                    <span class="text-muted small">Latest moderator actions</span>
+                </div>
+                {% if moderation_activities %}
+                    <ul class="activity-timeline">
+                        {% for activity in moderation_activities %}
+                            <li class="activity-item">
+                                <div class="activity-dot" aria-hidden="true"></div>
+                                <div class="activity-details">
+                                    <p class="activity-title">{{ activity.action|default:'Activity' }}</p>
+                                    <p class="activity-meta mb-1">{{ activity.description|default:'Reviewed content item' }}</p>
+                                    <p class="activity-meta">{{ activity.timestamp|default:'N/A' }}</p>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="empty-state">
+                        <i class="bi bi-clock-history"></i>
+                        <p>No recent moderation activity.</p>
+                    </div>
+                {% endif %}
+            </article>
+        </div>
+
+        <div class="col-xl-6">
+            <article class="panel-card shadow-sm rounded-4 p-4 user-summary-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="panel-title mb-0">User Report Summary</h2>
+                    <span class="text-muted small">Users with repeated reports</span>
+                </div>
+                {% if reported_users %}
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th scope="col">User</th>
+                                    <th scope="col">Reports</th>
+                                    <th scope="col">Latest Report</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user_item in reported_users %}
+                                    <tr>
+                                        <td>{{ user_item.username|default:'Unknown' }}</td>
+                                        <td>{{ user_item.report_count|default:0 }}</td>
+                                        <td>{{ user_item.latest_report|date:'M d, Y' }}</td>
+                                        <td>
+                                            <span class="status-badge {% if user_item.status == 'under_review' %}pending{% elif user_item.status == 'warning_issued' %}escalated{% elif user_item.status == 'escalated' %}escalated{% else %}approved{% endif %}">
+                                                {% if user_item.status == 'under_review' %}Under Review{% elif user_item.status == 'warning_issued' %}Warning Issued{% elif user_item.status == 'escalated' %}Escalated{% else %}Normal{% endif %}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-outline-primary">Review</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="empty-state">
+                        <i class="bi bi-people"></i>
+                        <p>No repeated report users at this time.</p>
+                    </div>
+                {% endif %}
+            </article>
+        </div>
+    </section>
+</div>
+
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirm moderation action</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="confirmationModalBody">
+                Are you sure you want to perform this action? The backend must handle the secure moderation action.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmationConfirmButton">Confirm Action</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/moderator_dashboard.js' %}"></script>
+{% endblock %}
