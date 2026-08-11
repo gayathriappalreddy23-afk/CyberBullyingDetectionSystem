@@ -1,0 +1,388 @@
+:root {
+    --primary: #2563EB;
+    --secondary: #4F46E5;
+    --success: #16A34A;
+    --warning: #F59E0B;
+    --danger: #DC2626;
+    --background: #F8FAFC;
+    --text: #1E293B;
+    --muted: #64748B;
+    --border: #E2E8F0;
+    --card-bg: #FFFFFF;
+}
+
+.moderator-dashboard .dashboard-page {
+    max-width: 1480px;
+    margin: 0 auto;
+}
+
+.moderator-dashboard .welcome-card,
+.moderator-dashboard .stat-card,
+.moderator-dashboard .panel-card,
+.moderator-dashboard .table-card,
+.moderator-dashboard .flagged-card,
+.moderator-dashboard .user-summary-card,
+.moderator-dashboard .filter-panel {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 1.25rem;
+}
+
+.moderator-dashboard .welcome-card {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.10), rgba(79, 70, 229, 0.10));
+}
+
+.moderator-dashboard .eyebrow {
+    color: var(--primary);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.moderator-dashboard .welcome-card {
+    padding: 2rem;
+}
+
+.moderator-dashboard .welcome-card h1 {
+    font-size: clamp(2rem, 3vw, 2.6rem);
+    margin-bottom: 0.5rem;
+}
+
+.moderator-dashboard .welcome-card p {
+    color: var(--muted);
+    max-width: 720px;
+}
+
+.moderator-dashboard .badge-role {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.6rem 0.95rem;
+    border-radius: 999px;
+    background: rgba(37, 99, 235, 0.12);
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.moderator-dashboard .stat-card,
+.moderator-dashboard .panel-card,
+.moderator-dashboard .filter-panel {
+    padding: 1.5rem;
+}
+
+.moderator-dashboard .stat-card {
+    transition: transform 0.24s ease, box-shadow 0.24s ease;
+}
+
+.moderator-dashboard .stat-card:hover,
+.moderator-dashboard .panel-card:hover,
+.moderator-dashboard .flagged-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+}
+
+.moderator-dashboard .stat-label {
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    font-size: 0.94rem;
+}
+
+.moderator-dashboard .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.moderator-dashboard .stat-icon {
+    width: 52px;
+    height: 52px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+    font-size: 1.3rem;
+}
+
+.moderator-dashboard .stat-card .stat-icon {
+    border: 1px solid rgba(226, 232, 240, 1);
+}
+
+.moderator-dashboard .text-warning-soft {
+    color: var(--warning);
+    background: rgba(245, 158, 11, 0.12);
+}
+
+.moderator-dashboard .text-danger-soft {
+    color: var(--danger);
+    background: rgba(220, 38, 38, 0.12);
+}
+
+.moderator-dashboard .text-success-soft {
+    color: var(--success);
+    background: rgba(22, 163, 74, 0.12);
+}
+
+.moderator-dashboard .text-primary-soft {
+    color: var(--primary);
+    background: rgba(37, 99, 235, 0.12);
+}
+
+.moderator-dashboard .quick-actions .btn {
+    text-align: left;
+    border-radius: 1rem;
+    font-weight: 600;
+}
+
+.moderator-dashboard .filter-panel {
+    margin-bottom: 1.5rem;
+}
+
+.moderator-dashboard .filter-panel .form-select,
+.moderator-dashboard .filter-panel .form-control {
+    border-radius: 0.9rem;
+}
+
+.moderator-dashboard .table-card {
+    overflow-x: auto;
+}
+
+.moderator-dashboard table {
+    min-width: 860px;
+}
+
+.moderator-dashboard thead th {
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    font-weight: 700;
+}
+
+.moderator-dashboard tbody tr:hover {
+    background: rgba(37, 99, 235, 0.04);
+}
+
+.moderator-dashboard .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.moderator-dashboard .status-badge.pending {
+    background: rgba(245, 158, 11, 0.12);
+    color: var(--warning);
+}
+
+.moderator-dashboard .status-badge.flagged {
+    background: rgba(220, 38, 38, 0.12);
+    color: var(--danger);
+}
+
+.moderator-dashboard .status-badge.approved {
+    background: rgba(22, 163, 74, 0.12);
+    color: var(--success);
+}
+
+.moderator-dashboard .status-badge.escalated {
+    background: rgba(37, 99, 235, 0.12);
+    color: var(--primary);
+}
+
+.moderator-dashboard .status-badge.false-positive {
+    background: rgba(148, 163, 184, 0.12);
+    color: #334155;
+}
+
+.moderator-dashboard .priority-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.moderator-dashboard .priority-badge.high {
+    background: rgba(220, 38, 38, 0.12);
+    color: var(--danger);
+}
+
+.moderator-dashboard .priority-badge.medium {
+    background: rgba(245, 158, 11, 0.12);
+    color: var(--warning);
+}
+
+.moderator-dashboard .priority-badge.low {
+    background: rgba(22, 163, 74, 0.10);
+    color: var(--success);
+}
+
+.moderator-dashboard .flagged-card {
+    padding: 1.3rem;
+    border-radius: 1.25rem;
+    border: 1px solid var(--border);
+    margin-bottom: 1rem;
+}
+
+.moderator-dashboard .flagged-card p {
+    margin-bottom: 0.5rem;
+}
+
+.moderator-dashboard .flagged-card .card-meta {
+    color: var(--muted);
+    font-size: 0.92rem;
+}
+
+.moderator-dashboard .card-label {
+    display: inline-flex;
+    gap: 0.35rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+    margin-bottom: 0.5rem;
+}
+
+.moderator-dashboard .card-label .badge {
+    border-radius: 0.9rem;
+    padding: 0.3rem 0.65rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.moderator-dashboard .review-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+}
+
+.moderator-dashboard .chart-panel {
+    padding: 1.5rem;
+}
+
+.moderator-dashboard .chart-wrapper {
+    min-height: 320px;
+    position: relative;
+}
+
+.moderator-dashboard .activity-timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.moderator-dashboard .activity-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.moderator-dashboard .activity-item:last-child {
+    border-bottom: 0;
+}
+
+.moderator-dashboard .activity-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--primary);
+    margin-top: 0.6rem;
+}
+
+.moderator-dashboard .activity-details {
+    min-width: 0;
+}
+
+.moderator-dashboard .activity-title {
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+}
+
+.moderator-dashboard .activity-meta {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.moderator-dashboard .user-summary-card .table {
+    margin-bottom: 0;
+}
+
+.moderator-dashboard .user-summary-card .status-label {
+    white-space: nowrap;
+}
+
+.moderator-dashboard .profile-card {
+    padding: 1.5rem;
+}
+
+.moderator-dashboard .profile-card .profile-avatar {
+    width: 86px;
+    height: 86px;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    border: 2px solid rgba(37, 99, 235, 0.18);
+}
+
+.moderator-dashboard .profile-card .profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.moderator-dashboard .profile-card h3 {
+    margin-bottom: 0.25rem;
+}
+
+.moderator-dashboard .profile-card .profile-role {
+    color: var(--muted);
+    margin-bottom: 1rem;
+}
+
+.moderator-dashboard .profile-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 0.9rem;
+    border-radius: 1rem;
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.moderator-dashboard .modal-content {
+    border-radius: 1.25rem;
+}
+
+.moderator-dashboard .modal-title {
+    font-weight: 700;
+}
+
+@media (max-width: 1199px) {
+    .moderator-dashboard .welcome-card,
+    .moderator-dashboard .stat-card,
+    .moderator-dashboard .panel-card,
+    .moderator-dashboard .flagged-card {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .moderator-dashboard .stat-value {
+        font-size: 1.6rem;
+    }
+
+    .moderator-dashboard .review-actions {
+        flex-direction: column;
+    }
+
+    .moderator-dashboard .chart-wrapper {
+        min-height: 260px;
+    }
+
+    .moderator-dashboard .activity-item {
+        grid-template-columns: 1fr;
+    }
+}

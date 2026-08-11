@@ -1,0 +1,669 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About | CyberBullying Detection System{% endblock %}
+
+{% block content %}
+<div class="about-page-container">
+
+    <!-- ====================================================================== -->
+    <!-- 1. ABOUT HERO SECTION                                                 -->
+    <!-- ====================================================================== -->
+    <section class="about-hero-section">
+        <div class="container-fluid px-3 px-md-4">
+            <div class="max-w-800 mx-auto text-center">
+                <div class="hero-badge-pill mx-auto mb-3">
+                    <i class="bi bi-shield-check me-1" aria-hidden="true"></i>
+                    <span>Technical & Academic Documentation</span>
+                </div>
+
+                <h1 class="about-headline">
+                    About CyberBullying Detection System
+                </h1>
+
+                <p class="about-subheadline mx-auto">
+                    An AI-assisted web application designed to help identify potentially harmful online content and support safer digital communication across web communities.
+                </p>
+
+                <div class="d-flex flex-wrap justify-content-center gap-3">
+                    <a href="{% url 'prediction:detect' %}" class="btn btn-primary hero-btn-primary d-inline-flex align-items-center gap-2">
+                        <i class="bi bi-shield-lock-fill" aria-hidden="true"></i> Try Detection
+                    </a>
+                    
+                    <a href="{% url 'home:home' %}" class="btn btn-outline-secondary hero-btn-secondary d-inline-flex align-items-center gap-2">
+                        <i class="bi bi-house-door" aria-hidden="true"></i> Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================== -->
+    <!-- 2. PROJECT OVERVIEW                                                    -->
+    <!-- ====================================================================== -->
+    <section class="py-5 bg-white border-bottom border-slate">
+        <div class="container-fluid px-3 px-md-4">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <span class="cyber-badge cyber-badge-primary mb-2">Platform Summary</span>
+                    <h2 class="h1 fw-bold text-slate-900 mb-3">Project Overview</h2>
+                    <p class="text-muted leading-relaxed mb-3">
+                        The <strong>CyberBullyingDetectionSystem</strong> is a full-stack Django web application developed as a B.Tech Final Year Capstone Project. It integrates machine learning and Natural Language Processing (NLP) techniques to analyze user-submitted text for potentially harmful language.
+                    </p>
+                    <p class="text-muted leading-relaxed mb-0">
+                        Beyond content classification, the application provides an ecosystem comprising user management, content posting, commenting, reporting tools, and dedicated dashboards for members, community moderators, and system administrators.
+                    </p>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="p-4 bg-slate-50 border border-slate rounded-4">
+                        <h3 class="h5 fw-bold mb-3 text-slate-900"><i class="bi bi-layers me-2 text-primary"></i>Core Capabilities</h3>
+                        <ul class="list-unstyled text-muted d-grid gap-2 small mb-0">
+                            <li class="d-flex align-items-start gap-2">
+                                <i class="bi bi-check-circle-fill text-success flex-shrink-0 mt-1"></i>
+                                <span><strong>Text Analysis:</strong> Evaluates submitted sentences for abusive, harassing, or toxic language.</span>
+                            </li>
+                            <li class="d-flex align-items-start gap-2">
+                                <i class="bi bi-check-circle-fill text-success flex-shrink-0 mt-1"></i>
+                                <span><strong>Confidence Scoring:</strong> Returns prediction classification along with model confidence ratings.</span>
+                            </li>
+                            <li class="d-flex align-items-start gap-2">
+                                <i class="bi bi-check-circle-fill text-success flex-shrink-0 mt-1"></i>
+                                <span><strong>Moderation Workflow:</strong> Flags potentially harmful content for human moderator review.</span>
+                            </li>
+                            <li class="d-flex align-items-start gap-2">
+                                <i class="bi bi-check-circle-fill text-success flex-shrink-0 mt-1"></i>
+                                <span><strong>Role-Based Access:</strong> Distinct views tailored for Members, Moderators, and Admins.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================== -->
+    <!-- 3. PROBLEM STATEMENT                                                   -->
+    <!-- ====================================================================== -->
+    <section class="py-5 bg-slate-50 border-bottom border-slate">
+        <div class="container-fluid px-3 px-md-4">
+            <div class="max-w-800 mx-auto text-center mb-5">
+                <span class="cyber-badge cyber-badge-primary mb-2">Problem Context</span>
+                <h2 class="h1 fw-bold text-slate-900">Problem We Are Addressing</h2>
+                <p class="text-muted lead fs-6">
+                    Rapid growth in digital communication makes manual screening of online harassment difficult. Automated AI assistance helps streamline initial screening while keeping human judgment central.
+                </p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="about-card">
+                        <div class="about-card-icon bg-danger-subtle text-danger">
+                            <i class="bi bi-chat-square-quote" aria-hidden="true"></i>
+                        </div>
+                        <h3 class="h5 fw-bold mb-2">Abusive Language</h3>
+                        <p class="text-muted small mb-0">Identify insults, toxic remarks, and derogatory speech aimed at individuals online.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="about-card">
+                        <div class="about-card-icon bg-warning-subtle text-warning">
+                            <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
+                        </div>
+                        <h3 class="h5 fw-bold mb-2">Harassment Patterns</h3>
+                        <p class="text-muted small mb-0">Recognize repetitive hostile messaging targeted at specific users.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="about-card">
+                        <div class="about-card-icon bg-primary-subtle text-primary">
+                            <i class="bi bi-speedometer" aria-hidden="true"></i>
+                        </div>
+                        <h3 class="h5 fw-bold mb-2">Moderation Bottlenecks</h3>
+                        <p class="text-muted small mb-0">Reduce manual review fatigue by flagging high-priority reports automatically.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="about-card">
+                        <div class="about-card-icon bg-success-subtle text-success">
+                            <i class="bi bi-shield-check" aria-hidden="true"></i>
+                        </div>
+                        <h3 class="h5 fw-bold mb-2">Community Protection</h3>
+                        <p class="text-muted small mb-0">Provide web-based safety tools to foster respectful digital spaces.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================== -->
+    <!-- 4. PROJECT OBJECTIVES                                                  -->
+    <!-- ====================================================================== -->
+    <section class="py-5 bg-white border-bottom border-slate">
+        <div class="container-fluid px-3 px-md-4">
+            <div class="text-center max-w-700 mx-auto mb-5">
+                <span class="cyber-badge cyber-badge-primary mb-2">Goals & Purpose</span>
+                <h2 class="h1 fw-bold text-slate-900">Key Project Objectives</h2>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="d-flex align-items-start gap-3 p-3 rounded-4 bg-slate-50 border border-slate">
+                        <span class="badge bg-primary rounded-circle p-2 fs-6">1</span>
+                        <div>
+                            <h3 class="h6 fw-bold mb-1">Detect Harmful Text</h3>
+                            <p class="text-muted small mb-0">Classify submitted content into safe or potentially harmful categories.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="d-flex align-items-start gap-3 p-3 rounded-4 bg-slate-50 border border-slate">
+                        <span class="badge bg-primary rounded-circle p-2 fs-6">2</span>
+                        <div>
+                            <h3 class="h6 fw-bold mb-1">Reduce Manual Effort</h3>
+                            <p class="text-muted small mb-0">Assist moderators by automatically screening submitted content.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="d-flex align-items-start gap-3 p-3 rounded-4 bg-slate-50 border border-slate">
+                        <span class="badge bg-primary rounded-circle p-2 fs-6">3</span>
+                        <div>
+                            <h3 class="h6 fw-bold mb-1">Transparent Predictions</h3>
+                            <p class="text-muted small mb-0">Display classification outputs and confidence ratings clearly.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="d-flex align-items-start gap-3 p-3 rounded-4 bg-slate-50 border border-slate">
+                        <span class="badge bg-primary rounded-circle p-2 fs-6">4</span>
+                        <div>
+                            <h3 class="h6 fw-bold mb-1">Content Reporting</h3>
+                            <p class="text-muted small mb-0">Allow community members to report abusive comments or posts easily.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="d-flex align-items-start gap-3 p-3 rounded-4 bg-slate-50 border border-slate">
+                        <span class="badge bg-primary rounded-circle p-2 fs-6">5</span>
+                        <div>
+                            <h3 class="h6 fw-bold mb-1">Moderation Workflow</h3>
+                            <p class="text-muted small mb-0">Equip moderators with review panels to inspect flagged content.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="d-flex align-items-start gap-3 p-3 rounded-4 bg-slate-50 border border-slate">
+                        <span class="badge bg-primary rounded-circle p-2 fs-6">6</span>
+                        <div>
+                            <h3 class="h6 fw-bold mb-1">Promote Digital Safety</h3>
+                            <p class="text-muted small mb-0">Encourage respectful communication and awareness across digital platforms.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================== -->
+    <!-- 5. HOW THE SYSTEM WORKS (WORKFLOW)                                     -->
+    <!-- ====================================================================== -->
+    <section class="py-5 bg-slate-50 border-bottom border-slate">
+        <div class="container-fluid px-3 px-md-4">
+            <div class="text-center max-w-700 mx-auto mb-5">
+                <span class="cyber-badge cyber-badge-primary mb-2">Processing Pipeline</span>
+                <h2 class="h1 fw-bold text-slate-900">System Processing Pipeline</h2>
+                <p class="text-muted">How data flows from user input to classification output and moderation review.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-2">
+                    <div class="p-3 bg-white border border-slate rounded-4 text-center h-100">
+                        <div class="fw-bold text-primary mb-1">Step 1</div>
+                        <h3 class="h6 fw-bold mb-1">User Input</h3>
+                        <p class="text-muted small mb-0">Text is submitted via form.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-2">
+                    <div class="p-3 bg-white border border-slate rounded-4 text-center h-100">
+                        <div class="fw-bold text-primary mb-1">Step 2</div>
+                        <h3 class="h6 fw-bold mb-1">Preprocessing</h3>
+                        <p class="text-muted small mb-0">Text cleansing & tokenization.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-2">
+                    <div class="p-3 bg-white border border-slate rounded-4 text-center h-100">
+                        <div class="fw-bold text-primary mb-1">Step 3</div>
+                        <h3 class="h6 fw-bold mb-1">Feature Extraction</h3>
+                        <p class="text-muted small mb-0">NLP numerical representations.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-2">
+                    <div class="p-3 bg-white border border-slate rounded-4 text-center h-100">
+                        <div class="fw-bold text-primary mb-1">Step 4</div>
+                        <h3 class="h6 fw-bold mb-1">ML Model</h3>
+                        <p class="text-muted small mb-0">Model pattern classification.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-2">
+                    <div class="p-3 bg-white border border-slate rounded-4 text-center h-100">
+                        <div class="fw-bold text-primary mb-1">Step 5</div>
+                        <h3 class="h6 fw-bold mb-1">Prediction</h3>
+                        <p class="text-muted small mb-0">Result & confidence rating.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-2">
+                    <div class="p-3 bg-white border border-slate rounded-4 text-center h-100">
+                        <div class="fw-bold text-primary mb-1">Step 6</div>
+                        <h3 class="h6 fw-bold mb-1">Human Review</h3>
+                        <p class="text-muted small mb-0">Moderators review flagged items.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================== -->
+    <!-- 6. AI / MACHINE LEARNING CONCEPT                                       -->
+    <!-- ====================================================================== -->
+    <section class="py-5 bg-white border-bottom border-slate">
+        <div class="container-fluid px-3 px-md-4">
+            <div class="max-w-800 mx-auto">
+                <div class="text-center mb-4">
+                    <span class="cyber-badge cyber-badge-primary mb-2">Machine Learning Concept</span>
+                    <h2 class="h1 fw-bold text-slate-900">How AI Helps Content Analysis</h2>
+                </div>
+
+                <div class="p-4 rounded-4 bg-slate-50 border border-slate">
+                    <p class="text-muted leading-relaxed mb-3">
+                        Machine Learning models learn statistical language patterns from historical training datasets. By evaluating word frequencies, n-grams, and semantic structures, the algorithm calculates probabilities to predict whether a given text snippet exhibits characteristics of cyberbullying or harassment.
+                    </p>
+                    <p class="text-muted leading-relaxed mb-0">
+                        Unlike human readers, machine learning algorithms evaluate mathematical patterns rather than understanding emotional intent or context. This is why automated predictions serve as decision-support signals rather than sole administrative authorities.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================== -->
+    <!-- 7. MAIN MODULES                                                        -->
+    <!-- ====================================================================== -->
+    <section class="py-5 bg-slate-50 border-bottom border-slate">
+        <div class="container-fluid px-3 px-md-4">
+            <div class="text-center max-w-700 mx-auto mb-5">
+                <span class="cyber-badge cyber-badge-primary mb-2">System Components</span>
+                <h2 class="h1 fw-bold text-slate-900">Core Application Modules</h2>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="about-card">
+                        <div class="about-card-icon bg-primary-subtle text-primary">
+                            <i class="bi bi-person-badge" aria-hidden="true"></i>
+                        </div>
+                        <h3 class="h5 fw-bold mb-2">Accounts Module</h3>
+                        <p class="text-muted small mb-0">Handles registration, authentication, login sessions, and user profiles.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="about-card">
+                        <div class="about-card-icon bg-success-subtle text-success">
+                            <i class="bi bi-journal-text" aria-hidden="true"></i>
+                        </div>
+                        <h3 class="h5 fw-bold mb-2">Posts Module</h3>
+                        <p class="text-muted small mb-0">Manages creation, viewing, and listing of community posts.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="about-card">
+                        <div class="about-card-icon bg-info-subtle text-info">
+                            <i class="bi bi-chat-dots" aria-hidden="true"></i>
+                        </div>
+                        <h3 class="h5 fw-bold mb-2">Comments Module</h3>
+                        <p class="text-muted small mb-0">Enables user comments and discussions under community posts.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="about-card">
+                        <div class="about-card-icon bg-primary-subtle text-primary">
+                            <i class="bi bi-cpu" aria-hidden="true"></i>
+                        </div>
+                        <h3 class="h5 fw-bold mb-2">Prediction Module</h3>
+                        <p class="text-muted small mb-0">Core NLP text analysis form, model execution, and prediction views.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="about-card">
+                        <div class="about-card-icon bg-warning-subtle text-warning">
+                            <i class="bi bi-speedometer2" aria-hidden="true"></i>
+                        </div>
+                        <h3 class="h5 fw-bold mb-2">Dashboard Module</h3>
+                        <p class="text-muted small mb-0">Role-tailored dashboards for Members, Moderators, and Administrators.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="about-card">
+                        <div class="about-card-icon bg-danger-subtle text-danger">
+                            <i class="bi bi-flag" aria-hidden="true"></i>
+                        </div>
+                        <h3 class="h5 fw-bold mb-2">Reports & Analytics</h3>
+                        <p class="text-muted small mb-0">Content reporting tools, moderation queues, and statistical charts.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================== -->
+    <!-- 8. USER ROLES                                                          -->
+    <!-- ====================================================================== -->
+    <section class="py-5 bg-white border-bottom border-slate">
+        <div class="container-fluid px-3 px-md-4">
+            <div class="text-center max-w-700 mx-auto mb-5">
+                <span class="cyber-badge cyber-badge-primary mb-2">Access Control</span>
+                <h2 class="h1 fw-bold text-slate-900">User Roles & Responsibilities</h2>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="about-card">
+                        <span class="badge bg-primary bg-opacity-10 text-primary p-2 mb-3">Member</span>
+                        <h3 class="h5 fw-bold mb-2">Standard User</h3>
+                        <p class="text-muted small mb-0">Submit text for detection, create posts, comment, report harmful content, and manage personal profiles.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="about-card">
+                        <span class="badge bg-warning bg-opacity-10 text-warning p-2 mb-3">Moderator</span>
+                        <h3 class="h5 fw-bold mb-2">Community Moderator</h3>
+                        <p class="text-muted small mb-0">Access Moderator Dashboard, inspect user reports, review AI-flagged items, and approve/remove content.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="about-card">
+                        <span class="badge bg-danger bg-opacity-10 text-danger p-2 mb-3">Administrator</span>
+                        <h3 class="h5 fw-bold mb-2">System Administrator</h3>
+                        <p class="text-muted small mb-0">Full oversight, user account management, detection metrics, and administrative analytics.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================== -->
+    <!-- 9. TECHNOLOGY STACK                                                    -->
+    <!-- ====================================================================== -->
+    <section class="py-5 bg-slate-50 border-bottom border-slate">
+        <div class="container-fluid px-3 px-md-4">
+            <div class="text-center max-w-700 mx-auto mb-5">
+                <span class="cyber-badge cyber-badge-primary mb-2">Technical Implementation</span>
+                <h2 class="h1 fw-bold text-slate-900">Technology Stack</h2>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="tech-category-card">
+                        <h3 class="h6 fw-bold mb-3 text-slate-900"><i class="bi bi-window me-2 text-primary"></i>Frontend</h3>
+                        <div>
+                            <span class="tech-badge">HTML5</span>
+                            <span class="tech-badge">CSS3</span>
+                            <span class="tech-badge">Bootstrap 5</span>
+                            <span class="tech-badge">Vanilla JS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="tech-category-card">
+                        <h3 class="h6 fw-bold mb-3 text-slate-900"><i class="bi bi-server me-2 text-primary"></i>Backend</h3>
+                        <div>
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">Django 4.2</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="tech-category-card">
+                        <h3 class="h6 fw-bold mb-3 text-slate-900"><i class="bi bi-database me-2 text-primary"></i>Database</h3>
+                        <div>
+                            <span class="tech-badge">SQLite3</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="tech-category-card">
+                        <h3 class="h6 fw-bold mb-3 text-slate-900"><i class="bi bi-cpu me-2 text-primary"></i>AI & Tools</h3>
+                        <div>
+                            <span class="tech-badge">Python NLP</span>
+                            <span class="tech-badge">Git</span>
+                            <span class="tech-badge">Chart.js</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================== -->
+    <!-- 10. SYSTEM ARCHITECTURE DIAGRAM (HTML/CSS VISUAL)                      -->
+    <!-- ====================================================================== -->
+    <section class="py-5 bg-white border-bottom border-slate">
+        <div class="container-fluid px-3 px-md-4">
+            <div class="text-center max-w-700 mx-auto mb-5">
+                <span class="cyber-badge cyber-badge-primary mb-2">System Design</span>
+                <h2 class="h1 fw-bold text-slate-900">System Architecture</h2>
+            </div>
+
+            <div class="arch-diagram-container max-w-800 mx-auto">
+                <div class="arch-node">
+                    <div class="arch-node-title">User Interface (Frontend Layer)</div>
+                    <div class="arch-node-desc">HTML5 • CSS3 • Bootstrap 5 • Django Templates</div>
+                </div>
+
+                <div class="arch-connector-arrow"><i class="bi bi-arrow-down"></i></div>
+
+                <div class="arch-node">
+                    <div class="arch-node-title">Django Application Layer (Backend Views & URLs)</div>
+                    <div class="arch-node-desc">Request Handler • Form Validation • Session & Auth Middleware</div>
+                </div>
+
+                <div class="arch-connector-arrow"><i class="bi bi-arrow-down-up"></i></div>
+
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="arch-node">
+                            <div class="arch-node-title">Database</div>
+                            <div class="arch-node-desc">SQLite3 Storage</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="arch-node">
+                            <div class="arch-node-title">AI / NLP Engine</div>
+                            <div class="arch-node-desc">Classification Pipeline</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================== -->
+    <!-- 11. KEY BENEFITS                                                       -->
+    <!-- ====================================================================== -->
+    <section class="py-5 bg-slate-50 border-bottom border-slate">
+        <div class="container-fluid px-3 px-md-4">
+            <div class="text-center max-w-700 mx-auto mb-5">
+                <span class="cyber-badge cyber-badge-primary mb-2">Value Proposition</span>
+                <h2 class="h1 fw-bold text-slate-900">Key Project Benefits</h2>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="about-card">
+                        <h3 class="h6 fw-bold mb-2 text-primary"><i class="bi bi-lightning-charge me-2"></i>Faster Screening</h3>
+                        <p class="text-muted small mb-0">Initial automated detection flags potentially toxic content instantly.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="about-card">
+                        <h3 class="h6 fw-bold mb-2 text-primary"><i class="bi bi-globe me-2"></i>Centralized Platform</h3>
+                        <p class="text-muted small mb-0">Unified web portal for detection, community posting, and moderation.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="about-card">
+                        <h3 class="h6 fw-bold mb-2 text-primary"><i class="bi bi-shield-check me-2"></i>Moderator Support</h3>
+                        <p class="text-muted small mb-0">Equips review teams with confidence ratings and structured reports.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================== -->
+    <!-- 12. CURRENT LIMITATIONS & RESPONSIBLE AI                               -->
+    <!-- ====================================================================== -->
+    <section class="py-5 bg-white border-bottom border-slate">
+        <div class="container-fluid px-3 px-md-4">
+            <div class="max-w-900 mx-auto">
+                <div class="text-center mb-5">
+                    <span class="cyber-badge cyber-badge-primary mb-2">Academic Transparency</span>
+                    <h2 class="h1 fw-bold text-slate-900">Current System Limitations</h2>
+                </div>
+
+                <div class="row g-4 mb-5">
+                    <div class="col-md-6">
+                        <div class="limitation-item">
+                            <h3 class="h6 fw-bold mb-2 text-warning-emphasis"><i class="bi bi-exclamation-circle me-2"></i>Context & Sarcasm</h3>
+                            <p class="text-muted small mb-0">NLP models can struggle with complex sarcasm, slang, or regional idioms.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="limitation-item">
+                            <h3 class="h6 fw-bold mb-2 text-warning-emphasis"><i class="bi bi-exclamation-circle me-2"></i>Training Data Scope</h3>
+                            <p class="text-muted small mb-0">Model accuracy depends directly on the diversity and quality of training datasets.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="limitation-item">
+                            <h3 class="h6 fw-bold mb-2 text-warning-emphasis"><i class="bi bi-exclamation-circle me-2"></i>False Positives / Negatives</h3>
+                            <p class="text-muted small mb-0">Statistical classification may occasionally misclassify benign or harmful sentences.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="limitation-item">
+                            <h3 class="h6 fw-bold mb-2 text-warning-emphasis"><i class="bi bi-exclamation-circle me-2"></i>Human Moderation Required</h3>
+                            <p class="text-muted small mb-0">AI predictions serve as decision support and should not replace human discretion.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Responsible AI Banner -->
+                <div class="responsible-ai-alert">
+                    <div class="d-flex align-items-start gap-3">
+                        <i class="bi bi-cpu-fill fs-2 text-primary flex-shrink-0" aria-hidden="true"></i>
+                        <div>
+                            <h3 class="h5 fw-bold text-white mb-2">Responsible AI Guidelines</h3>
+                            <p class="small text-slate-300 mb-0">
+                                AI-assisted predictions should be treated as decision-support information rather than absolute judgments. Users and moderators should consider context, fairness, and privacy when evaluating predictions.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================== -->
+    <!-- 13. FUTURE ENHANCEMENTS (FUTURE SCOPE)                                 -->
+    <!-- ====================================================================== -->
+    <section class="py-5 bg-slate-50 border-bottom border-slate">
+        <div class="container-fluid px-3 px-md-4">
+            <div class="text-center max-w-700 mx-auto mb-5">
+                <span class="cyber-badge cyber-badge-primary mb-2">Roadmap</span>
+                <h2 class="h1 fw-bold text-slate-900">Future Enhancements (Planned Scope)</h2>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="future-scope-card">
+                        <h3 class="h6 fw-bold mb-2 text-slate-900"><i class="bi bi-translate me-2 text-primary"></i>Multilingual Support</h3>
+                        <p class="text-muted small mb-0">Planned expansion for analyzing mixed-language and regional dialect inputs.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="future-scope-card">
+                        <h3 class="h6 fw-bold mb-2 text-slate-900"><i class="bi bi-graph-up me-2 text-primary"></i>Model Continuous Training</h3>
+                        <p class="text-muted small mb-0">Planned backend pipeline for periodic model retraining on new moderation feedback.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="future-scope-card">
+                        <h3 class="h6 fw-bold mb-2 text-slate-900"><i class="bi bi-bell-fill me-2 text-primary"></i>Real-Time Notifications</h3>
+                        <p class="text-muted small mb-0">Planned real-time WebSocket alerts for moderators when abusive language is detected.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================== -->
+    <!-- 14. CALL TO ACTION                                                     -->
+    <!-- ====================================================================== -->
+    <section class="py-5 bg-white">
+        <div class="container-fluid px-3 px-md-4">
+            <div class="cta-banner-card max-w-900 mx-auto text-center">
+                <h2 class="h1 fw-bold mb-3">Explore the System</h2>
+                <p class="text-slate-300 max-w-600 mx-auto mb-4 fs-6">
+                    Learn more about the platform or try the AI-assisted detection workflow firsthand.
+                </p>
+
+                <div class="d-flex flex-wrap justify-content-center gap-3">
+                    <a href="{% url 'prediction:detect' %}" class="btn btn-primary hero-btn-primary d-inline-flex align-items-center gap-2">
+                        <i class="bi bi-shield-lock-fill" aria-hidden="true"></i> Try Detection
+                    </a>
+                    
+                    <a href="{% url 'home:home' %}" class="btn btn-outline-light hero-btn-secondary d-inline-flex align-items-center gap-2">
+                        <i class="bi bi-house-door" aria-hidden="true"></i> Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/about.js' %}"></script>
+{% endblock %}

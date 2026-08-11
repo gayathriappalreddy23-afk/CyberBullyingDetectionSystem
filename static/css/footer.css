@@ -1,0 +1,193 @@
+/* ==========================================================================
+   CyberBullyingDetectionSystem - Component Stylesheet (footer.css)
+   Design Aesthetic: Modern Cybersecurity / AI SaaS Dark Slate Footer
+   ========================================================================== */
+
+/* 1. Base Footer Container */
+.site-footer {
+    background: linear-gradient(180deg, #0F172A 0%, #0B1120 100%);
+    color: #F8FAFC;
+    border-top: 1px solid #334155;
+    padding-top: 3.5rem;
+    padding-bottom: 2rem;
+    font-size: 0.92rem;
+    position: relative;
+    z-index: 10;
+}
+
+.site-footer a {
+    color: #94A3B8;
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.site-footer a:hover,
+.site-footer a:focus-visible {
+    color: #60A5FA !important;
+    outline-offset: 3px;
+}
+
+/* 2. Footer Brand Header */
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.footer-brand-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    text-decoration: none !important;
+}
+
+.footer-brand-icon {
+    font-size: 1.75rem;
+    color: #2563EB;
+    filter: drop-shadow(0 0 8px rgba(37, 99, 235, 0.4));
+}
+
+.footer-brand-desc {
+    color: #94A3B8;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    margin-bottom: 0;
+    max-width: 320px;
+}
+
+/* 3. Section Headings & Navigation Lists */
+.footer-heading {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #FFFFFF;
+    margin-bottom: 1.2rem;
+    position: relative;
+    letter-spacing: 0.3px;
+}
+
+.footer-heading::after {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #2563EB;
+    margin-top: 6px;
+    border-radius: 2px;
+}
+
+.footer-links-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.footer-links-list li a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.footer-links-list li a i {
+    font-size: 0.8rem;
+    color: #38BDF8;
+    transition: transform 0.2s ease;
+}
+
+.footer-links-list li a:hover i {
+    transform: translateX(3px);
+}
+
+/* 4. Safety & Info Cards */
+.footer-safety-box {
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    margin-top: 0.5rem;
+}
+
+.footer-safety-box p {
+    color: #94A3B8;
+    font-size: 0.82rem;
+    margin-bottom: 0;
+    line-height: 1.5;
+}
+
+/* 5. Responsible AI Disclaimer Box */
+.footer-disclaimer-card {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(37, 99, 235, 0.25);
+    border-left: 4px solid #2563EB;
+    border-radius: 10px;
+    padding: 0.9rem 1.25rem;
+    margin-top: 2.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+}
+
+.footer-disclaimer-icon {
+    font-size: 1.25rem;
+    color: #60A5FA;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.footer-disclaimer-text {
+    color: #CBD5E1;
+    font-size: 0.84rem;
+    line-height: 1.55;
+    margin-bottom: 0;
+}
+
+/* 6. Bottom Copyright & System Meta Bar */
+.footer-bottom-bar {
+    border-top: 1px solid #1E293B;
+    padding-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@media (min-width: 768px) {
+    .footer-bottom-bar {
+        flex-direction: row;
+    }
+}
+
+.footer-copyright {
+    color: #64748B;
+    font-size: 0.82rem;
+    margin-bottom: 0;
+}
+
+.footer-system-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    color: #94A3B8;
+    background: #1E293B;
+    border: 1px solid #334155;
+    padding: 0.3rem 0.75rem;
+    border-radius: 50px;
+}
+
+.footer-system-badge .status-dot {
+    width: 7px;
+    height: 7px;
+    background-color: #10B981;
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+}

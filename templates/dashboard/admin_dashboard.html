@@ -1,0 +1,476 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard | CyberBullying Detection System{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/admin_dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-page admin-dashboard" data-safe-count="{{ safe_content_count|default:0 }}" data-bullying-count="{{ bullying_content_count|default:0 }}" data-under-review-count="{{ under_review_count|default:0 }}" data-system-activity="{{ system_activity_data|default:'[]'|escapejs }}">
+    <section class="welcome-card shadow-sm rounded-4 mb-4" aria-labelledby="admin-welcome-title">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-8">
+                <p class="eyebrow">Administrator Dashboard</p>
+                <h1 id="admin-welcome-title">Welcome back, {% if user and user.username %}{{ user.username }}{% else %}Administrator{% endif %} 👋</h1>
+                <p>Monitor and manage the CyberBullying Detection System.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <span class="role-pill" aria-label="User role: Administrator">
+                    <i class="bi bi-person-badge"></i>
+                    Administrator
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <section class="row g-4 mb-4" aria-label="system statistics">
+        <div class="col-sm-6 col-md-4 col-xl-2">
+            <article class="stat-card shadow-sm rounded-4 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="stat-label">Total Users</p>
+                        <h3 class="stat-value">{{ total_users|default:0 }}</h3>
+                    </div>
+                    <div class="stat-icon text-primary-soft">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <div class="col-sm-6 col-md-4 col-xl-2">
+            <article class="stat-card shadow-sm rounded-4 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="stat-label">Total Posts</p>
+                        <h3 class="stat-value">{{ total_posts|default:0 }}</h3>
+                    </div>
+                    <div class="stat-icon text-secondary-soft">
+                        <i class="bi bi-file-earmark-post-fill"></i>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <div class="col-sm-6 col-md-4 col-xl-2">
+            <article class="stat-card shadow-sm rounded-4 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="stat-label">Total Comments</p>
+                        <h3 class="stat-value">{{ total_comments|default:0 }}</h3>
+                    </div>
+                    <div class="stat-icon text-success-soft">
+                        <i class="bi bi-chat-dots-fill"></i>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <div class="col-sm-6 col-md-4 col-xl-2">
+            <article class="stat-card shadow-sm rounded-4 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="stat-label">Cyberbullying Detected</p>
+                        <h3 class="stat-value">{{ total_bullying_detected|default:0 }}</h3>
+                    </div>
+                    <div class="stat-icon text-warning-soft">
+                        <i class="bi bi-shield-exclamation"></i>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <div class="col-sm-6 col-md-4 col-xl-2">
+            <article class="stat-card shadow-sm rounded-4 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="stat-label">Pending Reports</p>
+                        <h3 class="stat-value">{{ pending_reports_count|default:0 }}</h3>
+                    </div>
+                    <div class="stat-icon text-danger-soft">
+                        <i class="bi bi-flag-fill"></i>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <div class="col-sm-6 col-md-4 col-xl-2">
+            <article class="stat-card shadow-sm rounded-4 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="stat-label">Active Moderators</p>
+                        <h3 class="stat-value">{{ active_moderators|default:0 }}</h3>
+                    </div>
+                    <div class="stat-icon text-primary-soft">
+                        <i class="bi bi-person-check-fill"></i>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="row g-4 mb-4">
+        <div class="col-12">
+            <article class="panel-card quick-actions shadow-sm rounded-4 p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="panel-title mb-0">Quick Actions</h2>
+                </div>
+                <div class="row g-3">
+                    <div class="col-sm-6 col-md-4 col-xl-2">
+                        <a href="#" class="btn btn-outline-primary w-100">
+                            <i class="bi bi-people me-2"></i>Manage Users
+                        </a>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-xl-2">
+                        <a href="#" class="btn btn-outline-secondary w-100">
+                            <i class="bi bi-person-badge me-2"></i>Manage Moderators
+                        </a>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-xl-2">
+                        <a href="#" class="btn btn-outline-warning w-100">
+                            <i class="bi bi-flag-fill me-2"></i>View Reports
+                        </a>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-xl-2">
+                        <a href="#" class="btn btn-outline-success w-100">
+                            <i class="bi bi-journal-text me-2"></i>View All Posts
+                        </a>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-xl-2">
+                        <a href="#" class="btn btn-outline-info w-100 text-dark">
+                            <i class="bi bi-bar-chart-fill me-2"></i>View Detection History
+                        </a>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-xl-2">
+                        <a href="#" class="btn btn-outline-dark w-100">
+                            <i class="bi bi-graph-up-arrow me-2"></i>View Analytics
+                        </a>
+                    </div>
+                </div>
+                <p class="text-muted small mt-3 mb-0">TODO: connect quick action buttons to backend admin URLs when available.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="row g-4 mb-4">
+        <div class="col-12">
+            <form id="adminFiltersForm" class="panel-card filter-panel shadow-sm rounded-4 p-4">
+                <div class="row gy-3 gx-3 align-items-end">
+                    <div class="col-md-4 col-lg-3">
+                        <label class="form-label" for="adminSearch">Search</label>
+                        <input id="adminSearch" type="search" class="form-control" placeholder="Search users, content, reports">
+                    </div>
+                    <div class="col-md-4 col-lg-2">
+                        <label class="form-label" for="adminFilterType">Type</label>
+                        <select id="adminFilterType" class="form-select">
+                            <option value="">All types</option>
+                            <option value="user">User</option>
+                            <option value="content">Content</option>
+                            <option value="report">Report</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 col-lg-2">
+                        <label class="form-label" for="adminFilterStatus">Status</label>
+                        <select id="adminFilterStatus" class="form-select">
+                            <option value="">All statuses</option>
+                            <option value="pending">Pending</option>
+                            <option value="under_review">Under Review</option>
+                            <option value="resolved">Resolved</option>
+                            <option value="rejected">Rejected</option>
+                            <option value="escalated">Escalated</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 col-lg-2">
+                        <label class="form-label" for="adminFilterDate">Date</label>
+                        <input id="adminFilterDate" type="date" class="form-control">
+                    </div>
+                    <div class="col-md-4 col-lg-1 d-grid">
+                        <button type="button" class="btn btn-primary">Search</button>
+                    </div>
+                    <div class="col-md-4 col-lg-2 d-grid">
+                        <button id="adminFiltersReset" type="button" class="btn btn-outline-secondary">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="row g-4 mb-4">
+        <div class="col-lg-6 col-xl-4">
+            <article class="panel-card shadow-sm rounded-4 summary-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="panel-title mb-0">User Management</h2>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Total Users</span>
+                    <strong>{{ total_users|default:0 }}</strong>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Active Users</span>
+                    <strong>{{ active_users|default:0 }}</strong>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Suspended Users</span>
+                    <strong>{{ suspended_users|default:0 }}</strong>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">New Users</span>
+                    <strong>{{ new_users|default:0 }}</strong>
+                </div>
+                <a href="#" class="btn btn-primary w-100 mt-3">Manage Users</a>
+            </article>
+        </div>
+        <div class="col-lg-6 col-xl-4">
+            <article class="panel-card shadow-sm rounded-4 summary-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="panel-title mb-0">Moderator Overview</h2>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Total Moderators</span>
+                    <strong>{{ total_moderators|default:0 }}</strong>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Active Moderators</span>
+                    <strong>{{ active_moderators|default:0 }}</strong>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Reports Reviewed</span>
+                    <strong>{{ reviewed_reports_count|default:0 }}</strong>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Pending Reviews</span>
+                    <strong>{{ pending_reviews_count|default:0 }}</strong>
+                </div>
+                <a href="#" class="btn btn-secondary w-100 mt-3">Manage Moderators</a>
+            </article>
+        </div>
+        <div class="col-lg-12 col-xl-4">
+            <article class="panel-card shadow-sm rounded-4 summary-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="panel-title mb-0">Content Overview</h2>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Total Posts</span>
+                    <strong>{{ total_posts|default:0 }}</strong>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Total Comments</span>
+                    <strong>{{ total_comments|default:0 }}</strong>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Flagged Posts</span>
+                    <strong>{{ flagged_posts|default:0 }}</strong>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Flagged Comments</span>
+                    <strong>{{ flagged_comments|default:0 }}</strong>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Removed Content</span>
+                    <strong>{{ removed_content|default:0 }}</strong>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="row g-4 mb-4">
+        <div class="col-xl-6">
+            <article class="panel-card shadow-sm rounded-4 chart-card p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="panel-title mb-0">Cyberbullying Detection Overview</h2>
+                    <span class="text-muted small">AI classification metrics</span>
+                </div>
+                <div class="row gx-3 gy-3 mb-4">
+                    <div class="col-4">
+                        <div class="status-card shadow-sm rounded-4 p-3">
+                            <p class="stat-label mb-1">Safe Content</p>
+                            <h4>{{ safe_content_count|default:0 }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="status-card shadow-sm rounded-4 p-3">
+                            <p class="stat-label mb-1">Cyberbullying</p>
+                            <h4>{{ bullying_content_count|default:0 }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="status-card shadow-sm rounded-4 p-3">
+                            <p class="stat-label mb-1">Under Review</p>
+                            <h4>{{ under_review_count|default:0 }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="adminDetectionChart" aria-label="Cyberbullying detection chart"></canvas>
+                </div>
+            </article>
+        </div>
+        <div class="col-xl-6">
+            <article class="panel-card shadow-sm rounded-4 p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="panel-title mb-0">Recent Reports</h2>
+                    <span class="text-muted small">Latest system reports</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">Report ID</th>
+                                <th scope="col">Content Type</th>
+                                <th scope="col">Reason</th>
+                                <th scope="col">Reported By</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Priority</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if recent_reports %}
+                                {% for report in recent_reports %}
+                                    <tr>
+                                        <td>#{{ report.id }}</td>
+                                        <td>{{ report.content_type|default:'N/A' }}</td>
+                                        <td>{{ report.reason|default:'Not specified' }}</td>
+                                        <td>{{ report.reported_by|default:'Anonymous' }}</td>
+                                        <td>{{ report.created_at|date:'M d, Y' }}</td>
+                                        <td>
+                                            {% if report.priority == 'high' %}
+                                                <span class="status-badge escalated">High</span>
+                                            {% elif report.priority == 'medium' %}
+                                                <span class="status-badge pending">Medium</span>
+                                            {% else %}
+                                                <span class="status-badge resolved">Low</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if report.status == 'pending' %}
+                                                <span class="status-badge pending"><i class="bi bi-hourglass-split"></i> Pending</span>
+                                            {% elif report.status == 'under_review' %}
+                                                <span class="status-badge under-review"><i class="bi bi-search"></i> Under Review</span>
+                                            {% elif report.status == 'resolved' %}
+                                                <span class="status-badge resolved"><i class="bi bi-check-circle"></i> Resolved</span>
+                                            {% elif report.status == 'rejected' %}
+                                                <span class="status-badge rejected"><i class="bi bi-x-circle"></i> Rejected</span>
+                                            {% elif report.status == 'escalated' %}
+                                                <span class="status-badge escalated"><i class="bi bi-exclamation-circle"></i> Escalated</span>
+                                            {% else %}
+                                                <span class="status-badge pending">Unknown</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-outline-primary">View</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="8">
+                                        <div class="empty-state">
+                                            <i class="bi bi-flag"></i>
+                                            <p>No recent reports available.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="row g-4 mb-4">
+        <div class="col-xl-6">
+            <article class="panel-card shadow-sm rounded-4 p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="panel-title mb-0">Recent Admin Activity</h2>
+                    <span class="text-muted small">System and moderation events</span>
+                </div>
+                {% if recent_activities %}
+                    <ul class="activity-timeline">
+                        {% for activity in recent_activities %}
+                            <li class="activity-item">
+                                <div class="activity-dot" aria-hidden="true"></div>
+                                <div class="activity-details">
+                                    <p class="activity-title">{{ activity.event|default:'Activity' }}</p>
+                                    <p class="activity-meta mb-1">{{ activity.reference|default:'System' }}</p>
+                                    <p class="activity-meta">{{ activity.timestamp|default:'N/A' }}</p>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="empty-state">
+                        <i class="bi bi-clock-history"></i>
+                        <p>No recent activity.</p>
+                    </div>
+                {% endif %}
+            </article>
+        </div>
+        <div class="col-xl-6">
+            <article class="panel-card shadow-sm rounded-4 p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="panel-title mb-0">System Activity</h2>
+                    <span class="text-muted small">Performance over time</span>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="adminActivityChart" aria-label="System activity chart"></canvas>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="row g-4 mb-4">
+        <div class="col-xl-4">
+            <article class="profile-card shadow-sm rounded-4 p-4">
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <div class="profile-avatar">
+                        {% if user and user.profile_image %}
+                            <img src="{{ user.profile_image.url }}" alt="{{ user.username }} profile image">
+                        {% else %}
+                            <img src="https://ui-avatars.com/api/?name={{ user.username|default:'Admin' }}&background=2563EB&color=fff" alt="Admin avatar">
+                        {% endif %}
+                    </div>
+                    <div>
+                        <h3>{{ user.username|default:'Administrator' }}</h3>
+                        <p class="profile-role">Administrator</p>
+                    </div>
+                </div>
+                <div class="profile-info d-grid gap-2 mb-3">
+                    <div>
+                        <p class="summary-label mb-1">Email</p>
+                        <p class="text-muted mb-0">{% if user and user.email %}{{ user.email }}{% else %}Email not available{% endif %}</p>
+                    </div>
+                    <div>
+                        <p class="summary-label mb-1">Last Login</p>
+                        <p class="text-muted mb-0">{% if user and user.last_login %}{{ user.last_login }}{% else %}Not recorded{% endif %}</p>
+                    </div>
+                </div>
+                <a href="#" class="btn btn-primary w-100">View Profile</a>
+            </article>
+        </div>
+        <div class="col-xl-8">
+            <article class="panel-card shadow-sm rounded-4 p-4 system-status-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="panel-title mb-0">System Status</h2>
+                    <span class="text-muted small">Current UI placeholders</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-label">Database</span>
+                    <span class="status-value">{{ database_status|default:'Connected (UI placeholder)' }}</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-label">ML Model</span>
+                    <span class="status-value">{{ ml_model_status|default:'Available (UI placeholder)' }}</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-label">Application</span>
+                    <span class="status-value">{{ application_status|default:'Running (UI placeholder)' }}</span>
+                </div>
+                <p class="text-muted small mt-3 mb-0">Backend health check values should be connected here once the admin API supports system status.</p>
+            </article>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/admin_dashboard.js' %}"></script>
+{% endblock %}

@@ -1,117 +1,144 @@
-from django.shortcuts import render
-
-# Create your views here.
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView as DjangoLoginView
 from django.shortcuts import redirect, render
+from django.views import View
+
+from .forms import LoginForm, RegisterForm
 
 
-def login_view(request):
+# ---------------------------------------------------------------------------
+# Helper: Role-based redirect after successful login
+# ---------------------------------------------------------------------------
+
+def get_post_login_redirect(user):
+    """
+    Determines where the user should go after successful login.
+    """
+
+    if user.is_superuser:
+        return "/admin/"
+
+    elif user.is_staff:
+        return "/dashboard/moderator/"
+
+    else:
+        return "/dashboard/"
+
+
+# ---------------------------------------------------------------------------
+# Login View
+# ---------------------------------------------------------------------------
+
+class LoginView(DjangoLoginView):
+    """
+    Login view using Django's built-in authentication system.
+    """
+
+    template_name = "accounts/login.html"
+    authentication_form = LoginForm
+    redirect_authenticated_user = True
+
+    def get_success_url(self):
+        """
+        Redirect user according to their role.
+        """
+
+        next_url = self.get_redirect_url()
+
+        if next_url:
+            return next_url
+
+        return get_post_login_redirect(self.request.user)
+
+
+# ---------------------------------------------------------------------------
+# Logout View
+# ---------------------------------------------------------------------------
+
+def logout_view(request):
+    """
+    Logs the user out and redirects to the home page.
+    """
+
     if request.method == "POST":
-        username = request.POST.get("username", "").strip()
-        password = request.POST.get("password", "")
-
-        user = authenticate(
+        logout(request)
+        messages.success(
             request,
-            username=username,
-            password=password
+            "You have been signed out successfully."
         )
 
-        if user is not None:
+        return redirect("home:home")
+
+    return redirect("home:home")
+
+
+# ---------------------------------------------------------------------------
+# Register View
+# ---------------------------------------------------------------------------
+
+class RegisterView(View):
+    """
+    User registration.
+    """
+
+    template_name = "accounts/register.html"
+    form_class = RegisterForm
+
+    def get(self, request):
+
+        if request.user.is_authenticated:
+            return redirect(
+                get_post_login_redirect(request.user)
+            )
+
+        form = self.form_class()
+
+        return render(
+            request,
+            self.template_name,
+            {"form": form},
+        )
+
+    def post(self, request):
+
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+
+            user = form.save()
+
             login(request, user)
-            return redirect("dashboard")
-
-        messages.error(
-            request,
-            "Invalid username or password."
-        )
-
-    return render(request, "accounts/login.html")
-
-
-def register_view(request):
-    if request.method == "POST":
-
-        username = request.POST.get(
-            "username",
-            ""
-        ).strip()
-
-        email = request.POST.get(
-            "email",
-            ""
-        ).strip()
-
-        password = request.POST.get(
-            "password",
-            ""
-        )
-
-        confirm_password = request.POST.get(
-            "confirm_password",
-            ""
-        )
-
-        if not username or not email or not password:
-
-            messages.error(
-                request,
-                "Please fill in all required fields."
-            )
-
-        elif password != confirm_password:
-
-            messages.error(
-                request,
-                "Passwords do not match."
-            )
-
-        elif User.objects.filter(
-            username=username
-        ).exists():
-
-            messages.error(
-                request,
-                "Username already exists."
-            )
-
-        elif User.objects.filter(
-            email=email
-        ).exists():
-
-            messages.error(
-                request,
-                "Email is already registered."
-            )
-
-        else:
-
-            User.objects.create_user(
-                username=username,
-                email=email,
-                password=password
-            )
 
             messages.success(
                 request,
-                "Account created successfully. Please login."
+                f"Welcome, {user.username}! "
+                "Your account has been created."
             )
 
-            return redirect("login")
+            return redirect(
+                get_post_login_redirect(user)
+            )
+
+        return render(
+            request,
+            self.template_name,
+            {"form": form},
+        )
+
+
+# ---------------------------------------------------------------------------
+# Profile View
+# ---------------------------------------------------------------------------
+
+@login_required
+def profile_view(request):
+    """
+    User profile page.
+    """
 
     return render(
         request,
-        "accounts/register.html"
-    )
-
-
-def dashboard(request):
-
-    if not request.user.is_authenticated:
-        return redirect("login")
-
-    return render(
-        request,
-        "dashboard/dashboard.html"
+        "accounts/profile.html"
     )

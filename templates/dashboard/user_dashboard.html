@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+
+{% block title %}User Dashboard | CyberBullying Detection System{% endblock %}
+
+{% block content %}
+<div class="dashboard-page">
+    <section class="welcome-card shadow-sm rounded-4 p-4 mb-4" aria-labelledby="welcome-title">
+        <div class="row align-items-center g-3">
+            <div class="col-lg-8">
+                <p class="eyebrow mb-2">User Dashboard</p>
+                <h1 id="welcome-title" class="display-6 fw-semibold mb-2">
+                    Welcome back, {% if user and user.username %}{{ user.username }}{% else %}User{% endif %} 👋
+                </h1>
+                <p class="text-muted mb-0">Stay safe and keep your online community respectful.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <span class="status-pill">
+                    <i class="bi bi-shield-check me-2"></i>
+                    Secure monitoring active
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <section class="row g-4 mb-4" aria-label="dashboard statistics">
+        <div class="col-md-6 col-xl-3">
+            <article class="stat-card shadow-sm rounded-4 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="stat-label">Total Posts</p>
+                        <h3 class="stat-value">{{ total_posts|default:0 }}</h3>
+                    </div>
+                    <div class="stat-icon bg-primary-subtle text-primary">
+                        <i class="bi bi-file-earmark-post" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <article class="stat-card shadow-sm rounded-4 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="stat-label">Total Comments</p>
+                        <h3 class="stat-value">{{ total_comments|default:0 }}</h3>
+                    </div>
+                    <div class="stat-icon bg-indigo-subtle text-indigo">
+                        <i class="bi bi-chat-dots" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <article class="stat-card shadow-sm rounded-4 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="stat-label">Safe Content</p>
+                        <h3 class="stat-value">{{ safe_count|default:0 }}</h3>
+                    </div>
+                    <div class="stat-icon bg-success-subtle text-success">
+                        <i class="bi bi-shield-check" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <article class="stat-card shadow-sm rounded-4 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="stat-label">Cyberbullying Detected</p>
+                        <h3 class="stat-value">{{ bullying_count|default:0 }}</h3>
+                    </div>
+                    <div class="stat-icon bg-danger-subtle text-danger">
+                        <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="row g-4 mb-4">
+        <div class="col-lg-4">
+            <article class="panel-card shadow-sm rounded-4 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="panel-title mb-0">Quick Actions</h2>
+                </div>
+                <div class="d-grid gap-3">
+                    <a href="{% url 'posts:create_post' %}" class="btn btn-primary btn-lg text-start">
+                        <i class="bi bi-plus-circle me-2"></i>Create Post
+                    </a>
+                    <a href="{% url 'prediction:detect' %}" class="btn btn-outline-primary btn-lg text-start">
+                        <i class="bi bi-search-heart me-2"></i>Detect Cyberbullying
+                    </a>
+                    <a href="{% url 'reports:report' %}" class="btn btn-outline-secondary btn-lg text-start">
+                        <i class="bi bi-bar-chart-line me-2"></i>View Reports
+                    </a>
+                </div>
+            </article>
+        </div>
+        <div class="col-lg-8">
+            <article class="panel-card shadow-sm rounded-4 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="panel-title mb-0">Cyberbullying Detection Summary</h2>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="detectionChart" aria-label="Detection summary chart"></canvas>
+                </div>
+                <p class="text-muted mt-3 mb-0">Detection statistics are based on analyzed content.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="row g-4 mb-4">
+        <div class="col-xl-8">
+            <article class="panel-card shadow-sm rounded-4 p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="panel-title mb-0">Recent Posts</h2>
+                </div>
+                {% if recent_posts %}
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Post</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for post in recent_posts %}
+                                    <tr>
+                                        <td>{{ post.content }}</td>
+                                        <td>{{ post.created_at }}</td>
+                                        <td><span class="status-badge">Analyzed</span></td>
+                                        <td><a href="#" class="text-primary text-decoration-none">View</a></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="empty-state">
+                        <i class="bi bi-journal-text"></i>
+                        <p>No posts available yet.</p>
+                    </div>
+                {% endif %}
+            </article>
+        </div>
+        <div class="col-xl-4">
+            <article class="panel-card shadow-sm rounded-4 p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="panel-title mb-0">Recent Activity</h2>
+                </div>
+                {% if recent_activities %}
+                    <ul class="activity-list">
+                        {% for activity in recent_activities %}
+                            <li class="activity-item">
+                                <div class="activity-dot"></div>
+                                <div>
+                                    <p class="activity-title mb-1">{{ activity.title }}</p>
+                                    <p class="activity-meta mb-0">{{ activity.timestamp }}</p>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="empty-state compact">
+                        <i class="bi bi-clock-history"></i>
+                        <p>No recent activity yet.</p>
+                    </div>
+                {% endif %}
+            </article>
+        </div>
+    </section>
+
+    <section class="row g-4">
+        <div class="col-lg-8">
+            <article class="panel-card shadow-sm rounded-4 p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="panel-title mb-0">Profile Summary</h2>
+                    <a href="#" class="btn btn-sm btn-outline-primary">View Profile</a>
+                </div>
+                <div class="profile-summary d-flex flex-column flex-md-row align-items-center gap-4">
+                    <div class="profile-avatar">
+                        {% if user and user.profile_image %}
+                            <img src="{{ user.profile_image.url }}" alt="{{ user.username }} profile" />
+                        {% else %}
+                            <img src="https://ui-avatars.com/api/?name={{ user.username|default:'User' }}&background=2563EB&color=fff" alt="{{ user.username|default:'User' }} avatar" />
+                        {% endif %}
+                    </div>
+                    <div class="flex-grow-1">
+                        <h3 class="profile-name mb-1">{% if user and user.username %}{{ user.username }}{% else %}User{% endif %}</h3>
+                        <p class="profile-meta mb-2">{% if user and user.email %}{{ user.email }}{% else %}Email not provided{% endif %}</p>
+                        <p class="profile-meta mb-3">Role: {% if user and user.is_staff %}Moderator{% else %}Member{% endif %}</p>
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <div class="profile-stat">
+                                    <span class="profile-stat-label">Total Posts</span>
+                                    <strong>{{ total_posts|default:0 }}</strong>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="profile-stat">
+                                    <span class="profile-stat-label">Total Comments</span>
+                                    <strong>{{ total_comments|default:0 }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <div class="col-lg-4">
+            <article class="panel-card shadow-sm rounded-4 p-4 h-100">
+                <h2 class="panel-title mb-3">Security Notice</h2>
+                <p class="text-muted mb-3">Your activity is being analyzed in real time to keep the community safe.</p>
+                <div class="d-flex align-items-center gap-2 text-success">
+                    <i class="bi bi-shield-fill-check"></i>
+                    <span>Protection is active</span>
+                </div>
+            </article>
+        </div>
+    </section>
+</div>
+{% endblock %}

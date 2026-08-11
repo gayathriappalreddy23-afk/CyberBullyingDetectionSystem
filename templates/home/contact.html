@@ -1,0 +1,568 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Contact Us | CyberBullying Detection System{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/contact.js' %}"></script>
+{% endblock extra_js %}
+
+{% block content %}
+<div class="contact-page-wrapper">
+
+    <!-- Decorative grid background -->
+    <div class="contact-bg-grid" aria-hidden="true"></div>
+
+    <!-- =========================================================================
+         1. HERO SECTION
+         ========================================================================= -->
+    <section class="contact-hero" aria-labelledby="contactHeroTitle">
+        <div class="container">
+            <div class="contact-hero-inner text-center">
+
+                <div class="contact-hero-badge" aria-label="Contact the team">
+                    <i class="bi bi-chat-dots-fill" aria-hidden="true"></i>
+                    <span>Get In Touch</span>
+                </div>
+
+                <h1 class="contact-hero-title" id="contactHeroTitle">
+                    We're Here to <span class="gradient-text">Help You</span>
+                </h1>
+
+                <p class="contact-hero-subtitle">
+                    Have a question about the detection system, need technical support, or want to report a concern?
+                    Our team is ready to assist you.
+                </p>
+
+                <!-- Stats -->
+                <div class="contact-stats-bar">
+                    <div class="contact-stat-item">
+                        <i class="bi bi-clock-fill" aria-hidden="true"></i>
+                        <span>Response within <strong>24 hours</strong></span>
+                    </div>
+                    <div class="contact-stat-item">
+                        <i class="bi bi-shield-check-fill" aria-hidden="true"></i>
+                        <span>Secure & <strong>private</strong></span>
+                    </div>
+                    <div class="contact-stat-item">
+                        <i class="bi bi-people-fill" aria-hidden="true"></i>
+                        <span>Dedicated <strong>support team</strong></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         2. MAIN CONTACT SECTION (Info + Form)
+         ========================================================================= -->
+    <section class="contact-main-section" aria-label="Contact information and form">
+        <div class="container">
+            <div class="row g-4 align-items-start">
+
+                <!-- ── Left Column: Contact Info ── -->
+                <div class="col-lg-5">
+                    <div class="contact-info-stack">
+
+                        <!-- Email -->
+                        <div class="contact-info-card">
+                            <div class="contact-info-icon" aria-hidden="true">
+                                <i class="bi bi-envelope-fill"></i>
+                            </div>
+                            <div class="contact-info-body">
+                                <h6>Email Support</h6>
+                                <p>
+                                    <a href="mailto:support@cyberbullydetect.example.com"
+                                       id="copyEmailBtn"
+                                       data-email="support@cyberbullydetect.example.com">
+                                        support@cyberbullydetect.example.com
+                                    </a>
+                                </p>
+                                <p class="mt-1" style="font-size:0.78rem;">
+                                    Click to copy &nbsp;·&nbsp; replies within 24 hrs
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- GitHub -->
+                        <div class="contact-info-card">
+                            <div class="contact-info-icon" aria-hidden="true">
+                                <i class="bi bi-github"></i>
+                            </div>
+                            <div class="contact-info-body">
+                                <h6>GitHub Repository</h6>
+                                <p>
+                                    <a href="https://github.com/your-username/CyberBullyingDetectionSystem"
+                                       target="_blank"
+                                       rel="noopener noreferrer">
+                                        View Project on GitHub
+                                        <i class="bi bi-box-arrow-up-right ms-1" aria-hidden="true" style="font-size:0.75rem;"></i>
+                                    </a>
+                                </p>
+                                <p class="mt-1" style="font-size:0.78rem;">
+                                    Open issues · Pull requests · Discussions
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Institution -->
+                        <div class="contact-info-card">
+                            <div class="contact-info-icon" aria-hidden="true">
+                                <i class="bi bi-building-fill"></i>
+                            </div>
+                            <div class="contact-info-body">
+                                <h6>Institution</h6>
+                                <p>Final Year B.Tech Project</p>
+                                <p style="font-size:0.78rem;">Computer Science &amp; Engineering</p>
+                            </div>
+                        </div>
+
+                        <!-- Availability -->
+                        <div class="availability-card" aria-label="Support availability schedule">
+                            <div class="availability-title">
+                                <span class="availability-dot" aria-hidden="true"></span>
+                                Support Availability
+                            </div>
+                            <div class="availability-row">
+                                <span class="availability-day">Monday – Friday</span>
+                                <span class="availability-time">09:00 – 18:00 IST</span>
+                            </div>
+                            <div class="availability-row">
+                                <span class="availability-day">Saturday</span>
+                                <span class="availability-time">10:00 – 14:00 IST</span>
+                            </div>
+                            <div class="availability-row">
+                                <span class="availability-day">Sunday</span>
+                                <span class="availability-time">Closed</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ── Right Column: Contact Form ── -->
+                <div class="col-lg-7">
+                    <div class="contact-form-card">
+
+                        <!-- Form Header -->
+                        <div class="contact-form-header">
+                            <h3>
+                                <i class="bi bi-send-fill me-2" aria-hidden="true" style="color:#60a5fa;"></i>
+                                Send a Message
+                            </h3>
+                            <p>Fill in the form below and our team will get back to you promptly.</p>
+                        </div>
+
+                        <!-- Success Message -->
+                        <div id="contactSuccessMessage" class="contact-success-message" role="alert" aria-live="polite">
+                            <div class="success-icon-circle">
+                                <i class="bi bi-check-lg" aria-hidden="true"></i>
+                            </div>
+                            <h4 style="color:#f0f6ff; font-family:'Outfit',sans-serif; font-weight:700; margin-bottom:0.5rem;">
+                                Message Sent!
+                            </h4>
+                            <p style="color:#8b949e; margin-bottom:1.5rem;">
+                                Thank you for reaching out. We'll get back to you within 24 hours.
+                            </p>
+                            <button id="resetContactForm"
+                                    type="button"
+                                    class="btn btn-outline-primary btn-sm"
+                                    aria-label="Send another message">
+                                <i class="bi bi-arrow-repeat me-1" aria-hidden="true"></i>
+                                Send Another Message
+                            </button>
+                        </div>
+
+                        <!-- The Actual Form -->
+                        <div id="contactFormBody">
+                            <form id="contactForm"
+                                  method="POST"
+                                  action="{% url 'home:contact' %}"
+                                  novalidate
+                                  aria-label="Contact form">
+
+                                {% csrf_token %}
+
+                                <!-- Name + Email Row -->
+                                <div class="row g-3 mb-3">
+                                    <div class="col-sm-6">
+                                        <label for="id_name" class="form-label">
+                                            Full Name <span class="text-danger" aria-hidden="true">*</span>
+                                        </label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="id_name"
+                                               name="name"
+                                               placeholder="e.g. Priya Sharma"
+                                               required
+                                               autocomplete="name"
+                                               aria-required="true">
+                                        <div class="invalid-feedback">Please enter your full name.</div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="id_email" class="form-label">
+                                            Email Address <span class="text-danger" aria-hidden="true">*</span>
+                                        </label>
+                                        <input type="email"
+                                               class="form-control"
+                                               id="id_email"
+                                               name="email"
+                                               placeholder="you@example.com"
+                                               required
+                                               autocomplete="email"
+                                               aria-required="true">
+                                        <div class="invalid-feedback">Please enter a valid email address.</div>
+                                    </div>
+                                </div>
+
+                                <!-- Subject -->
+                                <div class="mb-3">
+                                    <label for="id_subject" class="form-label">
+                                        Subject <span class="text-danger" aria-hidden="true">*</span>
+                                    </label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="id_subject"
+                                           name="subject"
+                                           placeholder="Brief topic of your message"
+                                           required
+                                           aria-required="true">
+                                    <div class="invalid-feedback">Please enter a subject.</div>
+                                </div>
+
+                                <!-- Category -->
+                                <div class="mb-3">
+                                    <label for="id_category" class="form-label">Category</label>
+                                    <select class="form-select"
+                                            id="id_category"
+                                            name="category"
+                                            aria-label="Select message category">
+                                        <option value="" disabled selected>Select a category…</option>
+                                        <option value="general">General Inquiry</option>
+                                        <option value="technical">Technical Issue / Bug Report</option>
+                                        <option value="detection">Detection Result Question</option>
+                                        <option value="account">Account / Login Issue</option>
+                                        <option value="feedback">Website Feedback</option>
+                                        <option value="content">Content / Moderation Concern</option>
+                                        <option value="privacy">Privacy / Data Request</option>
+                                        <option value="academic">Academic / Research Collaboration</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+
+                                <!-- Priority -->
+                                <div class="mb-3">
+                                    <label class="form-label d-block">Priority Level</label>
+                                    <div class="priority-selector" role="radiogroup" aria-label="Select priority level">
+
+                                        <input class="priority-option" type="radio" name="priority" id="priority_low" value="low" checked>
+                                        <label class="priority-label" for="priority_low">
+                                            <i class="bi bi-circle text-success" aria-hidden="true"></i> Low
+                                        </label>
+
+                                        <input class="priority-option" type="radio" name="priority" id="priority_normal" value="normal">
+                                        <label class="priority-label" for="priority_normal">
+                                            <i class="bi bi-dash-circle text-info" aria-hidden="true"></i> Normal
+                                        </label>
+
+                                        <input class="priority-option" type="radio" name="priority" id="priority_high" value="high">
+                                        <label class="priority-label" for="priority_high">
+                                            <i class="bi bi-exclamation-circle text-warning" aria-hidden="true"></i> High
+                                        </label>
+
+                                        <input class="priority-option" type="radio" name="priority" id="priority_urgent" value="urgent">
+                                        <label class="priority-label" for="priority_urgent">
+                                            <i class="bi bi-exclamation-triangle-fill text-danger" aria-hidden="true"></i> Urgent
+                                        </label>
+
+                                    </div>
+                                </div>
+
+                                <!-- Message -->
+                                <div class="mb-3">
+                                    <label for="id_message" class="form-label">
+                                        Message <span class="text-danger" aria-hidden="true">*</span>
+                                    </label>
+                                    <textarea class="form-control"
+                                              id="id_message"
+                                              name="message"
+                                              placeholder="Describe your question or issue in detail…"
+                                              required
+                                              maxlength="2000"
+                                              aria-required="true"
+                                              aria-describedby="charCounter"></textarea>
+                                    <div class="invalid-feedback">Message must be at least 10 characters.</div>
+                                    <div class="char-counter" id="charCounter" aria-live="polite">0 / 2000 characters</div>
+                                </div>
+
+                                <!-- Attachment note -->
+                                <div class="mb-4">
+                                    <div style="font-size:0.8rem; color:#6e7681; display:flex; align-items:center; gap:0.4rem;">
+                                        <i class="bi bi-info-circle" aria-hidden="true" style="color:#60a5fa;"></i>
+                                        If you have screenshots or files, please describe them in your message and we'll request them via email.
+                                    </div>
+                                </div>
+
+                                <!-- Submit -->
+                                <button type="submit"
+                                        class="contact-submit-btn"
+                                        id="contactSubmitBtn"
+                                        aria-label="Send your message">
+                                    <span class="btn-spinner spinner-border spinner-border-sm me-2"
+                                          id="btnSpinner"
+                                          role="status"
+                                          aria-hidden="true"></span>
+                                    <i class="bi bi-send-fill me-2" id="btnIcon" aria-hidden="true"></i>
+                                    <span id="btnText">Send Message</span>
+                                </button>
+
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         3. ALTERNATIVE CONTACT METHODS
+         ========================================================================= -->
+    <section class="alt-contact-section" aria-label="Alternative ways to reach us">
+        <div class="container">
+            <div class="text-center mb-4">
+                <p class="contact-hero-badge mx-auto" style="display:inline-flex;">
+                    <i class="bi bi-grid-3x3-gap-fill me-1" aria-hidden="true"></i>
+                    Other Ways to Reach Us
+                </p>
+                <h2 style="font-family:'Outfit',sans-serif; font-size:1.6rem; font-weight:700; color:#f0f6ff; margin-top:0.75rem;">
+                    More Support Channels
+                </h2>
+            </div>
+
+            <div class="row g-3 justify-content-center">
+
+                <!-- GitHub Issues -->
+                <div class="col-sm-6 col-lg-3">
+                    <a href="https://github.com/your-username/CyberBullyingDetectionSystem/issues"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="alt-contact-card"
+                       aria-label="Report a bug on GitHub Issues">
+                        <div class="alt-contact-icon" style="background:rgba(139,92,246,0.12); border:1px solid rgba(139,92,246,0.25); color:#a78bfa;">
+                            <i class="bi bi-bug-fill" aria-hidden="true"></i>
+                        </div>
+                        <h6>Bug Reports</h6>
+                        <p>Open a GitHub Issue for bugs, errors, or unexpected behaviour.</p>
+                    </a>
+                </div>
+
+                <!-- GitHub Discussions -->
+                <div class="col-sm-6 col-lg-3">
+                    <a href="https://github.com/your-username/CyberBullyingDetectionSystem/discussions"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="alt-contact-card"
+                       aria-label="Join the GitHub Discussions community">
+                        <div class="alt-contact-icon" style="background:rgba(6,182,212,0.12); border:1px solid rgba(6,182,212,0.25); color:#22d3ee;">
+                            <i class="bi bi-chat-square-dots-fill" aria-hidden="true"></i>
+                        </div>
+                        <h6>Discussions</h6>
+                        <p>Join the community forum for general questions and ideas.</p>
+                    </a>
+                </div>
+
+                <!-- Documentation -->
+                <div class="col-sm-6 col-lg-3">
+                    <a href="{% url 'home:about' %}"
+                       class="alt-contact-card"
+                       aria-label="Read the project documentation">
+                        <div class="alt-contact-icon" style="background:rgba(59,130,246,0.12); border:1px solid rgba(59,130,246,0.25); color:#60a5fa;">
+                            <i class="bi bi-file-earmark-text-fill" aria-hidden="true"></i>
+                        </div>
+                        <h6>Documentation</h6>
+                        <p>Read about the system architecture, ML model, and tech stack.</p>
+                    </a>
+                </div>
+
+                <!-- Try Detection -->
+                <div class="col-sm-6 col-lg-3">
+                    <a href="{% url 'prediction:detect' %}"
+                       class="alt-contact-card"
+                       aria-label="Try the cyberbullying detection tool">
+                        <div class="alt-contact-icon" style="background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.25); color:#34d399;">
+                            <i class="bi bi-shield-lock-fill" aria-hidden="true"></i>
+                        </div>
+                        <h6>Try Detection</h6>
+                        <p>Test the AI model directly — analyse text for harmful content.</p>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         4. FREQUENTLY ASKED QUESTIONS
+         ========================================================================= -->
+    <section class="contact-faq-section" aria-labelledby="faqSectionTitle">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+
+                    <div class="text-center mb-4">
+                        <p class="section-eyebrow">FAQ</p>
+                        <h2 class="section-title" id="faqSectionTitle">Frequently Asked Questions</h2>
+                        <p class="section-subtitle">Quick answers to the most common questions we receive.</p>
+                    </div>
+
+                    <div class="faq-accordion accordion" id="contactFaqAccordion">
+
+                        <!-- Q1 -->
+                        <div class="accordion-item">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faq1"
+                                        aria-expanded="false"
+                                        aria-controls="faq1">
+                                    <i class="bi bi-shield-question me-2 text-info" aria-hidden="true"></i>
+                                    How does the cyberbullying detection work?
+                                </button>
+                            </h3>
+                            <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#contactFaqAccordion">
+                                <div class="accordion-body">
+                                    The system uses a trained Machine Learning / NLP model to analyse submitted text.
+                                    It assigns a statistical likelihood score indicating whether the text contains
+                                    patterns commonly associated with harmful or cyberbullying content. The model
+                                    is based on supervised learning and does not make absolute determinations —
+                                    human moderation is always recommended for borderline cases.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Q2 -->
+                        <div class="accordion-item">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faq2"
+                                        aria-expanded="false"
+                                        aria-controls="faq2">
+                                    <i class="bi bi-lock-fill me-2 text-success" aria-hidden="true"></i>
+                                    Is the text I submit stored or shared?
+                                </button>
+                            </h3>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#contactFaqAccordion">
+                                <div class="accordion-body">
+                                    Submitted text is processed for analysis purposes and may be logged for
+                                    system improvement and audit. It is not shared with third parties.
+                                    For specific data handling or deletion requests, please contact us via
+                                    the form above and select "Privacy / Data Request" as the category.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Q3 -->
+                        <div class="accordion-item">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faq3"
+                                        aria-expanded="false"
+                                        aria-controls="faq3">
+                                    <i class="bi bi-person-badge-fill me-2 text-warning" aria-hidden="true"></i>
+                                    Do I need an account to use the detection tool?
+                                </button>
+                            </h3>
+                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#contactFaqAccordion">
+                                <div class="accordion-body">
+                                    Yes — user registration is required to access the detection and analysis
+                                    features. This ensures accountability and allows you to view your past
+                                    analysis history. Registration is free and takes less than a minute.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Q4 -->
+                        <div class="accordion-item">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faq4"
+                                        aria-expanded="false"
+                                        aria-controls="faq4">
+                                    <i class="bi bi-graph-up-arrow me-2 text-info" aria-hidden="true"></i>
+                                    How accurate is the ML model?
+                                </button>
+                            </h3>
+                            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#contactFaqAccordion">
+                                <div class="accordion-body">
+                                    Model accuracy depends on the dataset, language, and type of content.
+                                    The system is designed as an assistive tool — not a final arbiter.
+                                    We recommend using its results alongside human review, especially for
+                                    moderation decisions. Accuracy metrics and model details are described
+                                    on the <a href="{% url 'home:about' %}" class="text-info">About page</a>.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Q5 -->
+                        <div class="accordion-item">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faq5"
+                                        aria-expanded="false"
+                                        aria-controls="faq5">
+                                    <i class="bi bi-clock-history me-2 text-warning" aria-hidden="true"></i>
+                                    How long does it take to get a response?
+                                </button>
+                            </h3>
+                            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#contactFaqAccordion">
+                                <div class="accordion-body">
+                                    We aim to respond to all messages within 24 hours on weekdays.
+                                    For urgent issues, select "Urgent" as the priority level in the contact form.
+                                    Weekend responses may take slightly longer.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Q6 -->
+                        <div class="accordion-item">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#faq6"
+                                        aria-expanded="false"
+                                        aria-controls="faq6">
+                                    <i class="bi bi-mortarboard-fill me-2 text-success" aria-hidden="true"></i>
+                                    Can I collaborate or use this project academically?
+                                </button>
+                            </h3>
+                            <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#contactFaqAccordion">
+                                <div class="accordion-body">
+                                    Yes. This is an open academic project. Researchers and students are welcome
+                                    to collaborate. Please reach out via the contact form with the
+                                    "Academic / Research Collaboration" category, or open a Discussion on GitHub.
+                                </div>
+                            </div>
+                        </div>
+
+                    </div><!-- /.accordion -->
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div><!-- /.contact-page-wrapper -->
+{% endblock content %}
