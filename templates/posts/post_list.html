@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Community Posts | CyberBullying Detection System{% endblock title %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/posts.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container post-page-wrapper">
+
+    <!-- ========================================================================= -->
+    <!-- 1. PAGE HEADER & CREATE POST BUTTON                                       -->
+    <!-- ========================================================================= -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+        <div>
+            <h1 class="h2 font-heading fw-bold m-0 text-slate-900">Community Posts</h1>
+            <p class="text-muted small m-0 mt-1">
+                Explore posts shared by the community and participate respectfully in online discussions.
+            </p>
+        </div>
+        
+        {% if user.is_authenticated %}
+            <a href="{% url 'posts:create' %}" class="btn btn-primary btn-post-submit flex-shrink-0">
+                <i class="bi bi-plus-circle-fill" aria-hidden="true"></i>
+                <span>Create Post</span>
+            </a>
+        {% endif %}
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- 2. SEARCH & CATEGORY FILTER BAR                                           -->
+    <!-- ========================================================================= -->
+    <div class="post-search-filter-card">
+        <form method="GET" action="{% url 'posts:list' %}" class="row g-2 align-items-center">
+            
+            <!-- Search Keyword Input -->
+            <div class="col-12 col-md-5 col-lg-6">
+                <div class="position-relative">
+                    <i class="bi bi-search post-search-icon" aria-hidden="true"></i>
+                    <input type="text" 
+                           name="q" 
+                           class="form-control post-search-input" 
+                           placeholder="Search posts by title or keyword..." 
+                           value="{{ search_query }}"
+                           aria-label="Search posts">
+                </div>
+            </div>
+
+            <!-- Category Filter Dropdown -->
+            <div class="col-12 col-md-4 col-lg-4">
+                <select name="category" class="form-select post-filter-select" aria-label="Filter by category">
+                    <option value="">All Categories</option>
+                    {% for code, name in categories %}
+                        <option value="{{ code }}" {% if selected_category == code %}selected{% endif %}>
+                            {{ name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Filter Submit & Reset -->
+            <div class="col-12 col-md-3 col-lg-2 d-flex gap-2">
+                <button type="submit" class="btn btn-outline-primary w-100 fw-semibold" style="height: 44px;">
+                    Filter
+                </button>
+                {% if search_query or selected_category %}
+                    <a href="{% url 'posts:list' %}" class="btn btn-outline-secondary px-3 d-inline-flex align-items-center justify-content-center" style="height: 44px;" title="Clear Filters">
+                        <i class="bi bi-x-lg" aria-hidden="true"></i>
+                    </a>
+                {% endif %}
+            </div>
+
+        </form>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- 3. POST FEED GRID                                                         -->
+    <!-- ========================================================================= -->
+    {% if posts %}
+        <div class="row g-4">
+            {% for post in posts %}
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="post-feed-card">
+                        <div>
+                            <!-- Category Pill & Safety Status -->
+                            <div class="post-card-header">
+                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle text-capitalize fw-semibold">
+                                    {{ post.get_category_display|default:post.category }}
+                                </span>
+
+                                {% if post.is_flagged %}
+                                    <span class="badge badge-safety-flagged" title="Flagged by moderation safety engine">
+                                        <i class="bi bi-exclamation-triangle-fill me-1" aria-hidden="true"></i> Flagged
+                                    </span>
+                                {% else %}
+                                    <span class="badge badge-safety-safe" title="Verified Safe Content">
+                                        <i class="bi bi-shield-check me-1" aria-hidden="true"></i> Safe
+                                    </span>
+                                {% endif %}
+                            </div>
+
+                            <!-- Post Title -->
+                            <h2 class="post-card-title">
+                                <a href="{% url 'posts:detail' pk=post.pk %}">{{ post.title }}</a>
+                            </h2>
+
+                            <!-- Content Preview (Truncated & Escaped) -->
+                            <p class="post-card-snippet">
+                                {{ post.content|truncatewords:28 }}
+                            </p>
+                        </div>
+
+                        <!-- Card Footer Meta Information -->
+                        <div class="post-card-footer">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="post-author-pill">
+                                    <i class="bi bi-person-circle text-primary" aria-hidden="true"></i>
+                                    {{ post.author.username }}
+                                </span>
+                                <span>•</span>
+                                <span>{{ post.created_at|date:"M d, Y" }}</span>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-2">
+                                {% if user.is_authenticated and user == post.author %}
+                                    <a href="{% url 'posts:edit' pk=post.pk %}" class="btn btn-sm btn-outline-secondary p-1 px-2 small" title="Edit your post">
+                                        <i class="bi bi-pencil-fill" aria-hidden="true"></i>
+                                    </a>
+                                {% endif %}
+                                <a href="{% url 'posts:detail' pk=post.pk %}" class="btn btn-sm btn-outline-primary fw-semibold px-3">
+                                    Read More
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- 4. PAGINATION CONTROLS                                                    -->
+        <!-- ========================================================================= -->
+        {% if page_obj.has_other_pages %}
+            <nav class="pagination-container" aria-label="Posts page navigation">
+                <ul class="pagination">
+                    <!-- Previous Page -->
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}" aria-label="Previous Page">
+                                <i class="bi bi-chevron-left" aria-hidden="true"></i> Prev
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link" aria-hidden="true"><i class="bi bi-chevron-left"></i> Prev</span>
+                        </li>
+                    {% endif %}
+
+                    <!-- Page Numbers -->
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="page-item active" aria-current="page">
+                                <span class="page-link">{{ num }}</span>
+                            </li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">
+                                    {{ num }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    <!-- Next Page -->
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}" aria-label="Next Page">
+                                Next <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link" aria-hidden="true">Next <i class="bi bi-chevron-right"></i></span>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+
+    {% else %}
+        <!-- ========================================================================= -->
+        <!-- 5. EMPTY STATE CONTAINER                                                  -->
+        <!-- ========================================================================= -->
+        <div class="post-form-card p-5 text-center my-4">
+            <div class="d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle p-3 mb-3" style="width: 64px; height: 64px;">
+                <i class="bi bi-search-heart fs-2" aria-hidden="true"></i>
+            </div>
+            <h2 class="h4 font-heading fw-bold mb-2">No Posts Found</h2>
+            <p class="text-muted small max-width-400 mx-auto mb-4">
+                {% if search_query or selected_category %}
+                    No community posts matched your filter criteria. Try clearing filters or searching for different keywords.
+                {% else %}
+                    There are currently no community posts available. Start the conversation by publishing the first post!
+                {% endif %}
+            </p>
+            {% if user.is_authenticated %}
+                <a href="{% url 'posts:create' %}" class="btn btn-primary btn-post-submit">
+                    <i class="bi bi-plus-circle-fill" aria-hidden="true"></i>
+                    <span>Create a Post</span>
+                </a>
+            {% else %}
+                <a href="{% url 'accounts:login' %}" class="btn btn-primary btn-post-submit">
+                    <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>
+                    <span>Sign In to Post</span>
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
+
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script src="{% static 'js/post.js' %}"></script>
+{% endblock extra_js %}

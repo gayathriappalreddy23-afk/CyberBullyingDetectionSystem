@@ -1,0 +1,285 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Profile | CyberBullying Detection System{% endblock title %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container profile-page-container">
+
+    <!-- ========================================================================= -->
+    <!-- 1. PROFILE HEADER BANNER & USER IDENTITY CARD                             -->
+    <!-- ========================================================================= -->
+    <div class="profile-header-card">
+        <div class="profile-cover-banner"></div>
+        <div class="profile-header-content">
+            <div class="row align-items-end g-3">
+                
+                <!-- Avatar & Identity Info -->
+                <div class="col-md-8">
+                    <div class="d-flex flex-column flex-sm-row align-items-center align-items-sm-end gap-3 text-center text-sm-start">
+                        <div class="profile-avatar-wrapper">
+                            <div class="profile-avatar-circle">
+                                {{ request.user.username|slice:":1"|upper }}
+                            </div>
+                            <span class="profile-role-badge" title="Account Active">
+                                <i class="bi bi-check-lg" aria-hidden="true"></i>
+                            </span>
+                        </div>
+
+                        <div>
+                            <h1 class="profile-user-name">
+                                {% if request.user.get_full_name %}
+                                    {{ request.user.get_full_name }}
+                                {% else %}
+                                    {{ request.user.username }}
+                                {% endif %}
+                            </h1>
+                            <div class="profile-user-handle d-flex align-items-center justify-content-center justify-content-sm-start gap-2">
+                                <span>@{{ request.user.username }}</span>
+                                <button type="button" class="btn btn-sm btn-link p-0 text-muted text-decoration-none" id="copyHandleBtn" data-handle="@{{ request.user.username }}" title="Copy handle">
+                                    <i class="bi bi-copy" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="profile-meta-pills">
+                                <span class="profile-meta-pill">
+                                    <i class="bi bi-envelope-fill text-primary" aria-hidden="true"></i>
+                                    {{ request.user.email|default:"No email set" }}
+                                </span>
+                                <span class="profile-meta-pill">
+                                    <i class="bi bi-calendar3 text-secondary" aria-hidden="true"></i>
+                                    Joined {{ request.user.date_joined|date:"M Y" }}
+                                </span>
+                                <span class="profile-meta-pill">
+                                    <i class="bi bi-shield-check text-success" aria-hidden="true"></i>
+                                    {% if request.user.is_superuser %}
+                                        Super Administrator
+                                    {% elif request.user.is_staff %}
+                                        Staff Moderator
+                                    {% else %}
+                                        Registered User
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Controls (Dashboard & Logout) -->
+                <div class="col-md-4 text-center text-md-end">
+                    <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-md-end">
+                        <a href="{% url 'dashboard:user_dashboard' %}" class="btn btn-outline-primary profile-action-btn">
+                            <i class="bi bi-speedometer2" aria-hidden="true"></i>
+                            <span>Dashboard</span>
+                        </a>
+
+                        <form method="POST" action="{% url 'accounts:logout' %}" id="profileLogoutForm" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger profile-action-btn">
+                                <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+                                <span>Sign Out</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- 2. USER STATISTICS GRID                                                   -->
+    <!-- ========================================================================= -->
+    <div class="row g-3 mb-4">
+        <!-- Total Posts Stat -->
+        <div class="col-6 col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon-wrapper stat-icon-primary">
+                    <i class="bi bi-file-earmark-post" aria-hidden="true"></i>
+                </div>
+                <div class="stat-value">{{ post_count|default:total_posts|default:0 }}</div>
+                <div class="stat-label">Total Posts</div>
+            </div>
+        </div>
+
+        <!-- Total Comments Stat -->
+        <div class="col-6 col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon-wrapper stat-icon-secondary">
+                    <i class="bi bi-chat-left-text" aria-hidden="true"></i>
+                </div>
+                <div class="stat-value">{{ comment_count|default:total_comments|default:0 }}</div>
+                <div class="stat-label">Total Comments</div>
+            </div>
+        </div>
+
+        <!-- Member Since Stat -->
+        <div class="col-6 col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon-wrapper stat-icon-info">
+                    <i class="bi bi-clock-history" aria-hidden="true"></i>
+                </div>
+                <div class="stat-value">{{ request.user.date_joined|date:"Y" }}</div>
+                <div class="stat-label">Member Since</div>
+            </div>
+        </div>
+
+        <!-- Safety Status Stat -->
+        <div class="col-6 col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon-wrapper stat-icon-success">
+                    <i class="bi bi-shield-lock" aria-hidden="true"></i>
+                </div>
+                <div class="stat-value">Good</div>
+                <div class="stat-label">Safety Rating</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- 3. MAIN CONTENT GRID (ACCOUNT DETAILS & POST ACTIVITIES)                  -->
+    <!-- ========================================================================= -->
+    <div class="row g-4">
+        
+        <!-- Left Column: Detailed Account Information -->
+        <div class="col-lg-5">
+            
+            <div class="profile-section-card">
+                <div class="profile-section-header">
+                    <h2 class="profile-section-title">
+                        <i class="bi bi-person-lines-fill text-primary" aria-hidden="true"></i>
+                        Account Information
+                    </h2>
+                </div>
+                <div class="profile-section-body">
+                    <div class="info-list-group">
+                        
+                        <div class="info-item">
+                            <span class="info-label">Username</span>
+                            <span class="info-value font-monospace">{{ request.user.username }}</span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">Email Address</span>
+                            <span class="info-value">{{ request.user.email|default:"Not provided" }}</span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">First Name</span>
+                            <span class="info-value">{{ request.user.first_name|default:"Not specified" }}</span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">Last Name</span>
+                            <span class="info-value">{{ request.user.last_name|default:"Not specified" }}</span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">Date Joined</span>
+                            <span class="info-value">{{ request.user.date_joined|date:"F d, Y - H:i" }}</span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">Last Active Session</span>
+                            <span class="info-value">{{ request.user.last_login|date:"F d, Y - H:i"|default:"Current Session" }}</span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">Account Permissions</span>
+                            <span class="info-value">
+                                {% if request.user.is_superuser %}
+                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Superuser Admin</span>
+                                {% elif request.user.is_staff %}
+                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle">Staff Moderator</span>
+                                {% else %}
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle">Standard User</span>
+                                {% endif %}
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Community Guidelines & Safety Card -->
+            <div class="community-guidelines-box">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <i class="bi bi-shield-check text-primary fs-4" aria-hidden="true"></i>
+                    <h3 class="h6 font-heading fw-bold m-0 text-slate-900">CyberBullying Safety Commitment</h3>
+                </div>
+                <p class="small text-muted mb-0">
+                    Our platform utilizes Natural Language Processing (NLP) toxicity detection models to ensure all community posts and comments adhere to respectful communication standards.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Member 2 Posts & Activity Navigation -->
+        <div class="col-lg-7">
+            
+            <div class="profile-section-card">
+                <div class="profile-section-header">
+                    <h2 class="profile-section-title">
+                        <i class="bi bi-card-heading text-primary" aria-hidden="true"></i>
+                        My Posts & Content
+                    </h2>
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'posts:create' %}" class="btn btn-sm btn-primary d-inline-flex align-items-center gap-1">
+                            <i class="bi bi-plus-circle" aria-hidden="true"></i> Create Post
+                        </a>
+                        <a href="{% url 'posts:list' %}" class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-1">
+                            <i class="bi bi-collection" aria-hidden="true"></i> View Feed
+                        </a>
+                    </div>
+                </div>
+
+                <div class="profile-section-body">
+                    {% if posts %}
+                        <div class="list-group list-group-flush">
+                            {% for post in posts %}
+                                <div class="list-group-item px-0 py-3 border-bottom">
+                                    <div class="d-flex w-100 justify-content-between align-items-center mb-1">
+                                        <h3 class="h6 mb-0 font-heading fw-bold">
+                                            <a href="#" class="text-decoration-none text-dark">{{ post.title|default:"Community Post" }}</a>
+                                        </h3>
+                                        <small class="text-muted">{{ post.created_at|date:"M d, Y" }}</small>
+                                    </div>
+                                    <p class="mb-2 text-muted small text-truncate">
+                                        {{ post.content|truncatewords:20 }}
+                                    </p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <!-- Empty State Container -->
+                        <div class="text-center py-5">
+                            <div class="d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle p-3 mb-3" style="width: 64px; height: 64px;">
+                                <i class="bi bi-pencil-square fs-2" aria-hidden="true"></i>
+                            </div>
+                            <h3 class="h5 font-heading fw-bold mb-2">No Posts Created Yet</h3>
+                            <p class="text-muted small max-width-400 mx-auto mb-4">
+                                Share your thoughts or initiate constructive discussions on online safety and digital wellness.
+                            </p>
+                            <a href="{% url 'posts:create' %}" class="btn btn-primary d-inline-flex align-items-center gap-2 px-4" style="height: 44px;">
+                                <i class="bi bi-plus-circle-fill" aria-hidden="true"></i>
+                                <span>Create Your First Post</span>
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script src="{% static 'js/profile.js' %}"></script>
+{% endblock extra_js %}
