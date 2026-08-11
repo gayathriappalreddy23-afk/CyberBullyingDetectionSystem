@@ -1,0 +1,334 @@
+/* ==========================================================================
+   CyberBullyingDetectionSystem - Global Stylesheet (main.css)
+   Design Aesthetic: Modern Cybersecurity & AI / Dark & Light Slate Fusion
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+/* --------------------------------------------------------------------------
+   1. Global CSS Variables & Design Tokens
+   -------------------------------------------------------------------------- */
+:root {
+    /* Brand & Theme Colors */
+    --primary-color: #2563EB;
+    --primary-hover: #1D4ED8;
+    --primary-light: rgba(37, 99, 235, 0.1);
+    
+    --secondary-color: #4F46E5;
+    --secondary-hover: #4338CA;
+    --secondary-light: rgba(79, 70, 229, 0.1);
+    
+    --accent-color: #06B6D4;
+    
+    /* Semantic Colors */
+    --success-color: #16A34A;
+    --success-light: rgba(22, 163, 74, 0.1);
+    
+    --warning-color: #F59E0B;
+    --warning-light: rgba(245, 158, 11, 0.1);
+    
+    --danger-color: #DC2626;
+    --danger-light: rgba(220, 38, 38, 0.1);
+    
+    --info-color: #0284C7;
+    --info-light: rgba(2, 132, 199, 0.1);
+    
+    /* Neutral & Background Colors */
+    --background-color: #F8FAFC;
+    --card-bg: #FFFFFF;
+    --surface-color: #FFFFFF;
+    --text-color: #1E293B;
+    --text-muted: #64748B;
+    --border-color: #E2E8F0;
+    --border-darker: #CBD5E1;
+    
+    /* Dark Theme Elements for Navigation & Sidebar */
+    --dark-surface: #0F172A;
+    --dark-surface-elevated: #1E293B;
+    --dark-border: rgba(255, 255, 255, 0.1);
+    --dark-text: #F8FAFC;
+    --dark-text-muted: #94A3B8;
+
+    /* Layout Specifications */
+    --sidebar-width: 280px;
+    --navbar-height: 70px;
+    --footer-height: 60px;
+    
+    /* Typography */
+    --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-heading: 'Outfit', var(--font-sans);
+    
+    /* Elevation & Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    --shadow-glow: 0 0 20px rgba(37, 99, 235, 0.2);
+
+    /* Transitions & Radii */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-full: 9999px;
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.25s ease;
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset & Typography
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6, .brand-name {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--primary-hover);
+}
+
+/* --------------------------------------------------------------------------
+   3. Accessibility & Focus States
+   -------------------------------------------------------------------------- */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 16px;
+    background: var(--primary-color);
+    color: #FFFFFF !important;
+    padding: 12px 20px;
+    z-index: 9999;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    box-shadow: var(--shadow-lg);
+    transition: top var(--transition-normal);
+}
+
+.skip-link:focus {
+    top: 16px;
+    outline: 3px solid #60A5FA;
+}
+
+:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   4. Application Shell & Responsive Layout Architecture
+   -------------------------------------------------------------------------- */
+.app-shell {
+    display: flex;
+    min-height: 100vh;
+    width: 100vw;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Sidebar Wrapper & Dynamic Content Layout */
+.app-sidebar-wrapper {
+    width: var(--sidebar-width);
+    flex-shrink: 0;
+    z-index: 1040;
+    transition: transform var(--transition-normal);
+}
+
+.app-main-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0; /* Prevents flex items from overflowing horizontally */
+    min-height: 100vh;
+    background-color: var(--background-color);
+}
+
+/* Page Body Container */
+.page-content-wrapper {
+    flex: 1 0 auto;
+    width: 100%;
+}
+
+/* Desktop Sidebar Sticky / Fixed layout compatibility */
+@media (min-width: 992px) {
+    .premium-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 1030;
+    }
+    
+    .app-shell.has-sidebar .app-main-wrapper {
+        margin-left: var(--sidebar-width);
+        width: calc(100% - var(--sidebar-width));
+    }
+}
+
+/* Mobile Sidebar Offcanvas & Collapse state */
+@media (max-width: 991.98px) {
+    .app-sidebar-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        transform: translateX(-100%);
+    }
+
+    .app-sidebar-wrapper.show {
+        transform: translateX(0);
+    }
+
+    .app-sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(4px);
+        z-index: 1035;
+        display: none;
+    }
+
+    .app-sidebar-overlay.show {
+        display: block;
+    }
+
+    .app-shell.has-sidebar .app-main-wrapper {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   5. Django Alerts & Messages Container
+   -------------------------------------------------------------------------- */
+.messages-container {
+    margin-bottom: 1.5rem;
+}
+
+.custom-alert {
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    box-shadow: var(--shadow-sm);
+    animation: fadeInDown 0.3s ease-out;
+}
+
+.custom-alert .alert-icon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+.custom-alert .btn-close {
+    margin-left: auto;
+    padding: 0.75rem;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   6. Cyber & AI Custom UI Utilities
+   -------------------------------------------------------------------------- */
+.gradient-text {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+}
+
+.cyber-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    border-radius: var(--radius-full);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cyber-badge-primary {
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+}
+
+.cyber-badge-success {
+    background-color: var(--success-light);
+    color: var(--success-color);
+    border: 1px solid rgba(22, 163, 74, 0.2);
+}
+
+.cyber-badge-danger {
+    background-color: var(--danger-light);
+    color: var(--danger-color);
+    border: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+.cyber-badge-warning {
+    background-color: var(--warning-light);
+    color: var(--warning-color);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+}

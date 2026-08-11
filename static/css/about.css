@@ -1,0 +1,168 @@
+/* ==========================================================================
+   CyberBullyingDetectionSystem - About Page Stylesheet (about.css)
+   Design Aesthetic: Modern Cybersecurity & AI / Academic Technical Fusion
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. About Hero Section
+   -------------------------------------------------------------------------- */
+.about-hero-section {
+    position: relative;
+    padding: 4rem 0 4.5rem 0;
+    background: radial-gradient(circle at 75% 25%, rgba(37, 99, 235, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 25% 75%, rgba(79, 70, 229, 0.06) 0%, transparent 45%);
+    border-bottom: 1px solid #E2E8F0;
+}
+
+.about-headline {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.75rem;
+    font-weight: 800;
+    line-height: 1.2;
+    color: #0F172A;
+    letter-spacing: -0.4px;
+}
+
+@media (max-width: 768px) {
+    .about-headline {
+        font-size: 2rem;
+    }
+}
+
+.about-subheadline {
+    font-size: 1.1rem;
+    color: #64748B;
+    line-height: 1.65;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    max-width: 680px;
+}
+
+/* --------------------------------------------------------------------------
+   2. Objective & Module Cards
+   -------------------------------------------------------------------------- */
+.about-card {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    padding: 1.75rem;
+    height: 100%;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.about-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.07);
+    border-color: #CBD5E1;
+}
+
+.about-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 1.2rem;
+}
+
+/* --------------------------------------------------------------------------
+   3. Visual Architecture Diagram
+   -------------------------------------------------------------------------- */
+.arch-diagram-container {
+    background: #0F172A;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    padding: 2rem;
+    color: #F8FAFC;
+    box-shadow: 0 15px 35px rgba(15, 23, 42, 0.2);
+}
+
+.arch-node {
+    background: #1E293B;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 1.25rem;
+    text-align: center;
+    position: relative;
+}
+
+.arch-node-title {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #FFFFFF;
+    margin-bottom: 0.35rem;
+}
+
+.arch-node-desc {
+    font-size: 0.82rem;
+    color: #94A3B8;
+    margin-bottom: 0;
+}
+
+.arch-connector-arrow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #38BDF8;
+    font-size: 1.5rem;
+    padding: 0.5rem 0;
+}
+
+/* --------------------------------------------------------------------------
+   4. Tech Stack Badges
+   -------------------------------------------------------------------------- */
+.tech-category-card {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    padding: 1.5rem;
+    height: 100%;
+}
+
+.tech-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.85rem;
+    background: #F1F5F9;
+    border: 1px solid #E2E8F0;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #334155;
+    margin: 0.25rem;
+}
+
+/* --------------------------------------------------------------------------
+   5. Limitations & Responsible AI Boxes
+   -------------------------------------------------------------------------- */
+.limitation-item {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-left: 4px solid #F59E0B;
+    border-radius: 12px;
+    padding: 1.25rem;
+    height: 100%;
+}
+
+.responsible-ai-alert {
+    background: #0F172A;
+    color: #F8FAFC;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 5px solid #2563EB;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2);
+}
+
+.future-scope-card {
+    background: #F8FAFC;
+    border: 1px dashed #CBD5E1;
+    border-radius: 14px;
+    padding: 1.25rem;
+    height: 100%;
+}

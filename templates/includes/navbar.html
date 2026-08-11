@@ -1,0 +1,313 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark cyber-navbar" aria-label="Main Navigation">
+    <div class="container-fluid px-3 px-lg-4">
+        
+        <!-- 1. Brand Section -->
+        <a class="cyber-brand me-3" href="{% url 'home:home' %}" aria-label="CyberSafe - CyberBullying Detection System Home">
+            <i class="bi bi-shield-check cyber-brand-icon" aria-hidden="true"></i>
+            <div class="cyber-brand-text">
+                <span class="cyber-brand-title">Cyber<span>Safe</span></span>
+                <span class="cyber-brand-subtitle">CyberBullying Detection</span>
+            </div>
+        </a>
+
+        <!-- 2. Mobile Hamburger Toggle Button -->
+        <button class="navbar-toggler border-0 p-2 shadow-none" 
+                type="button" 
+                data-bs-toggle="collapse" 
+                data-bs-target="#cyberNavbarContent" 
+                aria-controls="cyberNavbarContent" 
+                aria-expanded="false" 
+                aria-label="Toggle navigation menu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- 3. Navigation Links Container -->
+        <div class="collapse navbar-collapse" id="cyberNavbarContent">
+            
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-lg-center gap-1">
+                
+                {% if not user.is_authenticated %}
+                    <!-- ====================================================== -->
+                    <!-- GUEST USER NAVIGATION                                  -->
+                    <!-- ====================================================== -->
+                    <li class="nav-item">
+                        <a class="nav-link cyber-nav-link {% if request.resolver_match.url_name == 'home' or request.path == '/' %}active{% endif %}" 
+                           href="{% url 'home:home' %}" 
+                           {% if request.resolver_match.url_name == 'home' or request.path == '/' %}aria-current="page"{% endif %}>
+                            <i class="bi bi-house-door" aria-hidden="true"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link cyber-nav-link {% if request.resolver_match.url_name == 'about' or '/about' in request.path %}active{% endif %}" 
+                           href="{% url 'home:about' %}" 
+                           {% if request.resolver_match.url_name == 'about' or '/about' in request.path %}aria-current="page"{% endif %}>
+                            <i class="bi bi-info-circle" aria-hidden="true"></i> About
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link cyber-nav-link {% if request.resolver_match.url_name == 'contact' or '/contact' in request.path %}active{% endif %}" 
+                           href="{% url 'home:contact' %}" 
+                           {% if request.resolver_match.url_name == 'contact' or '/contact' in request.path %}aria-current="page"{% endif %}>
+                            <i class="bi bi-envelope" aria-hidden="true"></i> Contact
+                        </a>
+                    </li>
+
+                {% else %}
+                    <!-- ====================================================== -->
+                    <!-- AUTHENTICATED USER NAVIGATION (ROLE AWARE)             -->
+                    <!-- ====================================================== -->
+
+                    <li class="nav-item">
+                        <a class="nav-link cyber-nav-link {% if request.resolver_match.url_name == 'home' or request.path == '/' %}active{% endif %}" 
+                           href="{% url 'home:home' %}" 
+                           {% if request.resolver_match.url_name == 'home' or request.path == '/' %}aria-current="page"{% endif %}>
+                            <i class="bi bi-house-door" aria-hidden="true"></i> Home
+                        </a>
+                    </li>
+
+                    {% if user.is_superuser or user.role == 'admin' or user.is_admin %}
+                        <!-- -------------------------------------------------- -->
+                        <!-- ADMIN ROLE NAVIGATION                              -->
+                        <!-- -------------------------------------------------- -->
+                        <li class="nav-item">
+                            <a class="nav-link cyber-nav-link {% if 'dashboard' in request.path %}active{% endif %}" 
+                               href="{% url 'dashboard:admin_dashboard' %}" 
+                               {% if 'dashboard' in request.path %}aria-current="page"{% endif %}>
+                                <i class="bi bi-speedometer2" aria-hidden="true"></i> Admin Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link cyber-nav-link {% if 'users' in request.path %}active{% endif %}" 
+                               href="{% url 'accounts:profile' %}" 
+                               {% if 'users' in request.path %}aria-current="page"{% endif %}>
+                                <i class="bi bi-people" aria-hidden="true"></i> Users
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link cyber-nav-link {% if 'reports' in request.path %}active{% endif %}" 
+                               href="{% url 'reports:report' %}" 
+                               {% if 'reports' in request.path %}aria-current="page"{% endif %}>
+                                <i class="bi bi-bar-chart-line" aria-hidden="true"></i> Reports
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link cyber-nav-link {% if 'analytics' in request.path %}active{% endif %}" 
+                               href="{% url 'reports:analytics' %}" 
+                               {% if 'analytics' in request.path %}aria-current="page"{% endif %}>
+                                <i class="bi bi-graph-up-arrow" aria-hidden="true"></i> Analytics
+                            </a>
+                        </li>
+
+                    {% elif user.is_staff or user.role == 'moderator' or user.is_moderator %}
+                        <!-- -------------------------------------------------- -->
+                        <!-- MODERATOR ROLE NAVIGATION                          -->
+                        <!-- -------------------------------------------------- -->
+                        <li class="nav-item">
+                            <a class="nav-link cyber-nav-link {% if 'dashboard' in request.path %}active{% endif %}" 
+                               href="{% url 'dashboard:moderator_dashboard' %}" 
+                               {% if 'dashboard' in request.path %}aria-current="page"{% endif %}>
+                                <i class="bi bi-speedometer2" aria-hidden="true"></i> Moderator Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link cyber-nav-link {% if 'posts' in request.path %}active{% endif %}" 
+                               href="{% url 'posts:post_list' %}" 
+                               {% if 'posts' in request.path %}aria-current="page"{% endif %}>
+                                <i class="bi bi-journal-text" aria-hidden="true"></i> Posts
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link cyber-nav-link {% if 'reports' in request.path %}active{% endif %}" 
+                               href="{% url 'reports:report' %}" 
+                               {% if 'reports' in request.path %}aria-current="page"{% endif %}>
+                                <i class="bi bi-flag" aria-hidden="true"></i> Reports
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link cyber-nav-link {% if 'flagged' in request.path %}active{% endif %}" 
+                               href="{% url 'reports:report' %}" 
+                               {% if 'flagged' in request.path %}aria-current="page"{% endif %}>
+                                <i class="bi bi-shield-exclamation" aria-hidden="true"></i> Flagged Content
+                            </a>
+                        </li>
+
+                    {% else %}
+                        <!-- -------------------------------------------------- -->
+                        <!-- NORMAL USER NAVIGATION                             -->
+                        <!-- -------------------------------------------------- -->
+                        <li class="nav-item">
+                            <a class="nav-link cyber-nav-link {% if 'dashboard' in request.path %}active{% endif %}" 
+                               href="{% url 'dashboard:user_dashboard' %}" 
+                               {% if 'dashboard' in request.path %}aria-current="page"{% endif %}>
+                                <i class="bi bi-speedometer2" aria-hidden="true"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link cyber-nav-link {% if 'posts' in request.path %}active{% endif %}" 
+                               href="{% url 'posts:post_list' %}" 
+                               {% if 'posts' in request.path %}aria-current="page"{% endif %}>
+                                <i class="bi bi-journal-text" aria-hidden="true"></i> Posts
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    <!-- FEATURED DETECTION LINK (VISIBLE TO ALL AUTHENTICATED USERS) -->
+                    <li class="nav-item ms-lg-2 my-1 my-lg-0">
+                        <a class="nav-link nav-detect-btn d-inline-flex align-items-center gap-2" 
+                           href="{% url 'prediction:detect' %}" 
+                           data-bs-toggle="tooltip" 
+                           data-bs-placement="bottom" 
+                           title="Analyze text for potential cyberbullying using AI model">
+                            <i class="bi bi-shield-lock-fill" aria-hidden="true"></i> Detect Cyberbullying
+                        </a>
+                    </li>
+
+                {% endif %}
+
+            </ul>
+
+            <!-- 4. Right Controls Section (Auth / Account) -->
+            <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
+                
+                {% if not user.is_authenticated %}
+                    <!-- GUEST CONTROLS: LOGIN & REGISTER -->
+                    <a href="{% url 'accounts:login' %}" class="btn btn-outline-light btn-sm px-3 rounded-pill">
+                        <i class="bi bi-box-arrow-in-right me-1" aria-hidden="true"></i> Log In
+                    </a>
+                    <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-sm px-3 rounded-pill shadow-sm">
+                        <i class="bi bi-person-plus me-1" aria-hidden="true"></i> Register
+                    </a>
+
+                {% else %}
+                    <!-- AUTHENTICATED CONTROLS: NOTIFICATIONS & PROFILE DROPDOWN -->
+                    
+                    <!-- Notification Bell Button -->
+                    <!-- TODO: Connect notification count to backend variable when notification model is available -->
+                    <div class="dropdown">
+                        <button class="notification-btn" 
+                                type="button" 
+                                id="notificationsDropdown" 
+                                data-bs-toggle="dropdown" 
+                                aria-expanded="false" 
+                                aria-label="View Notifications"
+                                title="Notifications">
+                            <i class="bi bi-bell-fill" aria-hidden="true"></i>
+                            {% if unread_notifications_count %}
+                                <span class="notification-badge">{{ unread_notifications_count }}</span>
+                            {% elif notifications and notifications.count %}
+                                <span class="notification-badge">{{ notifications.count }}</span>
+                            {% else %}
+                                <!-- TODO: Uncomment badge when notifications exist -->
+                                <!-- <span class="notification-badge">0</span> -->
+                            {% endif %}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end cyber-dropdown-menu mt-2" aria-labelledby="notificationsDropdown">
+                            <li class="dropdown-header text-uppercase small text-muted">Notifications</li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="px-3 py-2 text-muted small text-center">
+                                <i class="bi bi-check2-all d-block fs-4 mb-1 text-primary"></i>
+                                No new notifications
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- User Profile Dropdown -->
+                    <div class="dropdown">
+                        <button class="btn nav-user-dropdown d-flex align-items-center gap-2" 
+                                type="button" 
+                                id="userProfileDropdown" 
+                                data-bs-toggle="dropdown" 
+                                aria-expanded="false">
+                            {% if user.profile_image %}
+                                <img src="{{ user.profile_image.url }}" alt="{{ user.username }} avatar" class="navbar-user-avatar">
+                            {% else %}
+                                <img src="https://ui-avatars.com/api/?name={{ user.username|default:'User' }}&background=2563EB&color=fff&rounded=true" alt="User Avatar" class="navbar-user-avatar">
+                            {% endif %}
+                            <span class="text-white small fw-medium text-truncate" style="max-width: 120px;">
+                                {% if user.get_full_name %}
+                                    {{ user.get_full_name }}
+                                {% else %}
+                                    {{ user.username }}
+                                {% endif %}
+                            </span>
+                            <i class="bi bi-chevron-down text-muted small" aria-hidden="true"></i>
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-end cyber-dropdown-menu mt-2" aria-labelledby="userProfileDropdown">
+                            
+                            <!-- Signed In User Header -->
+                            <li class="px-3 py-2">
+                                <div class="fw-bold text-white text-truncate">
+                                    {% if user.get_full_name %}
+                                        {{ user.get_full_name }}
+                                    {% else %}
+                                        {{ user.username }}
+                                    {% endif %}
+                                </div>
+                                <div class="text-muted small text-truncate mb-2">{{ user.email|default:"No email provided" }}</div>
+                                
+                                <!-- Role Badge -->
+                                {% if user.is_superuser or user.role == 'admin' or user.is_admin %}
+                                    <span class="nav-role-badge badge-admin"><i class="bi bi-shield-lock me-1"></i> Administrator</span>
+                                {% elif user.is_staff or user.role == 'moderator' or user.is_moderator %}
+                                    <span class="nav-role-badge badge-moderator"><i class="bi bi-person-badge me-1"></i> Moderator</span>
+                                {% else %}
+                                    <span class="nav-role-badge badge-user"><i class="bi bi-person me-1"></i> User</span>
+                                {% endif %}
+                            </li>
+
+                            <li><hr class="dropdown-divider"></li>
+
+                            <!-- Dropdown Links -->
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center gap-2" href="{% url 'accounts:profile' %}">
+                                    <i class="bi bi-person text-primary" aria-hidden="true"></i> View Profile
+                                </a>
+                            </li>
+
+                            <li>
+                                {% if user.is_superuser or user.role == 'admin' or user.is_admin %}
+                                    <a class="dropdown-item d-flex align-items-center gap-2" href="{% url 'dashboard:admin_dashboard' %}">
+                                        <i class="bi bi-speedometer2 text-info" aria-hidden="true"></i> Admin Dashboard
+                                    </a>
+                                {% elif user.is_staff or user.role == 'moderator' or user.is_moderator %}
+                                    <a class="dropdown-item d-flex align-items-center gap-2" href="{% url 'dashboard:moderator_dashboard' %}">
+                                        <i class="bi bi-speedometer2 text-warning" aria-hidden="true"></i> Moderator Dashboard
+                                    </a>
+                                {% else %}
+                                    <a class="dropdown-item d-flex align-items-center gap-2" href="{% url 'dashboard:user_dashboard' %}">
+                                        <i class="bi bi-speedometer2 text-success" aria-hidden="true"></i> User Dashboard
+                                    </a>
+                                {% endif %}
+                            </li>
+
+                            <!-- TODO: Add link to settings page when settings view is implemented -->
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center gap-2 text-muted" href="{% url 'accounts:profile' %}">
+                                    <i class="bi bi-gear" aria-hidden="true"></i> Settings
+                                </a>
+                            </li>
+
+                            <li><hr class="dropdown-divider"></li>
+
+                            <!-- Secure POST Logout -->
+                            <li>
+                                <form method="post" action="{% url 'accounts:logout' %}" class="m-0">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item text-danger d-flex align-items-center gap-2 w-100">
+                                        <i class="bi bi-box-arrow-right" aria-hidden="true"></i> Log Out
+                                    </button>
+                                </form>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+</nav>

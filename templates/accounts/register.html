@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Create Account | CyberBullying Detection System{% endblock title %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container register-page-wrapper">
+    <div class="row g-0 justify-content-center w-100">
+        <div class="col-12 col-lg-10 col-xl-9">
+            
+            <div class="register-card-container">
+                <div class="row g-0">
+                    
+                    <!-- Left Hero Section (Cybersecurity Branding) -->
+                    <div class="col-lg-5 register-hero-side d-none d-lg-flex">
+                        <div>
+                            <div class="register-hero-badge">
+                                <i class="bi bi-shield-check" aria-hidden="true"></i>
+                                <span>CyberBullying Protection</span>
+                            </div>
+
+                            <h1 class="register-hero-title">
+                                Join Our Safe Digital Initiative
+                            </h1>
+
+                            <p class="register-hero-subtitle">
+                                Create an account to access our AI-powered natural language processing tools, monitor text content, and contribute to a safer online community.
+                            </p>
+
+                            <ul class="register-feature-list">
+                                <li class="register-feature-item">
+                                    <span class="register-feature-icon">
+                                        <i class="bi bi-check-lg" aria-hidden="true"></i>
+                                    </span>
+                                    <span><strong>AI Detection Engine:</strong> Advanced multi-class text toxicity classification.</span>
+                                </li>
+                                <li class="register-feature-item">
+                                    <span class="register-feature-icon">
+                                        <i class="bi bi-check-lg" aria-hidden="true"></i>
+                                    </span>
+                                    <span><strong>Real-time Analytics:</strong> Instant evaluation of comments and post content.</span>
+                                </li>
+                                <li class="register-feature-item">
+                                    <span class="register-feature-icon">
+                                        <i class="bi bi-check-lg" aria-hidden="true"></i>
+                                    </span>
+                                    <span><strong>Secure & Confidential:</strong> Industry-standard password hashing and data privacy.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="register-hero-footer">
+                            <i class="bi bi-lock-fill text-primary" aria-hidden="true"></i>
+                            <span>Protected by end-to-end authentication security</span>
+                        </div>
+                    </div>
+
+                    <!-- Right Form Section -->
+                    <div class="col-12 col-lg-7 register-form-side">
+                        
+                        <!-- Page Header -->
+                        <div class="register-form-header">
+                            <h2 class="register-form-title">Create your account</h2>
+                            <p class="register-form-subtitle">
+                                Enter your credentials below to register with the CyberBullying Detection System.
+                            </p>
+                        </div>
+
+                        <!-- Form Non-Field Errors -->
+                        {% if form.non_field_errors %}
+                            <div class="form-errors-summary" role="alert" aria-live="assertive">
+                                <div class="fw-semibold text-danger mb-1">
+                                    <i class="bi bi-exclamation-triangle-fill me-1" aria-hidden="true"></i>
+                                    Please correct the following errors:
+                                </div>
+                                <ul>
+                                    {% for error in form.non_field_errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        <!-- Registration Form -->
+                        <form method="POST" action="{% url 'accounts:register' %}" id="registerForm" novalidate>
+                            {% csrf_token %}
+
+                            <!-- Username Field -->
+                            <div class="register-form-group">
+                                <label for="id_username" class="register-label">
+                                    <span>Username <span class="text-danger">*</span></span>
+                                </label>
+                                <div class="auth-input-group">
+                                    <i class="bi bi-person auth-input-icon" aria-hidden="true"></i>
+                                    {{ form.username }}
+                                </div>
+                                {% if form.username.errors %}
+                                    <div class="field-error-msg" role="alert">
+                                        <i class="bi bi-exclamation-circle-fill" aria-hidden="true"></i>
+                                        <span>{{ form.username.errors.0 }}</span>
+                                    </div>
+                                {% endif %}
+                                <div class="form-text text-muted small mt-1">
+                                    Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+                                </div>
+                            </div>
+
+                            <!-- Email Address Field -->
+                            <div class="register-form-group">
+                                <label for="id_email" class="register-label">
+                                    <span>Email Address <span class="text-danger">*</span></span>
+                                </label>
+                                <div class="auth-input-group">
+                                    <i class="bi bi-envelope auth-input-icon" aria-hidden="true"></i>
+                                    {{ form.email }}
+                                </div>
+                                {% if form.email.errors %}
+                                    <div class="field-error-msg" role="alert">
+                                        <i class="bi bi-exclamation-circle-fill" aria-hidden="true"></i>
+                                        <span>{{ form.email.errors.0 }}</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Password Field -->
+                            <div class="register-form-group">
+                                <label for="id_password1" class="register-label">
+                                    <span>Password <span class="text-danger">*</span></span>
+                                </label>
+                                <div class="auth-input-group">
+                                    <i class="bi bi-shield-lock auth-input-icon" aria-hidden="true"></i>
+                                    {{ form.password1 }}
+                                    <button type="button" 
+                                            class="password-toggle-btn" 
+                                            id="togglePassword1Btn" 
+                                            aria-label="Show password"
+                                            title="Show password">
+                                        <i class="bi bi-eye" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                
+                                <!-- Password Strength Indicator (UX Hint) -->
+                                <div class="password-strength-container">
+                                    <div class="password-strength-bar">
+                                        <div class="password-strength-progress" id="strengthProgress"></div>
+                                    </div>
+                                    <span class="password-strength-text" id="strengthText"></span>
+                                </div>
+
+                                {% if form.password1.errors %}
+                                    <div class="field-error-msg" role="alert">
+                                        <i class="bi bi-exclamation-circle-fill" aria-hidden="true"></i>
+                                        <span>{{ form.password1.errors.0 }}</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Confirm Password Field -->
+                            <div class="register-form-group mb-4">
+                                <label for="id_password2" class="register-label">
+                                    <span>Confirm Password <span class="text-danger">*</span></span>
+                                </label>
+                                <div class="auth-input-group">
+                                    <i class="bi bi-shield-lock-fill auth-input-icon" aria-hidden="true"></i>
+                                    {{ form.password2 }}
+                                    <button type="button" 
+                                            class="password-toggle-btn" 
+                                            id="togglePassword2Btn" 
+                                            aria-label="Show password"
+                                            title="Show password">
+                                        <i class="bi bi-eye" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                {% if form.password2.errors %}
+                                    <div class="field-error-msg" role="alert">
+                                        <i class="bi bi-exclamation-circle-fill" aria-hidden="true"></i>
+                                        <span>{{ form.password2.errors.0 }}</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-primary w-100 btn-auth-submit" id="registerSubmitBtn">
+                                <i class="bi bi-person-plus-fill" aria-hidden="true"></i>
+                                <span>Create Account</span>
+                            </button>
+                        </form>
+
+                        <!-- Footer Navigation Links -->
+                        <div class="auth-footer-text">
+                            Already have an account? 
+                            <a href="{% url 'accounts:login' %}" class="auth-footer-link">Sign In</a>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <a href="{% url 'home:home' %}" class="text-muted small text-decoration-none">
+                                <i class="bi bi-arrow-left me-1" aria-hidden="true"></i> Back to Home
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script src="{% static 'js/register.js' %}"></script>
+{% endblock extra_js %}

@@ -1,0 +1,135 @@
+{% load static %}
+<footer class="site-footer" aria-label="Site Footer">
+    <div class="container-fluid px-4 px-lg-5">
+        
+        <!-- Main Footer Navigation & Brand Grid -->
+        <div class="row g-4 mb-4">
+            
+            <!-- Column 1: Brand & Project Description -->
+            <div class="col-lg-4 col-md-6">
+                <div class="footer-brand">
+                    <a href="{% url 'home:home' %}" class="footer-brand-title" aria-label="CyberSafe Home">
+                        <i class="bi bi-shield-check footer-brand-icon" aria-hidden="true"></i>
+                        <span>Cyber<span class="text-primary">Safe</span></span>
+                    </a>
+                    <p class="footer-brand-desc">
+                        An AI-assisted platform for identifying potentially harmful online content and supporting safer digital communication across online communities.
+                    </p>
+                    
+                    <!-- TODO: Replace with official institutional project contact email when defined -->
+                    <div class="mt-2 text-muted small">
+                        <i class="bi bi-envelope me-1 text-primary" aria-hidden="true"></i> 
+                        <span class="fst-italic">Contact: TODO: Add official project contact email</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 2: Quick Links -->
+            <div class="col-lg-2 col-md-6">
+                <h2 class="footer-heading">Quick Links</h2>
+                <ul class="footer-links-list">
+                    <li>
+                        <a href="{% url 'home:home' %}">
+                            <i class="bi bi-chevron-right" aria-hidden="true"></i> Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'home:about' %}">
+                            <i class="bi bi-chevron-right" aria-hidden="true"></i> About System
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'home:contact' %}">
+                            <i class="bi bi-chevron-right" aria-hidden="true"></i> Contact & Support
+                        </a>
+                    </li>
+                    {% if not user.is_authenticated %}
+                        <li>
+                            <a href="{% url 'accounts:login' %}">
+                                <i class="bi bi-chevron-right" aria-hidden="true"></i> Log In
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'accounts:register' %}">
+                                <i class="bi bi-chevron-right" aria-hidden="true"></i> Register
+                            </a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{% url 'dashboard:user_dashboard' %}">
+                                <i class="bi bi-chevron-right" aria-hidden="true"></i> Dashboard
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <!-- Column 3: Detection & Analytics Links -->
+            <div class="col-lg-3 col-md-6">
+                <h2 class="footer-heading">AI Detection</h2>
+                <ul class="footer-links-list">
+                    <li>
+                        <a href="{% url 'prediction:detect' %}">
+                            <i class="bi bi-shield-lock-fill text-primary" aria-hidden="true"></i> Detect Cyberbullying
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'posts:post_list' %}">
+                            <i class="bi bi-journal-text" aria-hidden="true"></i> Community Posts
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'reports:report' %}">
+                            <i class="bi bi-bar-chart-line" aria-hidden="true"></i> Reports
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'reports:analytics' %}">
+                            <i class="bi bi-graph-up-arrow" aria-hidden="true"></i> Detection Analytics
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Column 4: Safety Advisory & Support -->
+            <div class="col-lg-3 col-md-6">
+                <h2 class="footer-heading">Online Safety</h2>
+                <div class="footer-safety-box mb-3">
+                    <p>
+                        <i class="bi bi-shield-exclamation me-1 text-warning" aria-hidden="true"></i>
+                        Promoting respectful communication. Do not submit passwords, financial records, or sensitive personal information.
+                    </p>
+                </div>
+
+                <!-- TODO: Add official social media URLs (GitHub, LinkedIn) here when links are established -->
+                <!-- Example:
+                <div class="d-flex gap-2 mt-2">
+                    <a href="#" class="btn btn-outline-light btn-sm rounded-circle" aria-label="GitHub Repository"><i class="bi bi-github"></i></a>
+                    <a href="#" class="btn btn-outline-light btn-sm rounded-circle" aria-label="LinkedIn Project Page"><i class="bi bi-linkedin"></i></a>
+                </div>
+                -->
+            </div>
+
+        </div>
+
+        <!-- Responsible AI Disclaimer Banner -->
+        <div class="footer-disclaimer-card" role="note">
+            <i class="bi bi-cpu-fill footer-disclaimer-icon" aria-hidden="true"></i>
+            <p class="footer-disclaimer-text">
+                <strong>Responsible AI Notice:</strong> AI predictions are intended to assist content review and may not always be 100% accurate. Human judgment should always be considered when making moderation and administrative decisions.
+            </p>
+        </div>
+
+        <!-- Bottom Copyright & Meta Status Bar -->
+        <div class="footer-bottom-bar">
+            <p class="footer-copyright">
+                &copy; {% now "Y" %} CyberBullying Detection System. All rights reserved. Built as a B.Tech Final Year Capstone Project.
+            </p>
+            <div class="footer-system-badge" role="status">
+                <span class="status-dot" aria-hidden="true"></span>
+                <span>System Operational • NLP Model Active</span>
+            </div>
+        </div>
+
+    </div>
+</footer>

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'prediction',
     'dashboard',
     'reports',
+    'home',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +134,30 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+# =============================================================================
+# Authentication Settings
+# =============================================================================
+
+# Where unauthenticated users are sent when @login_required fires
+LOGIN_URL = '/accounts/login/'
+
+# Default redirect after login (overridden per-role in accounts/views.py)
+LOGIN_REDIRECT_URL = '/dashboard/'
+
+# Where users go after logout
+LOGOUT_REDIRECT_URL = '/'
+
+# =============================================================================
+# Session Settings
+# =============================================================================
+# Session duration: 2 weeks (14 days × 24 h × 60 min × 60 s)
+SESSION_COOKIE_AGE = 1209600
+# Keep session alive across browser close (set False for stricter security)
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+# =============================================================================
+# Email (console backend for development — replace with SMTP in production)
+# =============================================================================
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
