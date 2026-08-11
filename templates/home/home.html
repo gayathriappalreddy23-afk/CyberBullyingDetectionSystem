@@ -1,0 +1,497 @@
+{% extends "base.html" %}
+
+{% block title %}Cyberbullying Detection{% endblock %}
+
+{% block content %}
+
+<!-- NAVBAR -->
+<header class="landing-navbar">
+    <div class="landing-container navbar-inner">
+
+        <a href="{% url 'home' %}" class="brand">
+            <span class="brand-icon">🛡</span>
+            <span>Cyberbullying <strong>Detection</strong></span>
+        </a>
+
+        <nav class="landing-nav">
+            <a href="#how-it-works">How It Works</a>
+            <a href="#features">Features</a>
+            <a href="#sample">Sample Detection</a>
+            <a href="#why-us">Why Choose Us</a>
+        </nav>
+
+        <div class="navbar-actions">
+            <a href="{% url 'login' %}" class="nav-login">
+                Login
+            </a>
+
+            <a href="{% url 'register' %}" class="btn-primary">
+                Register
+            </a>
+        </div>
+
+    </div>
+</header>
+
+
+<!-- HERO -->
+<section class="landing-hero">
+
+    <div class="hero-glow hero-glow-one"></div>
+    <div class="hero-glow hero-glow-two"></div>
+
+    <div class="landing-container hero-inner">
+
+        <div class="hero-copy">
+
+            <div class="section-badge">
+                🛡 AI-POWERED SECURITY
+            </div>
+
+            <h1>
+                Detect Cyberbullying
+                <span class="gradient-text">
+                    Before It Hurts
+                </span>
+            </h1>
+
+            <p>
+                Protect online communities with intelligent
+                Machine Learning and Natural Language Processing.
+                Detect harmful comments in real time.
+            </p>
+
+            <div class="hero-actions">
+
+                <a href="{% url 'login' %}" class="btn-primary">
+                    Start Detecting
+                    <span>→</span>
+                </a>
+
+                <a href="#how-it-works" class="btn-outline">
+                    Learn More
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-visual">
+
+            <div class="hero-circle">
+
+                <div class="hero-shield">
+                    <span>✓</span>
+                </div>
+
+            </div>
+
+            <div class="floating-label floating-safe">
+                ✓ Safe
+            </div>
+
+            <div class="floating-label floating-abuse">
+                ⚠ Abuse
+            </div>
+
+            <div class="floating-label floating-threat">
+                ! Threat
+            </div>
+
+            <div class="floating-label floating-kind">
+                ♥ Kind
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works" class="landing-section">
+
+    <div class="landing-container">
+
+        <div class="section-heading">
+
+            <div class="section-badge">
+                HOW IT WORKS
+            </div>
+
+            <h2>
+                Simple. Smart.
+                <span class="gradient-text">Secure.</span>
+            </h2>
+
+            <p>
+                Our AI-powered system analyzes comments
+                and identifies potentially harmful content
+                in three simple steps.
+            </p>
+
+        </div>
+
+
+        <div class="steps-grid">
+
+            <div class="step-card glass-card">
+
+                <div class="step-number">
+                    01
+                </div>
+
+                <div class="step-icon">
+                    💬
+                </div>
+
+                <h3>
+                    Enter Comment
+                </h3>
+
+                <p>
+                    Enter any message or online comment
+                    that you want the system to analyze.
+                </p>
+
+            </div>
+
+
+            <div class="step-card glass-card">
+
+                <div class="step-number">
+                    02
+                </div>
+
+                <div class="step-icon">
+                    ✦
+                </div>
+
+                <h3>
+                    AI Analyzes Text
+                </h3>
+
+                <p>
+                    Machine Learning and NLP techniques
+                    process the text and identify harmful patterns.
+                </p>
+
+            </div>
+
+
+            <div class="step-card glass-card">
+
+                <div class="step-number">
+                    03
+                </div>
+
+                <div class="step-icon">
+                    📊
+                </div>
+
+                <h3>
+                    Instant Prediction
+                </h3>
+
+                <p>
+                    Receive an immediate result showing
+                    whether the content is safe or bullying.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FEATURES -->
+<section id="features" class="landing-section features-section">
+
+    <div class="landing-container">
+
+        <div class="section-heading">
+
+            <div class="section-badge">
+                FEATURES
+            </div>
+
+            <h2>
+                Powerful Tools for
+                <span class="gradient-text">
+                    Safer Communities
+                </span>
+            </h2>
+
+            <p>
+                Everything you need to detect, monitor,
+                and understand cyberbullying activity.
+            </p>
+
+        </div>
+
+
+        <div class="features-grid">
+
+            <div class="feature-card glass-card">
+                <div class="feature-icon">🤖</div>
+                <h3>Machine Learning Detection</h3>
+                <p>
+                    Intelligent classification powered by
+                    machine learning and NLP.
+                </p>
+            </div>
+
+
+            <div class="feature-card glass-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Real-Time Prediction</h3>
+                <p>
+                    Analyze comments and receive results
+                    instantly.
+                </p>
+            </div>
+
+
+            <div class="feature-card glass-card">
+                <div class="feature-icon">🔐</div>
+                <h3>Secure User Accounts</h3>
+                <p>
+                    Secure authentication and protected
+                    user information.
+                </p>
+            </div>
+
+
+            <div class="feature-card glass-card">
+                <div class="feature-icon">🕘</div>
+                <h3>Prediction History</h3>
+                <p>
+                    Keep track of your previous detection
+                    results.
+                </p>
+            </div>
+
+
+            <div class="feature-card glass-card">
+                <div class="feature-icon">📈</div>
+                <h3>Interactive Dashboard</h3>
+                <p>
+                    View your detection activity and
+                    statistics in one place.
+                </p>
+            </div>
+
+
+            <div class="feature-card glass-card">
+                <div class="feature-icon">📋</div>
+                <h3>Detailed Reports</h3>
+                <p>
+                    Review detection results and generate
+                    useful reports.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SAMPLE DETECTION -->
+<section id="sample" class="landing-section">
+
+    <div class="landing-container">
+
+        <div class="sample-wrapper glass-card">
+
+            <div class="sample-content">
+
+                <div class="section-badge">
+                    SAMPLE DETECTION
+                </div>
+
+                <h2>
+                    See AI Detection
+                    <span class="gradient-text">
+                        In Action
+                    </span>
+                </h2>
+
+                <p>
+                    Our system analyzes the language and
+                    context of a comment to determine its
+                    potential risk.
+                </p>
+
+                <a href="{% url 'login' %}" class="btn-primary">
+                    Try Demo →
+                </a>
+
+            </div>
+
+
+            <div class="sample-result">
+
+                <div class="sample-label">
+                    COMMENT
+                </div>
+
+                <div class="comment-box">
+                    "You are so stupid."
+                </div>
+
+                <div class="prediction-box">
+
+                    <div>
+                        <small>PREDICTION</small>
+
+                        <strong class="danger-text">
+                            ⚠ Bullying Detected
+                        </strong>
+                    </div>
+
+                    <div class="confidence">
+                        <small>CONFIDENCE</small>
+                        <strong>96%</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- WHY CHOOSE US -->
+<section id="why-us" class="landing-section">
+
+    <div class="landing-container">
+
+        <div class="section-heading">
+
+            <div class="section-badge">
+                WHY CHOOSE US
+            </div>
+
+            <h2>
+                Built for
+                <span class="gradient-text">
+                    Safer Online Spaces
+                </span>
+            </h2>
+
+        </div>
+
+
+        <div class="benefits-grid">
+
+            <div class="benefit">
+                <span>✓</span>
+                <div>
+                    <h3>Fast Prediction</h3>
+                    <p>Analyze comments in real time.</p>
+                </div>
+            </div>
+
+
+            <div class="benefit">
+                <span>✓</span>
+                <div>
+                    <h3>Accurate AI Model</h3>
+                    <p>Machine learning powered classification.</p>
+                </div>
+            </div>
+
+
+            <div class="benefit">
+                <span>✓</span>
+                <div>
+                    <h3>Easy to Use</h3>
+                    <p>Simple and intuitive interface.</p>
+                </div>
+            </div>
+
+
+            <div class="benefit">
+                <span>✓</span>
+                <div>
+                    <h3>Secure Data</h3>
+                    <p>User data is securely managed.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CTA -->
+<section class="landing-cta">
+
+    <div class="landing-container">
+
+        <div class="cta-box">
+
+            <div class="section-badge">
+                GET STARTED
+            </div>
+
+            <h2>
+                Make Online Communities
+                <span class="gradient-text">
+                    Safer
+                </span>
+            </h2>
+
+            <p>
+                Start detecting harmful content with
+                AI-powered cyberbullying detection.
+            </p>
+
+            <a href="{% url 'register' %}" class="btn-primary">
+                Create Your Account →
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+<footer class="landing-footer">
+
+    <div class="landing-container footer-inner">
+
+        <div class="footer-brand">
+            🛡 Cyberbullying Detection System
+        </div>
+
+        <div>
+            © 2026 Cyberbullying Detection System
+        </div>
+
+        <div class="footer-links">
+            <a href="#">Contact</a>
+            <a href="#">Privacy</a>
+            <a href="#">About</a>
+        </div>
+
+    </div>
+
+</footer>
+
+{% endblock %}

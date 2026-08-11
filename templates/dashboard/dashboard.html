@@ -1,0 +1,397 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | Cyberbullying Detection{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-page">
+
+    <!-- SIDEBAR -->
+    <aside class="dashboard-sidebar">
+
+        <a href="{% url 'home' %}" class="dashboard-brand">
+            <span class="dashboard-brand-icon">🛡</span>
+
+            <span>
+                Cyberbullying
+                <strong>Detection</strong>
+            </span>
+        </a>
+
+        <nav class="dashboard-menu">
+
+            <a href="{% url 'dashboard' %}"
+               class="dashboard-menu-item active">
+                <span>⌂</span>
+                Dashboard
+            </a>
+
+            <a href="#detection"
+               class="dashboard-menu-item">
+                <span>⚡</span>
+                Detect Comment
+            </a>
+
+            <a href="#history"
+               class="dashboard-menu-item">
+                <span>🕘</span>
+                History
+            </a>
+
+            <a href="#reports"
+               class="dashboard-menu-item">
+                <span>📊</span>
+                Reports
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="#" class="dashboard-menu-item">
+                <span>⚙</span>
+                Settings
+            </a>
+
+            <a href="{% url 'home' %}"
+               class="dashboard-menu-item">
+                <span>←</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="dashboard-main">
+
+
+        <!-- TOP BAR -->
+        <header class="dashboard-topbar">
+
+            <div>
+
+                <p class="dashboard-welcome">
+                    Welcome back,
+                </p>
+
+                <h1>
+                    {{ request.user.username }}
+                </h1>
+
+            </div>
+
+
+            <div class="dashboard-user">
+
+                <div class="user-avatar">
+                    {{ request.user.username|first|upper }}
+                </div>
+
+                <div>
+
+                    <strong>
+                        {{ request.user.username }}
+                    </strong>
+
+                    <small>
+                        User
+                    </small>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- DASHBOARD CONTENT -->
+        <section class="dashboard-content">
+
+
+            <!-- HEADING -->
+            <div class="dashboard-heading">
+
+                <div>
+
+                    <div class="section-badge">
+                        AI DETECTION
+                    </div>
+
+                    <h2>
+                        Detect
+                        <span class="gradient-text">
+                            Cyberbullying
+                        </span>
+                    </h2>
+
+                    <p>
+                        Enter a comment below and let our
+                        AI analyze it for harmful content.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- DETECTION CARD -->
+            <div
+                class="detection-card glass-card"
+                id="detection"
+            >
+
+                <div class="detection-card-header">
+
+                    <div>
+
+                        <h3>
+                            Analyze a Comment
+                        </h3>
+
+                        <p>
+                            Our Machine Learning model will
+                            classify the text as safe or bullying.
+                        </p>
+
+                    </div>
+
+
+                    <div class="ai-status">
+
+                        <span></span>
+
+                        AI Ready
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- IMPORTANT: COMPLETE FORM -->
+                <form
+                    method="POST"
+                    action="{% url 'detect_comment' %}"
+                >
+
+                    {% csrf_token %}
+
+
+                    <label for="comment">
+                        Your Comment
+                    </label>
+
+
+                    <textarea
+                        id="comment"
+                        name="comment"
+                        rows="7"
+                        placeholder="Type or paste a comment here..."
+                        required
+                    ></textarea>
+
+
+                    <div class="detection-actions">
+
+
+                        <span class="character-count">
+                            0 characters
+                        </span>
+
+
+                        <button
+                            type="submit"
+                            class="btn-primary"
+                            id="analyzeButton"
+                        >
+
+                            Analyze Comment
+
+                            <span>
+                                →
+                            </span>
+
+                        </button>
+
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+
+            <!-- RESULT CARD -->
+            <div class="result-card glass-card" id="resultCard">
+
+    {% if prediction %}
+
+        <div class="result-placeholder">
+
+            {% if prediction == "bullying" %}
+
+                <div class="result-icon danger-result">
+                    ⚠
+                </div>
+
+                <h3 class="danger-result-text">
+                    Bullying Detected
+                </h3>
+
+            {% else %}
+
+                <div class="result-icon safe-result">
+                    ✓
+                </div>
+
+                <h3 class="safe-result-text">
+                    Safe Comment
+                </h3>
+
+            {% endif %}
+
+            <p>
+                Confidence:
+                <strong>{{ confidence }}%</strong>
+            </p>
+
+        </div>
+
+    {% else %}
+
+        <div class="result-placeholder">
+
+            <div class="result-icon">
+                ✦
+            </div>
+
+            <h3>
+                Prediction Result
+            </h3>
+
+            <p>
+                Submit a comment to see the
+                AI prediction here.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+            <!-- STATISTICS -->
+            <div class="dashboard-stats">
+
+
+                <div class="stat-card glass-card">
+
+                    <div class="stat-icon">
+                        🔍
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Total Predictions
+                        </span>
+
+                        <strong>
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="stat-card glass-card">
+
+                    <div class="stat-icon safe-stat">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Safe Comments
+                        </span>
+
+                        <strong>
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="stat-card glass-card">
+
+                    <div class="stat-icon danger-stat">
+                        ⚠
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Bullying Detected
+                        </span>
+
+                        <strong>
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+
+<!-- CHARACTER COUNTER -->
+<script>
+
+const commentBox =
+    document.getElementById("comment");
+
+const characterCount =
+    document.querySelector(".character-count");
+
+
+if (commentBox && characterCount) {
+
+    commentBox.addEventListener(
+        "input",
+        function () {
+
+            characterCount.textContent =
+                this.value.length +
+                " characters";
+
+        }
+    );
+
+}
+
+</script>
+
+{% endblock %}
