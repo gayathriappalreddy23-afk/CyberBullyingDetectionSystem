@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
+<<<<<<< HEAD
 {% block title %}Edit Post | CyberBullying Detection System{% endblock title %}
 
 {% block extra_css %}
@@ -44,6 +45,181 @@
                         <div class="d-flex justify-content-end gap-2 mt-4">
                             <a href="{% url 'posts:detail' pk=post.pk %}" class="btn btn-outline-secondary btn-post-cancel">Cancel</a>
                             <button type="submit" class="btn btn-primary btn-post-submit">Save Changes</button>
+=======
+{% block title %}Edit Post - {{ post.title|default:"CyberBullying Detection System" }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/posts.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="edit-post-container">
+    <div class="row justify-content-center">
+        <!-- Main Form Column -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm edit-post-card">
+                <div class="card-header bg-white border-bottom py-3 d-flex align-items-center">
+                    <i class="bi bi-pencil-square text-primary fs-4 me-2"></i>
+                    <div>
+                        <h1 class="h4 mb-0">Edit Post</h1>
+                        <p class="text-muted small mb-0">Update your post and make sure your content remains respectful and appropriate.</p>
+                    </div>
+                </div>
+                
+                <div class="card-body p-4">
+                    <!-- 2. Post Information Context -->
+                    <div class="post-context-banner mb-4 p-3 bg-light rounded border">
+                        <h2 class="h6 text-uppercase text-muted mb-2"><i class="bi bi-info-circle me-1"></i> Editing Post</h2>
+                        <h3 class="h5 mb-1 text-truncate">{{ post.title|default:"Untitled Post" }}</h3>
+                        <div class="d-flex flex-wrap gap-3 text-muted small">
+                            <span><i class="bi bi-person me-1"></i> {{ post.author|default:user.username }}</span>
+                            <span><i class="bi bi-calendar3 me-1"></i> Created: {{ post.created_at|date:"d M Y"|default:"Unknown" }}</span>
+                            {% if post.updated_at %}
+                            <span><i class="bi bi-clock-history me-1"></i> Last updated: {{ post.updated_at|date:"d M Y, h:i A" }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- 17. Django Form Errors Display -->
+                    {% if form.errors %}
+                        <div class="alert alert-danger shadow-sm">
+                            <h4 class="alert-heading h6"><i class="bi bi-exclamation-triangle-fill me-1"></i> Please correct the following errors:</h4>
+                            <ul class="mb-0">
+                                {% for field, errors in form.errors.items %}
+                                    {% for error in errors %}
+                                        <li><strong>{{ field|title }}:</strong> {{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                                {% for error in form.non_field_errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+
+                    <!-- 3. Edit Form -->
+                    <form method="POST" enctype="multipart/form-data" id="editPostForm" class="needs-validation" novalidate>
+                        {% csrf_token %}
+
+                        <!-- 4. Title Field -->
+                        <div class="mb-4">
+                            <label for="{{ form.title.id_for_label|default:'id_title' }}" class="form-label fw-semibold">Post Title <span class="text-danger">*</span></label>
+                            {% if form.title %}
+                                {{ form.title }}
+                            {% else %}
+                                <input type="text" name="title" id="id_title" class="form-control form-control-lg" placeholder="Enter your post title" value="{{ post.title }}" required maxlength="255">
+                            {% endif %}
+                            <div class="invalid-feedback">Please provide a valid title.</div>
+                        </div>
+
+                        <!-- 6. Category Field -->
+                        <div class="mb-4">
+                            <label for="{{ form.category.id_for_label|default:'id_category' }}" class="form-label fw-semibold">Category <span class="text-danger">*</span></label>
+                            {% if form.category %}
+                                {{ form.category }}
+                            {% else %}
+                                <select name="category" id="id_category" class="form-select" required>
+                                    <option value="" disabled>Select a category</option>
+                                    <!-- Options should ideally come from the backend -->
+                                    <option value="general" {% if post.category == 'general' %}selected{% endif %}>General</option>
+                                    <option value="education" {% if post.category == 'education' %}selected{% endif %}>Education</option>
+                                    <option value="technology" {% if post.category == 'technology' %}selected{% endif %}>Technology</option>
+                                    <option value="discussion" {% if post.category == 'discussion' %}selected{% endif %}>Discussion</option>
+                                    <option value="awareness" {% if post.category == 'awareness' %}selected{% endif %}>Awareness</option>
+                                    <option value="other" {% if post.category == 'other' %}selected{% endif %}>Other</option>
+                                </select>
+                            {% endif %}
+                            <div class="invalid-feedback">Please select a category.</div>
+                        </div>
+
+                        <!-- 5. Content Field & 10. Safety Notice -->
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-end mb-2">
+                                <label for="{{ form.content.id_for_label|default:'id_content' }}" class="form-label fw-semibold mb-0">Post Content <span class="text-danger">*</span></label>
+                                <span class="badge bg-info text-dark fw-normal"><i class="bi bi-shield-check me-1"></i> Keep your content respectful.</span>
+                            </div>
+                            
+                            <div class="position-relative">
+                                {% if form.content %}
+                                    {{ form.content }}
+                                {% else %}
+                                    <textarea name="content" id="id_content" class="form-control" rows="8" placeholder="Write your post content..." required maxlength="2000">{{ post.content }}</textarea>
+                                {% endif %}
+                                <div class="form-text d-flex justify-content-end mt-1">
+                                    <span class="small text-muted"><span id="charCount">0</span> / 2000 characters</span>
+                                </div>
+                                <div class="invalid-feedback">Post content is required.</div>
+                            </div>
+                            
+                            <!-- 11. Content Analysis Notice -->
+                            <div class="form-text text-muted mt-2 small">
+                                <i class="bi bi-info-circle me-1"></i> Updated content may be reviewed by the application's moderation or detection system after submission.
+                            </div>
+                        </div>
+
+                        <!-- 7 & 8. Image / Media Field -->
+                        <div class="mb-4 card bg-light border-0">
+                            <div class="card-body">
+                                <label for="{{ form.image.id_for_label|default:'id_image' }}" class="form-label fw-semibold">Post Image (Optional)</label>
+                                
+                                {% if post.image %}
+                                    <div class="current-image-container mb-3" id="currentImageContainer">
+                                        <p class="small text-muted mb-1">Current Image:</p>
+                                        <div class="position-relative d-inline-block">
+                                            <img src="{{ post.image.url }}" alt="Current post image" class="img-thumbnail img-preview-current rounded" style="max-height: 200px;">
+                                            <div class="mt-2">
+                                                <div class="form-check">
+                                                    <!-- Checkbox for clearing image if backend supports it -->
+                                                    <input class="form-check-input" type="checkbox" name="image-clear" id="image-clear_id">
+                                                    <label class="form-check-label text-danger small" for="image-clear_id">
+                                                        Remove Current Image
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                                <div class="new-image-upload">
+                                    <p class="small text-muted mb-1">Choose New Image:</p>
+                                    {% if form.image %}
+                                        {{ form.image }}
+                                    {% else %}
+                                        <input type="file" name="image" id="id_image" class="form-control" accept=".jpg,.jpeg,.png,.webp">
+                                    {% endif %}
+                                    <div class="form-text">Supported types: JPG, PNG, WEBP. Max size: 5MB.</div>
+                                    
+                                    <!-- Container for new client-side image preview -->
+                                    <div id="newImagePreviewContainer" class="mt-3 d-none">
+                                        <p class="small text-primary fw-semibold mb-1">New Image Preview:</p>
+                                        <img id="newImagePreview" src="#" alt="New Image Preview" class="img-thumbnail rounded shadow-sm" style="max-height: 200px;">
+                                        <button type="button" class="btn btn-sm btn-outline-danger mt-2 d-block" id="clearNewImageBtn"><i class="bi bi-x-circle me-1"></i> Clear New Image</button>
+                                    </div>
+                                </div>
+                                <div id="imageError" class="text-danger small mt-2 d-none"></div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex flex-wrap gap-2 mt-5 pt-3 border-top justify-content-between align-items-center">
+                            <div class="d-flex gap-2">
+                                <!-- 15. Cancel Button -->
+                                <a href="{% if post.id %}{% url 'posts:post_detail' post.id %}{% else %}#{% endif %}" class="btn btn-outline-secondary" id="cancelBtn">Cancel</a>
+                                <!-- 13. Reset Changes -->
+                                <button type="button" class="btn btn-outline-warning" id="resetBtn">Reset Changes</button>
+                            </div>
+                            
+                            <div class="d-flex gap-2">
+                                <!-- 12. Preview Feature Button -->
+                                <button type="button" class="btn btn-info text-white" id="previewBtn" data-bs-toggle="modal" data-bs-target="#previewModal">
+                                    <i class="bi bi-eye me-1"></i> Preview
+                                </button>
+                                <!-- 14. Save Changes Button -->
+                                <button type="submit" class="btn btn-primary px-4" id="submitBtn">
+                                    <i class="bi bi-check-circle me-1"></i> Save Changes
+                                </button>
+                            </div>
+>>>>>>> ad619db7049c403a289bc3cb973e287212094618
                         </div>
                     </form>
                 </div>
@@ -51,4 +227,48 @@
         </div>
     </div>
 </div>
+<<<<<<< HEAD
 {% endblock content %}
+=======
+
+<!-- 12. Preview Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="previewModalLabel"><i class="bi bi-eye text-info me-2"></i> Post Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="alert alert-warning small py-2 mb-4">
+                    <i class="bi bi-exclamation-triangle me-1"></i> This is a local preview. Your changes are not saved yet.
+                </div>
+                
+                <span id="previewCategory" class="badge bg-secondary mb-2">Category</span>
+                <h2 id="previewTitle" class="mb-3 text-break">Title Preview</h2>
+                
+                <div class="d-flex text-muted small mb-4 border-bottom pb-2">
+                    <span class="me-3"><i class="bi bi-person-circle me-1"></i> {{ post.author|default:user.username }}</span>
+                    <span><i class="bi bi-clock me-1"></i> Just now (Preview)</span>
+                </div>
+                
+                <div id="previewImageWrapper" class="mb-4 text-center d-none bg-light rounded p-2 border">
+                    <img id="previewModalImage" src="#" alt="Post Image" class="img-fluid rounded" style="max-height: 400px;">
+                </div>
+                
+                <div id="previewContent" class="post-content-preview text-break" style="white-space: pre-wrap;">
+                    Content preview will appear here.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close Preview</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script src="{% static 'js/posts.js' %}"></script>
+{% endblock %}
+>>>>>>> ad619db7049c403a289bc3cb973e287212094618

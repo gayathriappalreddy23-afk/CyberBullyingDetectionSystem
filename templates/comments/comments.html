@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Comments - {{ post.title|default:"Post" }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/comments.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="comments-page-container">
+    <!-- 1. Post Context -->
+    <div class="post-context-card mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="h4 mb-0">Comments on: {{ post.title|default:"This Post" }}</h2>
+            <!-- 2. Back to Post Button -->
+            <!-- Using a fallback URL if 'posts:post_detail' isn't available, but standard Django pattern used -->
+            <a href="{% if post.id %}{% url 'posts:post_detail' post.id %}{% else %}#{% endif %}" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i> Back to Post
+            </a>
+        </div>
+        <div class="post-preview text-muted">
+            <p class="mb-1"><i class="bi bi-person-circle me-1"></i> {{ post.author|default:"Author" }} &bull; {{ post.created_at|date:"d M Y"|default:"Unknown Date" }}</p>
+            <p class="mb-0 text-truncate">{{ post.content|truncatechars:150|default:"No preview available." }}</p>
+        </div>
+    </div>
+
+    <!-- 3. Comment Count -->
+    <div class="d-flex align-items-center mb-4">
+        <h3 class="h5 mb-0">
+            <i class="bi bi-chat-left-text-fill text-primary me-2"></i>
+            {{ comment_count|default:comments.count|default:0 }} Comments
+        </h3>
+    </div>
+
+    <!-- 4. Add Comment Section -->
+    <div class="add-comment-section card shadow-sm mb-5">
+        <div class="card-body">
+            <h4 class="card-title h6 mb-3">Add a Comment</h4>
+            <!-- 7. Responsible Comment Notice -->
+            <div class="alert alert-info py-2 small mb-3">
+                <i class="bi bi-info-circle-fill me-1"></i>
+                Please keep comments respectful. Harmful or abusive content may be reviewed by the moderation system.
+            </div>
+            
+            <!-- 5. Comment Form -->
+            <form method="POST" id="commentForm">
+                {% csrf_token %}
+                <div class="mb-3 position-relative">
+                    <textarea 
+                        name="content" 
+                        id="commentContent" 
+                        class="form-control" 
+                        rows="3" 
+                        placeholder="Write a respectful comment..."
+                        maxlength="500"
+                        required></textarea>
+                    <div class="form-text d-flex justify-content-between mt-1">
+                        <span id="commentError" class="text-danger small" style="display: none;"></span>
+                        <span class="ms-auto small text-muted"><span id="charCount">0</span> / 500 characters</span>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-light btn-sm" id="clearBtn">Clear</button>
+                    <button type="submit" class="btn btn-primary btn-sm" id="submitBtn">
+                        <i class="bi bi-send-fill me-1"></i> Post Comment
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 8. Comments List -->
+    <div class="comments-list">
+        {% if comments %}
+            {% for comment in comments %}
+            <!-- 9. Comment Card -->
+            <div class="comment-card card shadow-sm mb-3 {% if comment.status == 'flagged' %}border-warning{% elif comment.status == 'removed' %}border-danger{% endif %}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <!-- 10. Comment User Information -->
+                        <div class="d-flex align-items-center">
+                            {% if comment.author.profile.image %}
+                                <img src="{{ comment.author.profile.image.url }}" alt="{{ comment.author.username }}" class="rounded-circle me-2 comment-avatar">
+                            {% else %}
+                                <img src="{% static 'images/default-avatar.png' %}" alt="Default Avatar" class="rounded-circle me-2 comment-avatar">
+                            {% endif %}
+                            <div>
+                                <h5 class="mb-0 h6">{{ comment.author.get_full_name|default:comment.author.username|default:"Anonymous User" }}</h5>
+                                <!-- 11. Comment Timestamp -->
+                                <small class="text-muted">{{ comment.created_at|date:"d M Y, h:i A"|default:"Just now" }}</small>
+                            </div>
+                        </div>
+                        
+                        <!-- 12. Comment Status & 13. CyberBullying Detection Status -->
+                        <div class="comment-badges text-end">
+                            {% if comment.status == "pending" %}
+                                <span class="badge bg-secondary text-light"><i class="bi bi-hourglass-split me-1"></i>Pending Review</span>
+                            {% elif comment.status == "flagged" %}
+                                <span class="badge bg-warning text-dark"><i class="bi bi-flag-fill me-1"></i>Flagged</span>
+                            {% elif comment.status == "removed" %}
+                                <span class="badge bg-danger"><i class="bi bi-x-circle-fill me-1"></i>Removed</span>
+                            {% endif %}
+                            
+                            {% if comment.prediction == "harmful" %}
+                                <span class="badge bg-danger ms-1" title="Detected as potentially harmful"><i class="bi bi-shield-exclamation me-1"></i>Potentially Harmful</span>
+                            {% elif comment.prediction == "under_review" %}
+                                <span class="badge bg-info ms-1"><i class="bi bi-search me-1"></i>Under Review</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- 23 & 24. Security - Safe Comment Rendering -->
+                    <div class="comment-text mt-2 mb-3">
+                        {% if comment.status == "removed" %}
+                            <p class="text-muted fst-italic"><i class="bi bi-shield-lock-fill me-1"></i> This comment has been removed by moderation.</p>
+                        {% else %}
+                            <p class="mb-0">{{ comment.content }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="comment-actions d-flex gap-3 align-items-center mt-2 border-top pt-2">
+                        <!-- 15. Report Comment Button -->
+                        {% if user.is_authenticated and comment.author != user %}
+                            <a href="{% if comment.id %}{% url 'reports:create_report' comment.id %}{% else %}#{% endif %}" class="btn btn-link text-warning p-0 text-decoration-none small">
+                                <i class="bi bi-flag me-1"></i> Report
+                            </a>
+                        {% endif %}
+
+                        <!-- 19. Edit Comment (Optional/Future) -->
+                        {% if comment.author == user %}
+                            <!-- TODO: Connect to edit functionality if implemented -->
+                            <a href="#" class="btn btn-link text-primary p-0 text-decoration-none small disabled" aria-disabled="true" title="Edit functionality coming soon">
+                                <i class="bi bi-pencil me-1"></i> Edit
+                            </a>
+                        {% endif %}
+
+                        <!-- 17. Delete Comment -->
+                        {% if comment.author == user %}
+                            <form method="POST" action="{% if comment.id %}{% url 'comments:delete_comment' comment.id %}{% else %}#{% endif %}" class="d-inline delete-comment-form">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link text-danger p-0 text-decoration-none small delete-btn">
+                                    <i class="bi bi-trash me-1"></i> Delete
+                                </button>
+                            </form>
+                        {% endif %}
+
+                        <!-- 18. Moderator Actions -->
+                        {% if user.is_staff or 'Moderators' in user.groups.all|stringformat:"s" %}
+                            <div class="ms-auto">
+                                <!-- TODO: Connect to moderation actions if implemented -->
+                                <a href="#" class="btn btn-outline-secondary btn-sm" title="Moderator Actions">
+                                    <i class="bi bi-shield-check"></i> Mod Review
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+            <!-- 21. Pagination -->
+            {% if page_obj.has_other_pages %}
+            <nav aria-label="Comment pagination" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}"><i class="bi bi-chevron-left"></i> Previous</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link"><i class="bi bi-chevron-left"></i> Previous</span>
+                        </li>
+                    {% endif %}
+                    
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="page-item active" aria-current="page"><span class="page-link">{{ num }}</span></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next <i class="bi bi-chevron-right"></i></a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Next <i class="bi bi-chevron-right"></i></span>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+            
+        {% else %}
+            <!-- 20. Empty State -->
+            <div class="empty-state card text-center p-5 shadow-sm border-0">
+                <div class="card-body">
+                    <i class="bi bi-chat-square-text text-muted display-4 mb-3"></i>
+                    <h5 class="card-title">No comments yet</h5>
+                    <p class="card-text text-muted">Be the first to share a respectful comment.</p>
+                    <button class="btn btn-outline-primary mt-2" onclick="document.getElementById('commentContent').focus();">
+                        <i class="bi bi-pencil-square me-1"></i> Write a Comment
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script src="{% static 'js/comments.js' %}"></script>
+{% endblock %}

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
+<<<<<<< HEAD
 {% block title %}{{ post.title }} | CyberBullying Detection System{% endblock title %}
 
 {% block extra_css %}
@@ -43,7 +44,306 @@
                     {{ post.content|linebreaks }}
                 </div>
             </div>
+=======
+{% block title %}{{ post.title|default:"Post Detail" }} - CyberBullying Detection System{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/posts.css' %}">
+<link rel="stylesheet" href="{% static 'css/comments.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="post-detail-container">
+    <!-- 1. Breadcrumb / Back Button -->
+    <div class="mb-4">
+        <!-- Assuming 'posts:post_list' is the URL name for the list view -->
+        <a href="{% url 'posts:post_list' %}" class="btn btn-link text-decoration-none p-0 text-muted back-btn">
+            <i class="bi bi-arrow-left me-1"></i> Back to Posts
+        </a>
+    </div>
+
+    <div class="row justify-content-center">
+        <!-- Main Content Column -->
+        <div class="col-lg-8 col-xl-7">
+            
+            {% if not post %}
+                <!-- 24. Error / Empty State -->
+                <div class="card shadow-sm text-center p-5 border-0">
+                    <div class="card-body">
+                        <i class="bi bi-search text-muted display-1 mb-3"></i>
+                        <h2 class="h4">Post not found</h2>
+                        <p class="text-muted mb-4">The post you are looking for does not exist or has been removed.</p>
+                        <a href="{% url 'posts:post_list' %}" class="btn btn-primary">Back to Posts</a>
+                    </div>
+                </div>
+            {% else %}
+                <!-- Main Post Card -->
+                <article class="card shadow-sm border-0 mb-4 post-detail-card">
+                    
+                    <!-- 8. Moderation / Detection Status -->
+                    {% if post.moderation_status or post.prediction %}
+                        <div class="card-header bg-light border-bottom-0 py-2 d-flex gap-2 justify-content-end align-items-center">
+                            {% if post.moderation_status == "pending" %}
+                                <span class="badge bg-secondary"><i class="bi bi-hourglass-split me-1"></i> Pending Review</span>
+                            {% elif post.moderation_status == "flagged" %}
+                                <span class="badge bg-warning text-dark"><i class="bi bi-flag-fill me-1"></i> Flagged</span>
+                            {% elif post.moderation_status == "approved" %}
+                                <span class="badge bg-success"><i class="bi bi-check-circle-fill me-1"></i> Approved</span>
+                            {% endif %}
+                            
+                            {% if post.prediction == "harmful" %}
+                                <span class="badge bg-danger"><i class="bi bi-shield-exclamation me-1"></i> Potentially Harmful</span>
+                            {% elif post.prediction == "under_review" %}
+                                <span class="badge bg-info text-dark"><i class="bi bi-search me-1"></i> Under Review</span>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                    <div class="card-body p-4 p-md-5">
+                        
+                        <!-- 7. Category -->
+                        <div class="mb-3">
+                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle text-uppercase px-2 py-1">
+                                {{ post.category|default:"Uncategorized" }}
+                            </span>
+                        </div>
+
+                        <!-- 4. Post Title -->
+                        <h1 class="post-title fw-bold mb-4 text-break">{{ post.title }}</h1>
+                        
+                        <!-- 2 & 3. Post Header / Author Information -->
+                        <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+                            {% if post.author.profile.image %}
+                                <img src="{{ post.author.profile.image.url }}" alt="{{ post.author.username }}" class="rounded-circle me-3 border" width="48" height="48" style="object-fit: cover;">
+                            {% else %}
+                                <img src="{% static 'images/default-avatar.png' %}" alt="Default Avatar" class="rounded-circle me-3 border" width="48" height="48" style="object-fit: cover;">
+                            {% endif %}
+                            
+                            <div>
+                                <h2 class="h6 mb-0 fw-semibold">{{ post.author.get_full_name|default:post.author.username|default:"Anonymous User" }}</h2>
+                                <div class="text-muted small">
+                                    <span>{{ post.created_at|date:"d M Y, h:i A" }}</span>
+                                    {% if post.updated_at and post.updated_at != post.created_at %}
+                                        <span class="ms-1 fst-italic text-black-50">&bull; Edited {{ post.updated_at|date:"d M Y" }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 6. Post Image -->
+                        {% if post.image %}
+                            <div class="post-image-wrapper mb-4 rounded overflow-hidden shadow-sm text-center bg-light">
+                                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid post-detail-image" style="max-height: 500px; object-fit: contain; width: 100%;">
+                            </div>
+                        {% endif %}
+
+                        <!-- 5. Post Content (Safely Escaped automatically by Django) -->
+                        <div class="post-content text-break mb-5" style="white-space: pre-wrap; font-size: 1.1rem; line-height: 1.7; color: #334155;">{{ post.content }}</div>
+
+                        <!-- 10. Post Actions -->
+                        <div class="post-actions d-flex flex-wrap gap-3 align-items-center justify-content-between pt-3 border-top">
+                            <div class="d-flex gap-2">
+                                <!-- 18. Like/Reaction (Optional/Placeholder) -->
+                                <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill px-3" disabled aria-disabled="true" title="Reactions coming soon">
+                                    <i class="bi bi-heart me-1"></i> Like
+                                </button>
+                            </div>
+
+                            <div class="d-flex gap-3 align-items-center">
+                                <!-- Report -->
+                                {% if user.is_authenticated and user != post.author %}
+                                    <a href="{% url 'reports:create_report' post.id %}" class="btn btn-link text-warning text-decoration-none p-0 small fw-medium">
+                                        <i class="bi bi-flag-fill me-1"></i> Report Post
+                                    </a>
+                                {% endif %}
+
+                                <!-- Edit -->
+                                {% if user == post.author %}
+                                    <a href="{% url 'posts:edit_post' post.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                                        <i class="bi bi-pencil me-1"></i> Edit
+                                    </a>
+                                {% endif %}
+
+                                <!-- 21. Delete Workflow -->
+                                {% if user == post.author or user.is_staff %}
+                                    <form method="POST" action="{% url 'posts:delete_post' post.id %}" class="d-inline delete-post-form">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3 delete-btn">
+                                            <i class="bi bi-trash me-1"></i> Delete
+                                        </button>
+                                    </form>
+                                {% endif %}
+                                
+                                <!-- 11. Moderator Actions -->
+                                {% if user.is_staff or 'Moderators' in user.groups.all|stringformat:"s" %}
+                                    <div class="dropdown">
+                                        <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 dropdown-toggle" type="button" id="modActions" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-shield-lock me-1"></i> Mod Actions
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="modActions">
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-check-circle me-2 text-success"></i> Mark Reviewed</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-eye-slash me-2 text-warning"></i> Hide Post</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-x-circle me-2"></i> Remove Content</a></li>
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 12. Comment Section -->
+                <section class="comments-section mt-5" id="comments">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="h4 mb-0 fw-bold">
+                            Comments 
+                            <span class="badge bg-secondary rounded-pill ms-2 fs-6 fw-normal">{{ comment_count|default:post.comments.count|default:0 }}</span>
+                        </h3>
+                        
+                        <!-- 14. View All Comments -->
+                        <a href="{% url 'comments:comments' post.id %}" class="btn btn-link text-decoration-none">
+                            View All <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                    
+                    <!-- 9. Safety Notice & 17. Comment Safety -->
+                    <div class="alert alert-info py-2 small shadow-sm border-0 mb-4">
+                        <i class="bi bi-info-circle-fill me-2 text-info"></i>
+                        <strong>Please keep discussions respectful.</strong> Content may be reviewed by the moderation system.
+                    </div>
+
+                    <!-- 15. Add Comment -->
+                    {% if user.is_authenticated %}
+                        <div class="card shadow-sm border-0 mb-4 bg-light">
+                            <div class="card-body p-4">
+                                <h4 class="h6 mb-3 text-muted">Write a Comment</h4>
+                                <form method="POST" action="{% url 'comments:comments' post.id %}" id="commentFormInline" class="needs-validation" novalidate>
+                                    {% csrf_token %}
+                                    <div class="mb-3 position-relative">
+                                        <textarea name="content" id="commentContentInline" class="form-control" rows="3" placeholder="Write a respectful comment..." maxlength="500" required></textarea>
+                                        <!-- 16. Comment Character Counter -->
+                                        <div class="form-text d-flex justify-content-between mt-1">
+                                            <span class="invalid-feedback m-0" style="display: none;" id="commentErrorInline">Please write a valid comment.</span>
+                                            <span class="ms-auto small text-muted"><span id="charCountInline">0</span> / 500 characters</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <button type="submit" class="btn btn-primary px-4 rounded-pill" id="submitCommentBtn">
+                                            <i class="bi bi-send-fill me-1"></i> Post Comment
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-secondary text-center p-4 rounded mb-4">
+                            <p class="mb-3">You must be logged in to leave a comment.</p>
+                            <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary rounded-pill px-4">Log In to Comment</a>
+                        </div>
+                    {% endif %}
+
+                    <!-- 13. Comments Preview -->
+                    <div class="comments-preview-list">
+                        {% if comments %}
+                            {% for comment in comments|slice:":3" %}
+                                <div class="card shadow-sm border-0 mb-3 {% if comment.status == 'flagged' %}border-start border-warning border-4{% elif comment.status == 'removed' %}border-start border-danger border-4{% endif %}">
+                                    <div class="card-body p-3 p-md-4">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <div class="d-flex align-items-center">
+                                                {% if comment.author.profile.image %}
+                                                    <img src="{{ comment.author.profile.image.url }}" alt="{{ comment.author.username }}" class="rounded-circle me-3" width="40" height="40" style="object-fit: cover;">
+                                                {% else %}
+                                                    <img src="{% static 'images/default-avatar.png' %}" alt="Default Avatar" class="rounded-circle me-3" width="40" height="40" style="object-fit: cover;">
+                                                {% endif %}
+                                                <div>
+                                                    <h5 class="mb-0 h6 fw-semibold">{{ comment.author.get_full_name|default:comment.author.username }}</h5>
+                                                    <small class="text-muted">{{ comment.created_at|timesince }} ago</small>
+                                                </div>
+                                            </div>
+                                            
+                                            {% if user.is_authenticated and comment.author != user %}
+                                                <a href="{% url 'reports:create_report' comment.id %}" class="btn btn-link text-warning p-0 text-decoration-none small" title="Report this comment">
+                                                    <i class="bi bi-flag"></i>
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="comment-text mt-2 ps-md-5" style="margin-left: 12px;">
+                                            {% if comment.status == "removed" %}
+                                                <p class="text-muted fst-italic mb-0"><i class="bi bi-shield-lock-fill me-1"></i> This comment has been removed by moderation.</p>
+                                            {% else %}
+                                                <p class="mb-0 text-break">{{ comment.content }}</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            
+                            {% if comments|length > 3 %}
+                                <div class="text-center mt-4">
+                                    <a href="{% url 'comments:comments' post.id %}" class="btn btn-outline-primary rounded-pill px-4">
+                                        See All {{ comment_count|default:comments|length }} Comments
+                                    </a>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="text-center p-5 bg-white rounded shadow-sm border border-light">
+                                <i class="bi bi-chat-dots text-muted display-4 mb-3"></i>
+                                <h5 class="text-muted">No comments yet.</h5>
+                                <p class="text-muted small">Be the first to share a respectful comment.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </section>
+            {% endif %}
+            
+        </div>
+        
+        <!-- Optional Right Sidebar for Related/Author info -->
+        <div class="col-lg-4 col-xl-3 d-none d-lg-block">
+            {% if post %}
+                <div class="position-sticky" style="top: 2rem;">
+                    <!-- Author Card -->
+                    <div class="card shadow-sm border-0 mb-4">
+                        <div class="card-body text-center p-4">
+                            {% if post.author.profile.image %}
+                                <img src="{{ post.author.profile.image.url }}" alt="{{ post.author.username }}" class="rounded-circle mb-3 border border-3 border-white shadow-sm" width="96" height="96" style="object-fit: cover;">
+                            {% else %}
+                                <img src="{% static 'images/default-avatar.png' %}" alt="Default Avatar" class="rounded-circle mb-3 border border-3 border-white shadow-sm" width="96" height="96" style="object-fit: cover;">
+                            {% endif %}
+                            
+                            <h5 class="fw-bold mb-1">{{ post.author.get_full_name|default:post.author.username }}</h5>
+                            <p class="text-muted small mb-3">@{{ post.author.username }}</p>
+                            
+                            <!-- Connect to profile if implemented -->
+                            <a href="#" class="btn btn-outline-primary btn-sm rounded-pill w-100 disabled" aria-disabled="true">View Profile</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Safety Card -->
+                    <div class="card shadow-sm border-0 bg-primary bg-opacity-10 border border-primary-subtle">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-shield-check text-primary fs-3 me-2"></i>
+                                <h5 class="text-primary mb-0 fw-bold">Safe Community</h5>
+                            </div>
+                            <p class="small text-dark mb-0">
+                                This platform uses AI to detect and prevent cyberbullying. Please report any harmful content you encounter.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+>>>>>>> ad619db7049c403a289bc3cb973e287212094618
         </div>
     </div>
 </div>
 {% endblock content %}
+<<<<<<< HEAD
+=======
+
+{% block extra_js %}
+<script src="{% static 'js/posts.js' %}"></script>
+{% endblock %}
+>>>>>>> ad619db7049c403a289bc3cb973e287212094618
