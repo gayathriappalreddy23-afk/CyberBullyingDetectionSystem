@@ -253,63 +253,63 @@
     <nav class="sidebar-nav">
         
         <div class="nav-section-title">Main Menu</div>
-        <a href="/dashboard" class="nav-item active">
+        <a href="{% url 'dashboard:user_dashboard' %}" class="nav-item active">
             <span class="nav-icon">🏠</span>
             <span class="nav-text">Dashboard</span>
         </a>
-        <a href="/profile" class="nav-item">
+        <a href="{% url 'accounts:profile' %}" class="nav-item">
             <span class="nav-icon">👤</span>
             <span class="nav-text">Profile</span>
         </a>
         
         <div class="nav-section-title">Content</div>
-        <a href="/posts/create" class="nav-item">
+        <a href="{% url 'posts:create_post' %}" class="nav-item">
             <span class="nav-icon">📝</span>
             <span class="nav-text">Create Post</span>
         </a>
-        <a href="/posts" class="nav-item">
+        <a href="{% url 'posts:post_list' %}" class="nav-item">
             <span class="nav-icon">📄</span>
             <span class="nav-text">View Posts</span>
         </a>
-        <a href="/comments" class="nav-item">
+        <a href="{% url 'posts:post_list' %}" class="nav-item">
             <span class="nav-icon">💬</span>
             <span class="nav-text">Comments</span>
         </a>
 
         <div class="nav-section-title">AI Engine</div>
-        <a href="/detect" class="nav-item">
+        <a href="{% url 'prediction:detect' %}" class="nav-item">
             <span class="nav-icon">🤖</span>
             <span class="nav-text">Detect Cyberbullying</span>
         </a>
-        <a href="/history" class="nav-item">
+        <a href="{% url 'dashboard:user_dashboard' %}" class="nav-item">
             <span class="nav-icon">📜</span>
             <span class="nav-text">Prediction History</span>
         </a>
         
         <div class="nav-section-title">Insights</div>
-        <a href="/reports" class="nav-item">
+        <a href="{% url 'reports:report' %}" class="nav-item">
             <span class="nav-icon">📊</span>
             <span class="nav-text">Reports</span>
         </a>
-        <a href="/analytics" class="nav-item">
+        <a href="{% url 'reports:analytics' %}" class="nav-item">
             <span class="nav-icon">📈</span>
             <span class="nav-text">Analytics</span>
         </a>
 
         <div class="nav-section-title">Settings</div>
-        <a href="/notifications" class="nav-item">
+        <a href="#" class="nav-item disabled" aria-disabled="true" title="Notifications are not implemented yet">
             <span class="nav-icon">🔔</span>
             <span class="nav-text">Notifications</span>
         </a>
-        <a href="/settings" class="nav-item">
+        <a href="#" class="nav-item disabled" aria-disabled="true" title="Settings are not implemented yet">
             <span class="nav-icon">⚙️</span>
             <span class="nav-text">Settings</span>
         </a>
-        <a href="/support" class="nav-item">
+        <a href="{% url 'home:contact' %}" class="nav-item">
             <span class="nav-icon">❓</span>
             <span class="nav-text">Help & Support</span>
         </a>
-        <a href="/logout" class="nav-item">
+        <a href="{% url 'accounts:logout' %}" class="nav-item">
             <span class="nav-icon">🚪</span>
             <span class="nav-text">Logout</span>
         </a>

@@ -13,6 +13,7 @@ urlpatterns = [
     path('prediction/', include('prediction.urls', namespace='prediction')),
     path('dashboard/', include('dashboard.urls', namespace='dashboard')),
     path('posts/', include('posts.urls', namespace='posts')),
+    path('comments/', include('comments.urls', namespace='comments')),
     path('reports/', include('reports.urls', namespace='reports')),
 ]
 

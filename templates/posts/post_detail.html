@@ -1,50 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
 
-<<<<<<< HEAD
-{% block title %}{{ post.title }} | CyberBullying Detection System{% endblock title %}
-
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/posts.css' %}">
-{% endblock extra_css %}
-
-{% block content %}
-<div class="container post-page-wrapper">
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-9 col-xl-8">
-            <div class="mb-3">
-                <a href="{% url 'posts:list' %}" class="text-decoration-none text-muted small">
-                    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i> Back to All Posts
-                </a>
-            </div>
-
-            <div class="post-form-card p-4 p-md-5">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle text-capitalize px-3 py-2">
-                        {{ post.get_category_display|default:post.category }}
-                    </span>
-                    {% if user.is_authenticated and user == post.author %}
-                        <a href="{% url 'posts:edit' pk=post.pk %}" class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1">
-                            <i class="bi bi-pencil" aria-hidden="true"></i> Edit Post
-                        </a>
-                    {% endif %}
-                </div>
-
-                <h1 class="h2 font-heading fw-bold mb-3 text-slate-900">{{ post.title }}</h1>
-
-                <div class="d-flex align-items-center gap-3 text-muted small border-bottom pb-3 mb-4">
-                    <span class="d-flex align-items-center gap-1 fw-semibold text-dark">
-                        <i class="bi bi-person-circle text-primary" aria-hidden="true"></i> {{ post.author.username }}
-                    </span>
-                    <span>•</span>
-                    <span><i class="bi bi-calendar3 me-1" aria-hidden="true"></i> {{ post.created_at|date:"F d, Y - H:i" }}</span>
-                </div>
-
-                <div class="post-content-body fs-6 text-slate-800 line-height-lg mb-4">
-                    {{ post.content|linebreaks }}
-                </div>
-            </div>
-=======
 {% block title %}{{ post.title|default:"Post Detail" }} - CyberBullying Detection System{% endblock %}
 
 {% block extra_css %}
@@ -239,7 +195,7 @@
                     {% else %}
                         <div class="alert alert-secondary text-center p-4 rounded mb-4">
                             <p class="mb-3">You must be logged in to leave a comment.</p>
-                            <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary rounded-pill px-4">Log In to Comment</a>
+                            <a href="{% url 'accounts:login' %}?next={{ request.path }}" class="btn btn-primary rounded-pill px-4">Log In to Comment</a>
                         </div>
                     {% endif %}
 
@@ -263,7 +219,7 @@
                                             </div>
                                             
                                             {% if user.is_authenticated and comment.author != user %}
-                                                <a href="{% url 'reports:create_report' comment.id %}" class="btn btn-link text-warning p-0 text-decoration-none small" title="Report this comment">
+                                                <a href="{% url 'reports:create_report_comment' comment.id %}" class="btn btn-link text-warning p-0 text-decoration-none small" title="Report this comment">
                                                     <i class="bi bi-flag"></i>
                                                 </a>
                                             {% endif %}
@@ -335,15 +291,12 @@
                     </div>
                 </div>
             {% endif %}
->>>>>>> ad619db7049c403a289bc3cb973e287212094618
         </div>
     </div>
 </div>
 {% endblock content %}
-<<<<<<< HEAD
-=======
 
 {% block extra_js %}
 <script src="{% static 'js/posts.js' %}"></script>
 {% endblock %}
->>>>>>> ad619db7049c403a289bc3cb973e287212094618
+
