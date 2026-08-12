@@ -84,3 +84,11 @@ def edit_post(request, pk):
         form = PostForm(instance=post)
 
     return render(request, 'posts/edit_post.html', {'form': form, 'post': post})
+
+@login_required
+def delete_post(request, pk):
+    """
+    Placeholder for delete post functionality.
+    """
+    return redirect('posts:post_list')
+

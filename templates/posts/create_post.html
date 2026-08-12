@@ -47,7 +47,7 @@
                     {% endif %}
 
                     <!-- Post Creation Form -->
-                    <form method="POST" action="{% url 'posts:create' %}" id="createPostForm" novalidate>
+                    <form method="POST" action="{% url 'posts:create_post' %}" id="createPostForm" novalidate>
                         {% csrf_token %}
 
                         <!-- Post Title -->

@@ -20,3 +20,10 @@ def user_dashboard(request):
         "recent_activities": recent_activities,
     }
     return render(request, "dashboard/user_dashboard.html", context)
+
+def moderator_dashboard(request):
+    return render(request, "dashboard/moderator_dashboard.html")
+
+def admin_dashboard(request):
+    return render(request, "dashboard/admin_dashboard.html")
+
