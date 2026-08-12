@@ -53,7 +53,7 @@ def create_post(request):
             post.author = request.user
             post.save()
             messages.success(request, 'Your post has been published successfully.')
-            return redirect('posts:list')
+            return redirect('posts:post_list')
     else:
         form = PostForm()
 
@@ -65,7 +65,13 @@ def post_detail(request, pk):
     Render individual post details.
     """
     post = get_object_or_404(Post, pk=pk)
-    return render(request, 'posts/post_detail.html', {'post': post})
+    comments = post.comments.all()
+    comment_count = comments.count()
+    return render(request, 'posts/post_detail.html', {
+        'post': post,
+        'comments': comments,
+        'comment_count': comment_count,
+    })
 
 
 @login_required
@@ -79,7 +85,7 @@ def edit_post(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Your post has been updated.')
-            return redirect('posts:detail', pk=post.pk)
+            return redirect('posts:post_detail', pk=post.pk)
     else:
         form = PostForm(instance=post)
 

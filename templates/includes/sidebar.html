@@ -253,31 +253,31 @@
     <nav class="sidebar-nav">
         
         <div class="nav-section-title">Main Menu</div>
-        <a href="{% url 'dashboard:user_dashboard' %}" class="nav-item active">
+        <a href="{% url 'dashboard:user_dashboard' %}" class="nav-item {% if request.resolver_match.namespace == 'dashboard' and request.resolver_match.url_name == 'user_dashboard' %}active{% endif %}">
             <span class="nav-icon">🏠</span>
             <span class="nav-text">Dashboard</span>
         </a>
-        <a href="{% url 'accounts:profile' %}" class="nav-item">
+        <a href="{% url 'accounts:profile' %}" class="nav-item {% if request.resolver_match.namespace == 'accounts' and request.resolver_match.url_name == 'profile' %}active{% endif %}">
             <span class="nav-icon">👤</span>
             <span class="nav-text">Profile</span>
         </a>
         
         <div class="nav-section-title">Content</div>
-        <a href="{% url 'posts:create_post' %}" class="nav-item">
+        <a href="{% url 'posts:create_post' %}" class="nav-item {% if request.resolver_match.namespace == 'posts' and request.resolver_match.url_name == 'create_post' %}active{% endif %}">
             <span class="nav-icon">📝</span>
             <span class="nav-text">Create Post</span>
         </a>
-        <a href="{% url 'posts:post_list' %}" class="nav-item">
+        <a href="{% url 'posts:post_list' %}" class="nav-item {% if request.resolver_match.namespace == 'posts' and request.resolver_match.url_name in 'post_list,post_detail,edit_post' %}active{% endif %}">
             <span class="nav-icon">📄</span>
             <span class="nav-text">View Posts</span>
         </a>
-        <a href="{% url 'posts:post_list' %}" class="nav-item">
+        <a href="{% url 'posts:post_list' %}" class="nav-item {% if request.resolver_match.namespace == 'comments' %}active{% endif %}">
             <span class="nav-icon">💬</span>
             <span class="nav-text">Comments</span>
         </a>
 
         <div class="nav-section-title">AI Engine</div>
-        <a href="{% url 'prediction:detect' %}" class="nav-item">
+        <a href="{% url 'prediction:detect' %}" class="nav-item {% if request.resolver_match.namespace == 'prediction' and request.resolver_match.url_name == 'detect' %}active{% endif %}">
             <span class="nav-icon">🤖</span>
             <span class="nav-text">Detect Cyberbullying</span>
         </a>
@@ -287,11 +287,11 @@
         </a>
         
         <div class="nav-section-title">Insights</div>
-        <a href="{% url 'reports:report' %}" class="nav-item">
+        <a href="{% url 'reports:report' %}" class="nav-item {% if request.resolver_match.namespace == 'reports' and request.resolver_match.url_name == 'report' %}active{% endif %}">
             <span class="nav-icon">📊</span>
             <span class="nav-text">Reports</span>
         </a>
-        <a href="{% url 'reports:analytics' %}" class="nav-item">
+        <a href="{% url 'reports:analytics' %}" class="nav-item {% if request.resolver_match.namespace == 'reports' and request.resolver_match.url_name == 'analytics' %}active{% endif %}">
             <span class="nav-icon">📈</span>
             <span class="nav-text">Analytics</span>
         </a>
@@ -305,11 +305,15 @@
             <span class="nav-icon">⚙️</span>
             <span class="nav-text">Settings</span>
         </a>
-        <a href="{% url 'home:contact' %}" class="nav-item">
+        <a href="{% url 'home:contact' %}" class="nav-item {% if request.resolver_match.namespace == 'home' and request.resolver_match.url_name == 'contact' %}active{% endif %}">
             <span class="nav-icon">❓</span>
             <span class="nav-text">Help & Support</span>
         </a>
-        <a href="{% url 'accounts:logout' %}" class="nav-item">
+        
+        <form id="sidebarLogoutForm" method="post" action="{% url 'accounts:logout' %}" style="display: none;">
+            {% csrf_token %}
+        </form>
+        <a href="#" onclick="document.getElementById('sidebarLogoutForm').submit(); return false;" class="nav-item">
             <span class="nav-icon">🚪</span>
             <span class="nav-text">Logout</span>
         </a>
@@ -319,14 +323,31 @@
     <div class="sidebar-footer-section">
         <div class="user-card">
             <div class="user-avatar-container">
-                <img src="https://ui-avatars.com/api/?name=John+Doe&background=6366f1&color=fff&rounded=true" alt="John Doe" class="user-avatar">
+                <img src="https://ui-avatars.com/api/?name={{ request.user.username|urlencode }}&background=6366f1&color=fff&rounded=true" alt="{{ request.user.username }}" class="user-avatar">
                 <div class="status-dot" title="Online"></div>
             </div>
             <div class="user-details">
-                <span class="user-name">John Doe</span>
-                <span class="user-role">Moderator</span>
+                <span class="user-name">
+                    {% if request.user.get_full_name %}
+                        {{ request.user.get_full_name }}
+                    {% else %}
+                        {{ request.user.username }}
+                    {% endif %}
+                </span>
+                <span class="user-role">
+                    {% if request.user.is_superuser %}
+                        Administrator
+                    {% elif request.user.is_staff %}
+                        Moderator
+                    {% else %}
+                        User
+                    {% endif %}
+                </span>
             </div>
-            <a href="/logout" class="logout-action" title="Logout">
+            <form id="sidebarUserCardLogoutForm" method="post" action="{% url 'accounts:logout' %}" style="display: none;">
+                {% csrf_token %}
+            </form>
+            <a href="#" onclick="document.getElementById('sidebarUserCardLogoutForm').submit(); return false;" class="logout-action" title="Logout">
                 🚪
             </a>
         </div>
