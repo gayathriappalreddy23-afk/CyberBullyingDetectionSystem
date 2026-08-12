@@ -222,6 +222,11 @@
     color: var(--text-secondary);
     transition: all 0.2s ease;
     text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1rem;
 }
 
 .logout-action:hover {
@@ -319,16 +324,26 @@
     <div class="sidebar-footer-section">
         <div class="user-card">
             <div class="user-avatar-container">
-                <img src="https://ui-avatars.com/api/?name=John+Doe&background=6366f1&color=fff&rounded=true" alt="John Doe" class="user-avatar">
+                <img src="https://ui-avatars.com/api/?name={{ user.get_full_name|default:user.username }}&background=6366f1&color=fff&rounded=true" 
+                     alt="{{ user.username }}" 
+                     class="user-avatar">
                 <div class="status-dot" title="Online"></div>
             </div>
             <div class="user-details">
-                <span class="user-name">John Doe</span>
-                <span class="user-role">Moderator</span>
+                <span class="user-name">{{ user.get_full_name|default:user.username }}</span>
+                <span class="user-role">
+                    {% if user.is_superuser %}Administrator
+                    {% elif user.is_staff %}Moderator
+                    {% else %}Member{% endif %}
+                </span>
             </div>
-            <a href="/logout" class="logout-action" title="Logout">
-                🚪
-            </a>
+            <!-- Logout via POST (CSRF protected) -->
+            <form method="POST" action="{% url 'accounts:logout' %}" class="d-inline" id="sidebar-logout-form">
+                {% csrf_token %}
+                <button type="submit" class="logout-action" title="Logout" aria-label="Sign out">
+                    🚪
+                </button>
+            </form>
         </div>
         <div class="app-version">Version 1.0</div>
     </div>

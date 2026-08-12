@@ -171,6 +171,21 @@ a:hover {
 .page-content-wrapper {
     flex: 1 0 auto;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Main content element — no forced py-4 gap; each page controls its own vertical spacing */
+.main-content {
+    flex: 1;
+    width: 100%;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+}
+
+/* Pages rendered WITHOUT sidebar (public/auth pages) get extra top breathing room */
+.app-shell:not(.has-sidebar) .main-content {
+    padding-top: 1.5rem;
 }
 
 /* Desktop Sidebar Sticky / Fixed layout compatibility */
@@ -181,11 +196,6 @@ a:hover {
         left: 0;
         bottom: 0;
         z-index: 1030;
-    }
-    
-    .app-shell.has-sidebar .app-main-wrapper {
-        margin-left: var(--sidebar-width);
-        width: calc(100% - var(--sidebar-width));
     }
 }
 

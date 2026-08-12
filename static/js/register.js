@@ -71,15 +71,18 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // -------------------------------------------------------------------------
-    // 3. Form Submit Button Loading State
+    // 3. Form Submit Loading Spinner (Safe UX Enhancement)
     // -------------------------------------------------------------------------
     const registerForm = document.getElementById('registerForm');
     const submitBtn = document.getElementById('registerSubmitBtn');
 
     if (registerForm && submitBtn) {
-        registerForm.addEventListener('submit', function () {
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Creating Account...';
+        registerForm.addEventListener('submit', function (e) {
+            // Give user feedback without blocking form resubmission
+            setTimeout(function () {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Creating Account...';
+            }, 50);
         });
     }
 });
