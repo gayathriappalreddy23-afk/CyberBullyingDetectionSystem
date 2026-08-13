@@ -14,7 +14,8 @@
     border: 1px solid var(--border-color, #E2E8F0);
     border-radius: var(--radius-lg, 16px);
     box-shadow: var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.08));
-    overflow: hidden;
+    /* Removed overflow:hidden — it was clipping the avatar and username */
+    overflow: visible;
     margin-bottom: 2rem;
 }
 
@@ -22,6 +23,8 @@
     height: 140px;
     background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #2563EB 100%);
     position: relative;
+    border-radius: var(--radius-lg, 16px) var(--radius-lg, 16px) 0 0;
+    overflow: hidden;
 }
 
 .profile-cover-banner::after {
@@ -34,13 +37,18 @@
 .profile-header-content {
     padding: 0 2rem 2rem 2rem;
     position: relative;
+    /* Avatar overlaps cover by ~50px: half of 100px avatar = 50px */
     margin-top: -50px;
+    /* Ensure content is on top of the cover */
+    z-index: 2;
 }
 
 .profile-avatar-wrapper {
     position: relative;
     display: inline-block;
     margin-bottom: 1rem;
+    /* Ensure avatar sits on top of the cover gradient */
+    z-index: 3;
 }
 
 .profile-avatar-circle {
@@ -79,8 +87,11 @@
     font-family: var(--font-heading, 'Outfit', sans-serif);
     font-size: 1.75rem;
     font-weight: 700;
+    /* Use a dark color — text sits on white card area below the cover */
     color: var(--text-color, #1E293B);
     margin-bottom: 0.25rem;
+    position: relative;
+    z-index: 3;
 }
 
 .profile-user-handle {
@@ -272,6 +283,8 @@
     .profile-header-content {
         padding: 0 1.25rem 1.5rem 1.25rem;
         text-align: center;
+        /* Smaller avatar overlap on mobile */
+        margin-top: -40px;
     }
 
     .profile-meta-pills {
@@ -280,5 +293,9 @@
 
     .profile-cover-banner {
         height: 110px;
+    }
+
+    .profile-user-name {
+        font-size: 1.4rem;
     }
 }

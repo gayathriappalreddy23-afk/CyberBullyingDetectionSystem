@@ -190,16 +190,29 @@ a:hover {
     padding-top: 1.5rem;
 }
 
-/* Desktop Sidebar Sticky / Fixed layout compatibility */
+/* Desktop Sidebar — Fixed so it stays put while main content scrolls */
 @media (min-width: 992px) {
-    .premium-sidebar {
-        position: sticky;
+    .app-sidebar-wrapper {
+        position: fixed;
         top: 0;
         left: 0;
-        bottom: 0;
+        height: 100vh;
+        z-index: 1040;
+        width: var(--sidebar-width);
+    }
+
+    .premium-sidebar {
+        position: relative;
+        height: 100vh;
+        overflow-y: auto;
+        overflow-x: hidden;
         z-index: 1030;
     }
 
+    /* Push main content right so it is never hidden behind the fixed sidebar */
+    .app-shell.has-sidebar .app-main-wrapper {
+        margin-left: var(--sidebar-width);
+    }
 }
 
 /* Mobile Sidebar Offcanvas & Collapse state */
