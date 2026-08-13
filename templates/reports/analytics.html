@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Analytics | CyberBullying Detection System{% endblock %}
+
+{% block content %}
+<div class="dashboard-page py-4">
+
+    <!-- Page Header -->
+    <section class="page-header mb-4">
+        <div class="row align-items-center g-3">
+            <div class="col-lg-8">
+                <p class="eyebrow text-uppercase text-muted small fw-semibold mb-1">
+                    <i class="bi bi-bar-chart-line-fill me-1 text-primary"></i> Insights
+                </p>
+                <h1 class="mb-1">Analytics Dashboard</h1>
+                <p class="text-muted mb-0">System-wide statistics on cyberbullying detection and content moderation.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <span class="badge bg-primary bg-opacity-10 text-primary p-3 rounded-4">
+                    <i class="bi bi-graph-up-arrow fs-4"></i>
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Summary Stats Row -->
+    <section class="row g-3 mb-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body d-flex align-items-center gap-3 p-4">
+                    <div class="rounded-3 p-3 bg-primary bg-opacity-10">
+                        <i class="bi bi-collection fs-4 text-primary"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Total Analyzed</div>
+                        <div class="fs-4 fw-bold">{{ total_analyzed|default:"—" }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body d-flex align-items-center gap-3 p-4">
+                    <div class="rounded-3 p-3 bg-success bg-opacity-10">
+                        <i class="bi bi-shield-check fs-4 text-success"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Safe Content</div>
+                        <div class="fs-4 fw-bold">{{ safe_count|default:"—" }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body d-flex align-items-center gap-3 p-4">
+                    <div class="rounded-3 p-3 bg-danger bg-opacity-10">
+                        <i class="bi bi-exclamation-octagon fs-4 text-danger"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Bullying Detected</div>
+                        <div class="fs-4 fw-bold">{{ bullying_count|default:"—" }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body d-flex align-items-center gap-3 p-4">
+                    <div class="rounded-3 p-3 bg-warning bg-opacity-10">
+                        <i class="bi bi-flag fs-4 text-warning"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Pending Reports</div>
+                        <div class="fs-4 fw-bold">{{ pending_reports|default:"—" }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Charts Row -->
+    <section class="row g-4 mb-4">
+        <!-- Detection Breakdown Doughnut -->
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-header bg-transparent border-bottom py-3 px-4">
+                    <h2 class="h5 mb-0 fw-semibold">
+                        <i class="bi bi-pie-chart me-2 text-primary"></i>Detection Breakdown
+                    </h2>
+                </div>
+                <div class="card-body d-flex align-items-center justify-content-center p-4">
+                    {% if total_analyzed %}
+                        <canvas id="detectionChart" width="300" height="300" aria-label="Detection breakdown chart" role="img"></canvas>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="bi bi-pie-chart display-4 text-muted opacity-50 d-block mb-3"></i>
+                            <p class="text-muted small mb-0">No detection data available yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity / Detection Trend -->
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-header bg-transparent border-bottom py-3 px-4">
+                    <h2 class="h5 mb-0 fw-semibold">
+                        <i class="bi bi-activity me-2 text-primary"></i>Detection Trend
+                    </h2>
+                </div>
+                <div class="card-body d-flex align-items-center justify-content-center p-4">
+                    {% if total_analyzed %}
+                        <canvas id="trendChart" aria-label="Detection trend chart" role="img"></canvas>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="bi bi-bar-chart display-4 text-muted opacity-50 d-block mb-3"></i>
+                            <p class="text-muted small mb-0">No trend data available yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Report Status Breakdown -->
+    <section class="card border-0 shadow-sm rounded-4">
+        <div class="card-header bg-transparent border-bottom py-3 px-4">
+            <h2 class="h5 mb-0 fw-semibold">
+                <i class="bi bi-clipboard-data me-2 text-primary"></i>Report Status Overview
+            </h2>
+        </div>
+        <div class="card-body p-4">
+            {% if total_reports %}
+                <div class="row g-3">
+                    <div class="col-sm-4">
+                        <div class="d-flex align-items-center gap-3 p-3 rounded-3 bg-warning bg-opacity-10">
+                            <i class="bi bi-hourglass-split text-warning fs-5"></i>
+                            <div>
+                                <div class="small text-muted">Pending</div>
+                                <div class="fw-bold">{{ pending_reports|default:"0" }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="d-flex align-items-center gap-3 p-3 rounded-3 bg-success bg-opacity-10">
+                            <i class="bi bi-check-circle text-success fs-5"></i>
+                            <div>
+                                <div class="small text-muted">Resolved</div>
+                                <div class="fw-bold">{{ resolved_reports|default:"0" }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="d-flex align-items-center gap-3 p-3 rounded-3 bg-secondary bg-opacity-10">
+                            <i class="bi bi-x-circle text-secondary fs-5"></i>
+                            <div>
+                                <div class="small text-muted">Dismissed</div>
+                                <div class="fw-bold">{{ dismissed_reports|default:"0" }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="text-center py-4">
+                    <i class="bi bi-clipboard display-4 text-muted opacity-50 d-block mb-3"></i>
+                    <p class="text-muted small mb-0">No report data available yet. Reports will appear here once submitted.</p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+{% if total_analyzed %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+(function () {
+    'use strict';
+
+    // Detection Breakdown Doughnut
+    var ctx1 = document.getElementById('detectionChart');
+    if (ctx1) {
+        new Chart(ctx1, {
+            type: 'doughnut',
+            data: {
+                labels: ['Safe Content', 'Bullying Detected'],
+                datasets: [{
+                    data: [{{ safe_count|default:0 }}, {{ bullying_count|default:0 }}],
+                    backgroundColor: ['rgba(16, 185, 129, 0.8)', 'rgba(239, 68, 68, 0.8)'],
+                    borderColor: ['rgba(16, 185, 129, 1)', 'rgba(239, 68, 68, 1)'],
+                    borderWidth: 2,
+                    hoverOffset: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' }
+                },
+                cutout: '65%'
+            }
+        });
+    }
+
+    // Trend Bar Chart (placeholder using available totals)
+    var ctx2 = document.getElementById('trendChart');
+    if (ctx2) {
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['Total Analyzed', 'Safe', 'Bullying', 'Pending Reports'],
+                datasets: [{
+                    label: 'Count',
+                    data: [
+                        {{ total_analyzed|default:0 }},
+                        {{ safe_count|default:0 }},
+                        {{ bullying_count|default:0 }},
+                        {{ pending_reports|default:0 }}
+                    ],
+                    backgroundColor: [
+                        'rgba(99, 102, 241, 0.7)',
+                        'rgba(16, 185, 129, 0.7)',
+                        'rgba(239, 68, 68, 0.7)',
+                        'rgba(245, 158, 11, 0.7)'
+                    ],
+                    borderRadius: 6,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { precision: 0 }
+                    }
+                }
+            }
+        });
+    }
+}());
+</script>
+{% endif %}
+{% endblock %}

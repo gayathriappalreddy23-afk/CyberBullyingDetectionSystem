@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Reports | CyberBullying Detection System{% endblock %}
+
+{% block content %}
+<div class="dashboard-page py-4">
+
+    <!-- Page Header -->
+    <section class="page-header mb-4">
+        <div class="row align-items-center g-3">
+            <div class="col-lg-8">
+                <p class="eyebrow text-uppercase text-muted small fw-semibold mb-1">
+                    <i class="bi bi-flag-fill me-1 text-danger"></i> Insights
+                </p>
+                <h1 class="mb-1">Cyberbullying Reports</h1>
+                <p class="text-muted mb-0">Review and manage flagged content reports submitted by users.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <span class="badge bg-danger bg-opacity-10 text-danger p-3 rounded-4">
+                    <i class="bi bi-exclamation-triangle-fill fs-4"></i>
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Summary Stats Row -->
+    <section class="row g-3 mb-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body d-flex align-items-center gap-3 p-4">
+                    <div class="rounded-3 p-3 bg-primary bg-opacity-10">
+                        <i class="bi bi-flag fs-4 text-primary"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Total Reports</div>
+                        <div class="fs-4 fw-bold">{{ total_reports|default:"—" }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body d-flex align-items-center gap-3 p-4">
+                    <div class="rounded-3 p-3 bg-warning bg-opacity-10">
+                        <i class="bi bi-hourglass-split fs-4 text-warning"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Pending Review</div>
+                        <div class="fs-4 fw-bold">{{ pending_reports|default:"—" }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body d-flex align-items-center gap-3 p-4">
+                    <div class="rounded-3 p-3 bg-success bg-opacity-10">
+                        <i class="bi bi-check-circle fs-4 text-success"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Resolved</div>
+                        <div class="fs-4 fw-bold">{{ resolved_reports|default:"—" }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body d-flex align-items-center gap-3 p-4">
+                    <div class="rounded-3 p-3 bg-danger bg-opacity-10">
+                        <i class="bi bi-x-circle fs-4 text-danger"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Dismissed</div>
+                        <div class="fs-4 fw-bold">{{ dismissed_reports|default:"—" }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reports Table -->
+    <section class="card border-0 shadow-sm rounded-4">
+        <div class="card-header bg-transparent border-bottom d-flex justify-content-between align-items-center py-3 px-4">
+            <h2 class="h5 mb-0 fw-semibold">
+                <i class="bi bi-list-ul me-2 text-primary"></i>All Reports
+            </h2>
+            {% if user.is_staff or user.is_superuser %}
+            <span class="badge bg-primary bg-opacity-10 text-primary">
+                <i class="bi bi-shield-check me-1"></i>Moderator View
+            </span>
+            {% endif %}
+        </div>
+        <div class="card-body p-0">
+            {% if reports %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0" aria-label="Reports list">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col" class="px-4 py-3">#</th>
+                                <th scope="col" class="py-3">Reported Content</th>
+                                <th scope="col" class="py-3">Reason</th>
+                                <th scope="col" class="py-3">Reported By</th>
+                                <th scope="col" class="py-3">Date</th>
+                                <th scope="col" class="py-3">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for report in reports %}
+                            <tr>
+                                <td class="px-4 text-muted small">{{ forloop.counter }}</td>
+                                <td class="py-3">
+                                    <span class="text-truncate d-inline-block" style="max-width: 260px;" title="{{ report.content|default:'' }}">
+                                        {{ report.content|default:"—"|truncatechars:60 }}
+                                    </span>
+                                </td>
+                                <td class="py-3">{{ report.reason|default:"—" }}</td>
+                                <td class="py-3">{{ report.reported_by|default:"—" }}</td>
+                                <td class="py-3 text-muted small">{{ report.created_at|date:"M d, Y"|default:"—" }}</td>
+                                <td class="py-3">
+                                    {% if report.status == 'pending' %}
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    {% elif report.status == 'resolved' %}
+                                        <span class="badge bg-success">Resolved</span>
+                                    {% elif report.status == 'dismissed' %}
+                                        <span class="badge bg-secondary">Dismissed</span>
+                                    {% else %}
+                                        <span class="badge bg-light text-muted">{{ report.status|default:"—" }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <!-- Empty State -->
+                <div class="text-center py-5 px-4">
+                    <div class="mb-3">
+                        <i class="bi bi-flag display-4 text-muted opacity-50"></i>
+                    </div>
+                    <h3 class="h5 fw-semibold text-muted mb-2">No Reports Yet</h3>
+                    <p class="text-muted small mb-0">
+                        When users flag content for review, reports will appear here.
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+</div>
+{% endblock %}
