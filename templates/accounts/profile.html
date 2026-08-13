@@ -101,7 +101,7 @@
                 <div class="stat-icon-wrapper stat-icon-primary">
                     <i class="bi bi-file-earmark-post" aria-hidden="true"></i>
                 </div>
-                <div class="stat-value">{{ post_count|default:total_posts|default:0 }}</div>
+                <div class="stat-value">{{ post_count|default:0 }}</div>
                 <div class="stat-label">Total Posts</div>
             </div>
         </div>
@@ -112,7 +112,7 @@
                 <div class="stat-icon-wrapper stat-icon-secondary">
                     <i class="bi bi-chat-left-text" aria-hidden="true"></i>
                 </div>
-                <div class="stat-value">{{ comment_count|default:total_comments|default:0 }}</div>
+                <div class="stat-value">{{ comment_count|default:0 }}</div>
                 <div class="stat-label">Total Comments</div>
             </div>
         </div>
