@@ -7,5 +7,5 @@ class UserDashboardViewTests(TestCase):
         response = self.client.get(reverse("dashboard:user_dashboard"))
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Cyberbullying Detection Summary")
+        self.assertContains(response, "NLP Analysis & Detection")
         self.assertContains(response, "Welcome back")

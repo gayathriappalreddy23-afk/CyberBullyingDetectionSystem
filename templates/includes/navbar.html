@@ -1,6 +1,15 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg navbar-dark cyber-navbar" aria-label="Main Navigation">
     <div class="container-fluid px-3 px-lg-4">
+        {% if user.is_authenticated %}
+            <button class="navbar-toggler border-0 p-2 shadow-none d-lg-none me-2" 
+                    id="sidebarToggle"
+                    type="button"
+                    aria-label="Toggle sidebar navigation"
+                    aria-expanded="false">
+                <i class="bi bi-list fs-4" aria-hidden="true"></i>
+            </button>
+        {% endif %}
         
         <!-- 1. Brand Section -->
         <a class="cyber-brand me-3" href="{% url 'home:home' %}" aria-label="CyberSafe - CyberBullying Detection System Home">

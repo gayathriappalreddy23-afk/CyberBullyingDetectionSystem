@@ -34,7 +34,7 @@
     {% block extra_head %}{% endblock extra_head %}
     {% block extra_css %}{% endblock extra_css %}
 </head>
-<body class="{% block body_class %}{% endblock body_class %}">
+<body class="{% block body_class %}{% endblock body_class %}" data-safe-count="{% if safe_count %}{{ safe_count }}{% elif safe_content_count %}{{ safe_content_count }}{% else %}0{% endif %}" data-bullying-count="{% if bullying_count %}{{ bullying_count }}{% elif bullying_content_count %}{{ bullying_content_count }}{% else %}0{% endif %}">
 
     <!-- 6. Accessibility: Keyboard Skip Link -->
     <a href="#main-content" class="skip-link">Skip to main content</a>

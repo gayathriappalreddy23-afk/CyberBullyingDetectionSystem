@@ -12,7 +12,7 @@ def post_list(request):
     Render community posts with server-side search, category filter, and pagination.
     """
     posts_queryset = Post.objects.all().select_related('author')
-    
+
     # 1. Search Query Filter
     search_query = request.GET.get('q', '').strip()
     if search_query:
@@ -68,7 +68,7 @@ def post_detail(request, pk):
     """
     post = get_object_or_404(Post, pk=pk)
     comments = post.comments.select_related('author').all()
-    
+
     context = {
         'post': post,
         'comments': comments,

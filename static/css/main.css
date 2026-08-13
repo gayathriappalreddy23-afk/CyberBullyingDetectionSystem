@@ -50,7 +50,7 @@
     --dark-text-muted: #94A3B8;
 
     /* Layout Specifications */
-    --sidebar-width: 280px;
+    --sidebar-width: 240px;
     --navbar-height: 70px;
     --footer-height: 60px;
     
@@ -145,7 +145,8 @@ a:hover {
 .app-shell {
     display: flex;
     min-height: 100vh;
-    width: 100vw;
+    width: 100%;
+    max-width: 100%;
     overflow-x: hidden;
     position: relative;
 }
@@ -162,9 +163,10 @@ a:hover {
     flex: 1;
     display: flex;
     flex-direction: column;
-    min-width: 0; /* Prevents flex items from overflowing horizontally */
+    min-width: 0;
     min-height: 100vh;
     background-color: var(--background-color);
+    width: auto;
 }
 
 /* Page Body Container */
@@ -175,7 +177,7 @@ a:hover {
     flex-direction: column;
 }
 
-/* Main content element — no forced py-4 gap; each page controls its own vertical spacing */
+/* Main content element */
 .main-content {
     flex: 1;
     width: 100%;
@@ -191,12 +193,13 @@ a:hover {
 /* Desktop Sidebar Sticky / Fixed layout compatibility */
 @media (min-width: 992px) {
     .premium-sidebar {
-        position: fixed;
+        position: sticky;
         top: 0;
         left: 0;
         bottom: 0;
         z-index: 1030;
     }
+
 }
 
 /* Mobile Sidebar Offcanvas & Collapse state */

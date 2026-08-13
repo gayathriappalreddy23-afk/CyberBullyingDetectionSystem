@@ -168,18 +168,70 @@
 
         <!-- Cyberbullying Detection Summary Chart Panel -->
         <div class="col-lg-8">
-            <article class="panel-card shadow-sm rounded-4 p-4 h-100">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div>
-                        <h2 class="panel-title mb-1 font-heading fw-bold">Detection Overview</h2>
-                        <p class="text-muted small mb-0">Safety distribution of analyzed content submissions</p>
-                    </div>
-                    <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill font-monospace">
-                        <i class="bi bi-activity me-1"></i> Live Metrics
-                    </span>
+            <article class="panel-card shadow-sm rounded-4 p-4 h-100 nlp-visualization-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h2 class="panel-title mb-0" style="color: #ffffff;">NLP Analysis &amp; Detection</h2>
                 </div>
-                <div class="chart-wrapper">
-                    <canvas id="detectionChart" aria-label="Cyberbullying detection summary chart"></canvas>
+                
+                <div class="nlp-visualization-container">
+                    <div class="orbit-container">
+                        <div class="orbit-glow"></div>
+                        <div class="orbit-ring ring-outer"></div>
+                        <div class="orbit-ring ring-middle"></div>
+                        <div class="orbit-ring ring-inner"></div>
+                        <div class="shield-center">
+                            <div class="shield-icon-wrapper">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shield-svg">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                    <path d="M9 11l2 2 4-4"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="keyword-orbit">
+                            <span class="keyword keyword-abuse" style="--index: 0;" data-tooltip="Potential toxic abuse indicator"><span class="keyword-text-wrapper">abuse</span></span>
+                            <span class="keyword keyword-kind" style="--index: 1;" data-tooltip="Positive communication indicator"><span class="keyword-text-wrapper">kind</span></span>
+                            <span class="keyword keyword-harm" style="--index: 2;" data-tooltip="Harmful text indicator"><span class="keyword-text-wrapper">harm</span></span>
+                            <span class="keyword keyword-love" style="--index: 3;" data-tooltip="Empathetic language indicator"><span class="keyword-text-wrapper">love</span></span>
+                            <span class="keyword keyword-hate" style="--index: 4;" data-tooltip="Hate speech indicator"><span class="keyword-text-wrapper">hate</span></span>
+                            <span class="keyword keyword-bully" style="--index: 5;" data-tooltip="Bullying indicator"><span class="keyword-text-wrapper">bully</span></span>
+                            <span class="keyword keyword-threat" style="--index: 6;" data-tooltip="Threatening language indicator"><span class="keyword-text-wrapper">threat</span></span>
+                            <span class="keyword keyword-safe" style="--index: 7;" data-tooltip="Safe/constructive text indicator"><span class="keyword-text-wrapper">safe</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nlp-analysis-box mt-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="nlp-title">NLP Analysis</span>
+                        <span class="nlp-status">Processing...</span>
+                    </div>
+                    <div class="progress nlp-progress-bar-container mb-3">
+                        <div class="progress-bar nlp-progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="nlp-input-text-preview mb-3">
+                        <span class="nlp-label">Input Text:</span>
+                        <p class="nlp-preview-text">
+                            {% if latest_post %}
+                                "{{ latest_post.content|truncatewords:20 }}"
+                            {% else %}
+                                "Analyzing communication pattern for potential cyberbullying indicators..."
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="row g-2 nlp-results-row">
+                        <div class="col-4">
+                            <span class="results-label">Toxic Score</span>
+                            <span class="results-value text-danger">{{ toxic_score|default:0.96 }}</span>
+                        </div>
+                        <div class="col-4">
+                            <span class="results-label">Sentiment</span>
+                            <span class="results-value text-warning">{{ sentiment|default:"Negative" }}</span>
+                        </div>
+                        <div class="col-4">
+                            <span class="results-label">Confidence</span>
+                            <span class="results-value text-success">{{ confidence|default:"High" }}</span>
+                        </div>
+                    </div>
                 </div>
             </article>
         </div>
@@ -295,7 +347,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h2 class="panel-title mb-0 font-heading fw-bold">Account Profile</h2>
                     <a href="{% url 'accounts:profile' %}" class="btn btn-sm btn-outline-primary fw-semibold px-3">
-                        <i class="bi bi-person me-1"></i> Edit Profile
+                        <i class="bi bi-person me-1"></i> View Profile
                     </a>
                 </div>
                 <div class="profile-summary d-flex flex-column flex-md-row align-items-center gap-4 pt-2">
