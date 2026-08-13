@@ -411,7 +411,7 @@ textarea.form-control {
 .img-preview-current {
     object-fit: contain;
     border: 2px solid var(--bs-gray-200, #E2E8F0);
-    background-color: #fff;
+    background-color: var(--card-bg);
     padding: 0.25rem;
 }
 

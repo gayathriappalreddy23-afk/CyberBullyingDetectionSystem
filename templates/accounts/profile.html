@@ -4,7 +4,7 @@
 {% block title %}My Profile | CyberBullying Detection System{% endblock title %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}?v=2.0">
 {% endblock extra_css %}
 
 {% block content %}
@@ -13,80 +13,69 @@
     <!-- ========================================================================= -->
     <!-- 1. PROFILE HEADER BANNER & USER IDENTITY CARD                             -->
     <!-- ========================================================================= -->
-    <div class="profile-header-card">
-        <div class="profile-cover-banner"></div>
-        <div class="profile-header-content">
-            <div class="row align-items-end g-3">
-                
-                <!-- Avatar & Identity Info -->
-                <div class="col-md-8">
-                    <div class="d-flex flex-column flex-sm-row align-items-center align-items-sm-end gap-3 text-center text-sm-start">
-                        <div class="profile-avatar-wrapper">
-                            <div class="profile-avatar-circle">
-                                {{ request.user.username|slice:":1"|upper }}
-                            </div>
-                            <span class="profile-role-badge" title="Account Active">
-                                <i class="bi bi-check-lg" aria-hidden="true"></i>
-                            </span>
-                        </div>
-
-                        <div>
-                            <h1 class="profile-user-name">
-                                {% if request.user.get_full_name %}
-                                    {{ request.user.get_full_name }}
-                                {% else %}
-                                    {{ request.user.username }}
-                                {% endif %}
-                            </h1>
-                            <div class="profile-user-handle d-flex align-items-center justify-content-center justify-content-sm-start gap-2">
-                                <span>@{{ request.user.username }}</span>
-                                <button type="button" class="btn btn-sm btn-link p-0 text-muted text-decoration-none" id="copyHandleBtn" data-handle="@{{ request.user.username }}" title="Copy handle">
-                                    <i class="bi bi-copy" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            
-                            <div class="profile-meta-pills">
-                                <span class="profile-meta-pill">
-                                    <i class="bi bi-envelope-fill text-primary" aria-hidden="true"></i>
-                                    {{ request.user.email|default:"No email set" }}
-                                </span>
-                                <span class="profile-meta-pill">
-                                    <i class="bi bi-calendar3 text-secondary" aria-hidden="true"></i>
-                                    Joined {{ request.user.date_joined|date:"M Y" }}
-                                </span>
-                                <span class="profile-meta-pill">
-                                    <i class="bi bi-shield-check text-success" aria-hidden="true"></i>
-                                    {% if request.user.is_superuser %}
-                                        Super Administrator
-                                    {% elif request.user.is_staff %}
-                                        Staff Moderator
-                                    {% else %}
-                                        Registered User
-                                    {% endif %}
-                                </span>
-                            </div>
-                        </div>
+    <div class="profile-card">
+        <div class="profile-cover"></div>
+        <div class="profile-body">
+            <div class="profile-main">
+                <div class="profile-avatar">
+                    <div class="profile-avatar-circle">
+                        {{ request.user.username|slice:":1"|upper }}
+                    </div>
+                    <span class="profile-role-badge" title="Account Active">
+                        <i class="bi bi-check-lg" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <div class="profile-info">
+                    <h1 class="profile-user-name">
+                        {% if request.user.get_full_name %}
+                            {{ request.user.get_full_name }}
+                        {% else %}
+                            {{ request.user.username }}
+                        {% endif %}
+                    </h1>
+                    <div class="profile-user-handle d-flex align-items-center gap-2">
+                        <span>@{{ request.user.username }}</span>
+                        <button type="button" class="btn btn-sm btn-link p-0 text-muted text-decoration-none" id="copyHandleBtn" data-handle="@{{ request.user.username }}" title="Copy handle">
+                            <i class="bi bi-copy" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="profile-meta-pills">
+                        <span class="profile-meta-pill">
+                            <i class="bi bi-envelope-fill text-primary" aria-hidden="true"></i>
+                            {{ request.user.email|default:"No email set" }}
+                        </span>
+                        <span class="profile-meta-pill">
+                            <i class="bi bi-calendar3 text-secondary" aria-hidden="true"></i>
+                            Joined {{ request.user.date_joined|date:"M Y" }}
+                        </span>
+                        <span class="profile-meta-pill">
+                            <i class="bi bi-shield-check text-success" aria-hidden="true"></i>
+                            {% if request.user.is_superuser %}
+                                Super Administrator
+                            {% elif request.user.is_staff %}
+                                Staff Moderator
+                            {% else %}
+                                Registered User
+                            {% endif %}
+                        </span>
                     </div>
                 </div>
+            </div>
 
-                <!-- Action Controls (Dashboard & Logout) -->
-                <div class="col-md-4 text-center text-md-end">
-                    <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-md-end">
-                        <a href="{% url 'dashboard:user_dashboard' %}" class="btn btn-outline-primary profile-action-btn">
-                            <i class="bi bi-speedometer2" aria-hidden="true"></i>
-                            <span>Dashboard</span>
-                        </a>
+            <div class="profile-actions">
+                <a href="{% url 'dashboard:user_dashboard' %}" class="btn btn-outline-primary profile-action-btn">
+                    <i class="bi bi-speedometer2" aria-hidden="true"></i>
+                    <span>Dashboard</span>
+                </a>
 
-                        <form method="POST" action="{% url 'accounts:logout' %}" id="profileLogoutForm" class="d-inline">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-outline-danger profile-action-btn">
-                                <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
-                                <span>Sign Out</span>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
+                <form method="POST" action="{% url 'accounts:logout' %}" id="profileLogoutForm" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-danger profile-action-btn">
+                        <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+                        <span>Sign Out</span>
+                    </button>
+                </form>
             </div>
         </div>
     </div>
