@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 [
  {
    "text": "Here is a classification that determines whether a given text is considered cyberbullying or not; and if so, which kind. ",
@@ -17735,3 +17736,21 @@
    "instruction": "pussy ass bitch dumb muthafuker like fuck u nigger — i'm white http://ask.fm/a/elbjagf",
    "input": ""
  }
+=======
+text,label
+"Hello there! How are you doing today?","Safe"
+"I hope you have a wonderful day and succeed in your work.","Safe"
+"This is an amazing project and I love the interface design.","Safe"
+"Let's collaborate on this task and build something great.","Safe"
+"Thank you for sharing this information, it was very helpful.","Safe"
+"Congratulations on winning the contest, you deserved it!","Safe"
+"I agree with your analysis, it makes complete sense.","Safe"
+"Let's meet tomorrow for coffee and talk about it.","Safe"
+"You are so stupid and ugly, no one wants to talk to you.","Cyberbullying"
+"I hate you, you are a complete loser and worthless.","Cyberbullying"
+"Nobody likes you here. You should go away and die.","Cyberbullying"
+"You are an idiot and your opinions are trash.","Cyberbullying"
+"Shut up, you dumb jerk. You know nothing.","Cyberbullying"
+"Go kill yourself, you are a waste of space.","Cyberbullying"
+"You are extremely ugly and fat, get off this platform.","Cyberbullying"
+>>>>>>> Stashed changes
