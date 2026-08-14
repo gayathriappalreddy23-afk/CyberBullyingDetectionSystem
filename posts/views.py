@@ -12,7 +12,7 @@ def post_list(request):
     Render community posts with server-side search, category filter, and pagination.
     """
     posts_queryset = Post.objects.all().select_related('author')
-    
+
     # 1. Search Query Filter
     search_query = request.GET.get('q', '').strip()
     if search_query:
@@ -54,6 +54,8 @@ def create_post(request):
             post.save()
             messages.success(request, 'Your post has been published successfully.')
             return redirect('posts:post_list')
+        else:
+            messages.error(request, 'Please correct the errors in the form below.')
     else:
         form = PostForm()
 
@@ -62,16 +64,17 @@ def create_post(request):
 
 def post_detail(request, pk):
     """
-    Render individual post details.
+    Render individual post details along with comments.
     """
     post = get_object_or_404(Post, pk=pk)
-    comments = post.comments.all()
-    comment_count = comments.count()
-    return render(request, 'posts/post_detail.html', {
+    comments = post.comments.select_related('author').all()
+
+    context = {
         'post': post,
         'comments': comments,
-        'comment_count': comment_count,
-    })
+        'comment_count': comments.count(),
+    }
+    return render(request, 'posts/post_detail.html', context)
 
 
 @login_required
@@ -86,15 +89,21 @@ def edit_post(request, pk):
             form.save()
             messages.success(request, 'Your post has been updated.')
             return redirect('posts:post_detail', pk=post.pk)
+        else:
+            messages.error(request, 'Please correct the errors below.')
     else:
         form = PostForm(instance=post)
 
     return render(request, 'posts/edit_post.html', {'form': form, 'post': post})
 
+
 @login_required
 def delete_post(request, pk):
     """
-    Placeholder for delete post functionality.
+    Handles post deletion (ownership verified server-side).
     """
+    post = get_object_or_404(Post, pk=pk, author=request.user)
+    if request.method == 'POST':
+        post.delete()
+        messages.success(request, 'Your post has been deleted.')
     return redirect('posts:post_list')
-

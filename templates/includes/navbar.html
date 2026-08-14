@@ -179,6 +179,11 @@
             <!-- 4. Right Controls Section (Auth / Account) -->
             <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
                 
+                <!-- Theme Toggle Button -->
+                <button id="themeToggle" type="button" class="btn btn-link text-white text-decoration-none p-2 fs-5" aria-label="Toggle dark mode" title="Toggle dark mode">
+                    🌙
+                </button>
+
                 {% if not user.is_authenticated %}
                     <!-- GUEST CONTROLS: LOGIN & REGISTER -->
                     <a href="{% url 'accounts:login' %}" class="btn btn-outline-light btn-sm px-3 rounded-pill">

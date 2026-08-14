@@ -42,7 +42,7 @@
    2. Objective & Module Cards
    -------------------------------------------------------------------------- */
 .about-card {
-    background: #FFFFFF;
+    background: var(--card-bg);
     border: 1px solid #E2E8F0;
     border-radius: 16px;
     padding: 1.75rem;
@@ -116,7 +116,7 @@
    4. Tech Stack Badges
    -------------------------------------------------------------------------- */
 .tech-category-card {
-    background: #FFFFFF;
+    background: var(--card-bg);
     border: 1px solid #E2E8F0;
     border-radius: 16px;
     padding: 1.5rem;
@@ -141,7 +141,7 @@
    5. Limitations & Responsible AI Boxes
    -------------------------------------------------------------------------- */
 .limitation-item {
-    background: #FFFFFF;
+    background: var(--card-bg);
     border: 1px solid #E2E8F0;
     border-left: 4px solid #F59E0B;
     border-radius: 12px;

@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Comments | CyberBullying Detection System{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/comments.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-3 px-md-4 py-3">
+
+    <!-- Page Header -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h1 class="h3 fw-bold mb-1">
+                <i class="bi bi-chat-left-text-fill text-primary me-2"></i>My Comments
+            </h1>
+            <p class="text-muted mb-0 small">
+                All {{ comment_count }} comment{{ comment_count|pluralize }} you have posted
+            </p>
+        </div>
+        <a href="{% url 'posts:post_list' %}" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-journal-text me-1"></i> Browse Posts
+        </a>
+    </div>
+
+    {% if comments %}
+        <div class="row g-3">
+            {% for comment in comments %}
+            <div class="col-12">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-body">
+
+                        <!-- Comment meta -->
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-journal-richtext text-secondary"></i>
+                                <a href="{% url 'posts:post_detail' pk=comment.post.pk %}"
+                                   class="text-decoration-none fw-semibold text-primary">
+                                    {{ comment.post.title|default:"Post #"|add:comment.post.pk|truncatechars:60 }}
+                                </a>
+                            </div>
+                            <span class="badge
+                                {% if comment.status == 'approved' %}bg-success-subtle text-success
+                                {% elif comment.status == 'flagged' %}bg-danger-subtle text-danger
+                                {% elif comment.status == 'pending' %}bg-warning-subtle text-warning
+                                {% else %}bg-secondary-subtle text-secondary{% endif %}
+                                rounded-pill px-3 py-1 small">
+                                {% if comment.status == 'approved' %}
+                                    <i class="bi bi-check-circle-fill me-1"></i>Approved
+                                {% elif comment.status == 'flagged' %}
+                                    <i class="bi bi-exclamation-triangle-fill me-1"></i>Flagged
+                                {% elif comment.status == 'pending' %}
+                                    <i class="bi bi-hourglass-split me-1"></i>Pending
+                                {% else %}
+                                    <i class="bi bi-dash-circle me-1"></i>{{ comment.status|capfirst }}
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <!-- Comment body -->
+                        <p class="mb-2 text-dark">{{ comment.content }}</p>
+
+                        <!-- Timestamp + link -->
+                        <div class="d-flex align-items-center justify-content-between">
+                            <small class="text-muted">
+                                <i class="bi bi-clock me-1"></i>
+                                {{ comment.created_at|date:"M d, Y – H:i" }}
+                            </small>
+                            <a href="{% url 'comments:comments' post_id=comment.post.pk %}"
+                               class="btn btn-sm btn-outline-secondary px-3">
+                                <i class="bi bi-arrow-right me-1"></i>View Thread
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if page_obj.has_other_pages %}
+        <nav class="mt-4" aria-label="Comments pagination">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                            <i class="bi bi-chevron-left"></i>
+                        </a>
+                    </li>
+                {% endif %}
+                {% for num in page_obj.paginator.page_range %}
+                    <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+
+    {% else %}
+        <!-- Empty state -->
+        <div class="text-center py-5">
+            <div class="mb-3" style="font-size: 3.5rem;">💬</div>
+            <h4 class="fw-bold text-muted mb-2">No comments yet</h4>
+            <p class="text-muted mb-4">
+                You haven't commented on any posts yet.<br>
+                Browse posts and join the conversation!
+            </p>
+            <a href="{% url 'posts:post_list' %}" class="btn btn-primary px-4">
+                <i class="bi bi-journal-text me-1"></i> Browse Posts
+            </a>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/comments.js' %}"></script>
+{% endblock %}

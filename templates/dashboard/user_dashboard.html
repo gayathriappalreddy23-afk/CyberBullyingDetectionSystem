@@ -1,118 +1,184 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}User Dashboard | CyberBullying Detection System{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=1.1">
+{% endblock %}
+
 {% block content %}
-<div class="dashboard-page">
-    <section class="welcome-card shadow-sm rounded-4 p-4 mb-4" aria-labelledby="welcome-title">
-        <div class="row align-items-center g-3">
+<div class="container-fluid px-3 px-md-4 py-3 dashboard-page">
+    
+    <!-- ========================================================================= -->
+    <!-- 1. WELCOME BANNER                                                         -->
+    <!-- ========================================================================= -->
+    <section class="welcome-card shadow-sm rounded-4 p-4 p-md-5 mb-4" aria-labelledby="welcome-title">
+        <div class="row align-items-center g-4">
             <div class="col-lg-8">
-                <p class="eyebrow mb-2">User Dashboard</p>
-                <h1 id="welcome-title" class="display-6 fw-semibold mb-2">
+                <div class="d-inline-flex align-items-center gap-2 px-3 py-1 bg-primary-subtle text-primary rounded-pill small fw-semibold mb-3">
+                    <i class="bi bi-cpu-fill" aria-hidden="true"></i>
+                    <span>AI Monitoring Engine Online</span>
+                </div>
+                <h1 id="welcome-title" class="display-6 font-heading fw-bold mb-2 text-slate-900">
                     Welcome back, {% if user and user.username %}{{ user.username }}{% else %}User{% endif %} 👋
                 </h1>
-                <p class="text-muted mb-0">Stay safe and keep your online community respectful.</p>
+                <p class="text-muted lead fs-6 mb-0">
+                    Stay safe and keep your online community respectful. Monitor real-time content safety insights below.
+                </p>
             </div>
             <div class="col-lg-4 text-lg-end">
-                <span class="status-pill">
-                    <i class="bi bi-shield-check me-2"></i>
-                    Secure monitoring active
+                <span class="status-pill shadow-sm">
+                    <span class="pulse-dot me-2"></span>
+                    <i class="bi bi-shield-check me-1"></i>
+                    Secure Monitoring Active
                 </span>
             </div>
         </div>
     </section>
 
-    <section class="row g-4 mb-4" aria-label="dashboard statistics">
-        <div class="col-md-6 col-xl-3">
+    <!-- ========================================================================= -->
+    <!-- 2. STATISTICAL METRICS CARDS ROW                                         -->
+    <!-- ========================================================================= -->
+    <section class="row g-3 g-md-4 mb-4" aria-label="Dashboard Statistics">
+        
+        <!-- Total Posts Metric -->
+        <div class="col-12 col-sm-6 col-xl-3">
             <article class="stat-card shadow-sm rounded-4 p-4 h-100">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
                         <p class="stat-label">Total Posts</p>
-                        <h3 class="stat-value">{{ total_posts|default:0 }}</h3>
+                        <h2 class="stat-value text-slate-900">{{ total_posts|default:0 }}</h2>
                     </div>
-                    <div class="stat-icon bg-primary-subtle text-primary">
-                        <i class="bi bi-file-earmark-post" aria-hidden="true"></i>
+                    <div class="stat-icon bg-primary-subtle text-primary rounded-3">
+                        <i class="bi bi-journal-text" aria-hidden="true"></i>
                     </div>
+                </div>
+                <div class="mt-3 pt-2 border-top border-slate small text-muted d-flex align-items-center gap-1">
+                    <i class="bi bi-arrow-up-short text-success fs-6"></i>
+                    <span>Published community posts</span>
                 </div>
             </article>
         </div>
-        <div class="col-md-6 col-xl-3">
+
+        <!-- Total Comments Metric -->
+        <div class="col-12 col-sm-6 col-xl-3">
             <article class="stat-card shadow-sm rounded-4 p-4 h-100">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
                         <p class="stat-label">Total Comments</p>
-                        <h3 class="stat-value">{{ total_comments|default:0 }}</h3>
+                        <h2 class="stat-value text-slate-900">{{ total_comments|default:0 }}</h2>
                     </div>
-                    <div class="stat-icon bg-indigo-subtle text-indigo">
-                        <i class="bi bi-chat-dots" aria-hidden="true"></i>
+                    <div class="stat-icon bg-indigo-subtle text-indigo rounded-3">
+                        <i class="bi bi-chat-dots-fill" aria-hidden="true"></i>
                     </div>
+                </div>
+                <div class="mt-3 pt-2 border-top border-slate small text-muted d-flex align-items-center gap-1">
+                    <i class="bi bi-chat-quote text-primary fs-6"></i>
+                    <span>Engagements & responses</span>
                 </div>
             </article>
         </div>
-        <div class="col-md-6 col-xl-3">
+
+        <!-- Safe Content Metric -->
+        <div class="col-12 col-sm-6 col-xl-3">
             <article class="stat-card shadow-sm rounded-4 p-4 h-100">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
                         <p class="stat-label">Safe Content</p>
-                        <h3 class="stat-value">{{ safe_count|default:0 }}</h3>
+                        <h2 class="stat-value text-success">{{ safe_count|default:0 }}</h2>
                     </div>
-                    <div class="stat-icon bg-success-subtle text-success">
-                        <i class="bi bi-shield-check" aria-hidden="true"></i>
+                    <div class="stat-icon bg-success-subtle text-success rounded-3">
+                        <i class="bi bi-shield-check-fill" aria-hidden="true"></i>
                     </div>
+                </div>
+                <div class="mt-3 pt-2 border-top border-slate small text-muted d-flex align-items-center gap-1">
+                    <i class="bi bi-check-circle-fill text-success"></i>
+                    <span>Passed NLP safety check</span>
                 </div>
             </article>
         </div>
-        <div class="col-md-6 col-xl-3">
+
+        <!-- Cyberbullying Detected Metric -->
+        <div class="col-12 col-sm-6 col-xl-3">
             <article class="stat-card shadow-sm rounded-4 p-4 h-100">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
-                        <p class="stat-label">Cyberbullying Detected</p>
-                        <h3 class="stat-value">{{ bullying_count|default:0 }}</h3>
+                        <p class="stat-label">Cyberbullying Flagged</p>
+                        <h2 class="stat-value text-danger">{{ bullying_count|default:0 }}</h2>
                     </div>
-                    <div class="stat-icon bg-danger-subtle text-danger">
-                        <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
+                    <div class="stat-icon bg-danger-subtle text-danger rounded-3">
+                        <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
                     </div>
+                </div>
+                <div class="mt-3 pt-2 border-top border-slate small text-muted d-flex align-items-center gap-1">
+                    <i class="bi bi-flag-fill text-danger"></i>
+                    <span>Identified for moderation</span>
                 </div>
             </article>
         </div>
+
     </section>
 
+    <!-- ========================================================================= -->
+    <!-- 3. QUICK ACTIONS & ANALYTICS SUMMARY ROW                                 -->
+    <!-- ========================================================================= -->
     <section class="row g-4 mb-4">
+        
+        <!-- Quick Actions Panel -->
         <div class="col-lg-4">
             <article class="panel-card shadow-sm rounded-4 p-4 h-100">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h2 class="panel-title mb-0">Quick Actions</h2>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="panel-title mb-0 font-heading fw-bold">Quick Actions</h2>
+                    <span class="badge bg-slate-100 text-muted rounded-pill">Shortcuts</span>
                 </div>
                 <div class="d-grid gap-3">
-                    <a href="{% url 'posts:create_post' %}" class="btn btn-primary btn-lg text-start">
-                        <i class="bi bi-plus-circle me-2"></i>Create Post
+                    <a href="{% url 'posts:create_post' %}" class="btn btn-primary btn-action-card d-flex align-items-center gap-3 p-3 text-start">
+                        <div class="action-icon-wrapper bg-white bg-opacity-20 text-white rounded-3">
+                            <i class="bi bi-plus-circle-fill fs-5" aria-hidden="true"></i>
+                        </div>
+                        <div>
+                            <span class="fw-bold d-block">Create New Post</span>
+                            <small class="text-white-50">Share thoughts with community</small>
+                        </div>
                     </a>
-                    <a href="{% url 'prediction:detect' %}" class="btn btn-outline-primary btn-lg text-start">
-                        <i class="bi bi-search-heart me-2"></i>Detect Cyberbullying
+
+                    <a href="{% url 'prediction:detect' %}" class="btn btn-outline-primary btn-action-card d-flex align-items-center gap-3 p-3 text-start">
+                        <div class="action-icon-wrapper bg-primary-subtle text-primary rounded-3">
+                            <i class="bi bi-shield-lock-fill fs-5" aria-hidden="true"></i>
+                        </div>
+                        <div>
+                            <span class="fw-bold d-block">Detect Cyberbullying</span>
+                            <small class="text-muted">Analyze text using NLP model</small>
+                        </div>
                     </a>
-                    <a href="{% url 'reports:report' %}" class="btn btn-outline-secondary btn-lg text-start">
-                        <i class="bi bi-bar-chart-line me-2"></i>View Reports
+
+                    <a href="{% url 'posts:post_list' %}" class="btn btn-outline-secondary btn-action-card d-flex align-items-center gap-3 p-3 text-start">
+                        <div class="action-icon-wrapper bg-secondary-subtle text-secondary rounded-3">
+                            <i class="bi bi-journal-text fs-5" aria-hidden="true"></i>
+                        </div>
+                        <div>
+                            <span class="fw-bold d-block">Browse Posts</span>
+                            <small class="text-muted">View community discussions</small>
+                        </div>
                     </a>
                 </div>
             </article>
         </div>
+
+        <!-- Cyberbullying Detection Summary Chart Panel -->
         <div class="col-lg-8">
             <article class="panel-card shadow-sm rounded-4 p-4 h-100 nlp-visualization-card">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h2 class="panel-title mb-0" style="color: #ffffff;">NLP Analysis & Detection</h2>
+                    <h2 class="panel-title mb-0" style="color: #ffffff;">NLP Analysis &amp; Detection</h2>
                 </div>
                 
                 <div class="nlp-visualization-container">
                     <div class="orbit-container">
-                        <!-- Background Glow -->
                         <div class="orbit-glow"></div>
-                        
-                        <!-- Concentric Orbit Rings -->
                         <div class="orbit-ring ring-outer"></div>
                         <div class="orbit-ring ring-middle"></div>
                         <div class="orbit-ring ring-inner"></div>
-
-                        <!-- Central Shield -->
                         <div class="shield-center">
                             <div class="shield-icon-wrapper">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shield-svg">
@@ -121,58 +187,27 @@
                                 </svg>
                             </div>
                         </div>
-
-                        <!-- Orbiting Keywords -->
                         <div class="keyword-orbit">
-                            <!-- abuse (12 o'clock, index 0) -->
-                            <span class="keyword keyword-abuse" style="--index: 0;" data-tooltip="Potential toxic abuse indicator">
-                                <span class="keyword-text-wrapper">abuse</span>
-                            </span>
-                            <!-- kind (1:30, index 1) -->
-                            <span class="keyword keyword-kind" style="--index: 1;" data-tooltip="Positive communication indicator">
-                                <span class="keyword-text-wrapper">kind</span>
-                            </span>
-                            <!-- harm (3 o'clock, index 2) -->
-                            <span class="keyword keyword-harm" style="--index: 2;" data-tooltip="Harmful text indicator">
-                                <span class="keyword-text-wrapper">harm</span>
-                            </span>
-                            <!-- love (4:30, index 3) -->
-                            <span class="keyword keyword-love" style="--index: 3;" data-tooltip="Empathetic language indicator">
-                                <span class="keyword-text-wrapper">love</span>
-                            </span>
-                            <!-- hate (6 o'clock, index 4) -->
-                            <span class="keyword keyword-hate" style="--index: 4;" data-tooltip="Hate speech indicator">
-                                <span class="keyword-text-wrapper">hate</span>
-                            </span>
-                            <!-- bully (7:30, index 5) -->
-                            <span class="keyword keyword-bully" style="--index: 5;" data-tooltip="Bullying indicator">
-                                <span class="keyword-text-wrapper">bully</span>
-                            </span>
-                            <!-- threat (9 o'clock, index 6) -->
-                            <span class="keyword keyword-threat" style="--index: 6;" data-tooltip="Threatening language indicator">
-                                <span class="keyword-text-wrapper">threat</span>
-                            </span>
-                            <!-- safe (10:30, index 7) -->
-                            <span class="keyword keyword-safe" style="--index: 7;" data-tooltip="Safe/constructive text indicator">
-                                <span class="keyword-text-wrapper">safe</span>
-                            </span>
+                            <span class="keyword keyword-abuse" style="--index: 0;" data-tooltip="Potential toxic abuse indicator"><span class="keyword-text-wrapper">abuse</span></span>
+                            <span class="keyword keyword-kind" style="--index: 1;" data-tooltip="Positive communication indicator"><span class="keyword-text-wrapper">kind</span></span>
+                            <span class="keyword keyword-harm" style="--index: 2;" data-tooltip="Harmful text indicator"><span class="keyword-text-wrapper">harm</span></span>
+                            <span class="keyword keyword-love" style="--index: 3;" data-tooltip="Empathetic language indicator"><span class="keyword-text-wrapper">love</span></span>
+                            <span class="keyword keyword-hate" style="--index: 4;" data-tooltip="Hate speech indicator"><span class="keyword-text-wrapper">hate</span></span>
+                            <span class="keyword keyword-bully" style="--index: 5;" data-tooltip="Bullying indicator"><span class="keyword-text-wrapper">bully</span></span>
+                            <span class="keyword keyword-threat" style="--index: 6;" data-tooltip="Threatening language indicator"><span class="keyword-text-wrapper">threat</span></span>
+                            <span class="keyword keyword-safe" style="--index: 7;" data-tooltip="Safe/constructive text indicator"><span class="keyword-text-wrapper">safe</span></span>
                         </div>
                     </div>
                 </div>
 
-                <!-- NLP Analysis Box (exactly matching image structure) -->
                 <div class="nlp-analysis-box mt-3">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <span class="nlp-title">NLP Analysis</span>
                         <span class="nlp-status">Processing...</span>
                     </div>
-
-                    <!-- Progress bar -->
                     <div class="progress nlp-progress-bar-container mb-3">
                         <div class="progress-bar nlp-progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
-
-                    <!-- Input Text Area -->
                     <div class="nlp-input-text-preview mb-3">
                         <span class="nlp-label">Input Text:</span>
                         <p class="nlp-preview-text">
@@ -183,8 +218,6 @@
                             {% endif %}
                         </p>
                     </div>
-
-                    <!-- Dynamic Results Columns -->
                     <div class="row g-2 nlp-results-row">
                         <div class="col-4">
                             <span class="results-label">Toxic Score</span>
@@ -202,56 +235,82 @@
                 </div>
             </article>
         </div>
+
     </section>
 
+    <!-- ========================================================================= -->
+    <!-- 4. RECENT POSTS & RECENT ACTIVITY ROW                                     -->
+    <!-- ========================================================================= -->
     <section class="row g-4 mb-4">
+        
+        <!-- Recent Posts List -->
         <div class="col-xl-8">
-            <article class="panel-card shadow-sm rounded-4 p-4">
+            <article class="panel-card shadow-sm rounded-4 p-4 h-100">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h2 class="panel-title mb-0">Recent Posts</h2>
+                    <h2 class="panel-title mb-0 font-heading fw-bold">Recent Posts</h2>
+                    <a href="{% url 'posts:post_list' %}" class="btn btn-sm btn-outline-primary fw-semibold">
+                        View All Posts <i class="bi bi-arrow-right me-1" aria-hidden="true"></i>
+                    </a>
                 </div>
+
                 {% if recent_posts %}
                     <div class="table-responsive">
-                        <table class="table align-middle">
+                        <table class="table align-middle text-nowrap">
                             <thead>
-                                <tr>
-                                    <th scope="col">Post</th>
-                                    <th scope="col">Date</th>
+                                <tr class="text-muted small">
+                                    <th scope="col">Content Preview</th>
+                                    <th scope="col">Created Date</th>
                                     <th scope="col">Status</th>
-                                    <th scope="col">Action</th>
+                                    <th scope="col" class="text-end">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for post in recent_posts %}
                                     <tr>
-                                        <td>{{ post.content }}</td>
-                                        <td>{{ post.created_at|date:"M d, Y" }}</td>
+                                        <td class="fw-medium text-slate-900">{{ post.title|default:post.content|truncatechars:40 }}</td>
+                                        <td class="text-muted small">{{ post.created_at|date:"M d, Y" }}</td>
                                         <td>
                                             {% if post.is_flagged %}
-                                                <span class="status-badge bg-danger-subtle text-danger border border-danger-subtle">Flagged</span>
+                                                <span class="badge badge-safety-flagged">
+                                                    <i class="bi bi-exclamation-triangle-fill me-1"></i> Flagged
+                                                </span>
                                             {% else %}
-                                                <span class="status-badge">Analyzed</span>
+                                                <span class="badge badge-safety-safe">
+                                                    <i class="bi bi-shield-check me-1"></i> Safe
+                                                </span>
                                             {% endif %}
                                         </td>
-                                        <td><a href="{% url 'posts:post_detail' pk=post.pk %}" class="text-primary text-decoration-none">View</a></td>
+                                        <td class="text-end">
+                                            <a href="{% url 'posts:post_detail' pk=post.pk %}" class="btn btn-sm btn-outline-primary px-3">View</a>
+                                        </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
                     </div>
                 {% else %}
-                    <div class="empty-state">
-                        <i class="bi bi-journal-text"></i>
-                        <p>No posts available yet.</p>
+                    <div class="empty-state p-4 text-center">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle p-3 mb-3" style="width: 56px; height: 56px;">
+                            <i class="bi bi-journal-plus fs-3" aria-hidden="true"></i>
+                        </div>
+                        <h3 class="h6 fw-bold mb-1">No Posts Created Yet</h3>
+                        <p class="text-muted small mb-3">Start interacting by publishing your first post for the community.</p>
+                        <a href="{% url 'posts:create_post' %}" class="btn btn-primary btn-sm px-3">
+                            <i class="bi bi-plus-lg me-1"></i> Create First Post
+                        </a>
                     </div>
                 {% endif %}
             </article>
         </div>
+
+        <!-- Recent Activity Feed -->
         <div class="col-xl-4">
-            <article class="panel-card shadow-sm rounded-4 p-4">
+            <article class="panel-card shadow-sm rounded-4 p-4 h-100">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h2 class="panel-title mb-0">Recent Activity</h2>
+                    <h2 class="panel-title mb-0 font-heading fw-bold">Recent Activity</h2>
+                    <span class="text-muted small">Timeline</span>
                 </div>
+
                 {% if recent_activities %}
                     <ul class="activity-list">
                         {% for activity in recent_activities %}
@@ -265,45 +324,64 @@
                         {% endfor %}
                     </ul>
                 {% else %}
-                    <div class="empty-state compact">
-                        <i class="bi bi-clock-history"></i>
-                        <p>No recent activity yet.</p>
+                    <div class="empty-state compact p-4 text-center">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-slate-100 text-muted rounded-circle p-3 mb-2" style="width: 48px; height: 48px;">
+                            <i class="bi bi-clock-history fs-4" aria-hidden="true"></i>
+                        </div>
+                        <p class="text-muted small mb-0">No recent account activity logged.</p>
                     </div>
                 {% endif %}
             </article>
         </div>
+
     </section>
 
+    <!-- ========================================================================= -->
+    <!-- 5. PROFILE SUMMARY & SECURITY ADVISORY ROW                                -->
+    <!-- ========================================================================= -->
     <section class="row g-4">
+        
+        <!-- Profile Overview Card -->
         <div class="col-lg-8">
             <article class="panel-card shadow-sm rounded-4 p-4 h-100">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h2 class="panel-title mb-0">Profile Summary</h2>
-                    <a href="{% url 'accounts:profile' %}" class="btn btn-sm btn-outline-primary">View Profile</a>
+                    <h2 class="panel-title mb-0 font-heading fw-bold">Account Profile</h2>
+                    <a href="{% url 'accounts:profile' %}" class="btn btn-sm btn-outline-primary fw-semibold px-3">
+                        <i class="bi bi-person me-1"></i> View Profile
+                    </a>
                 </div>
-                <div class="profile-summary d-flex flex-column flex-md-row align-items-center gap-4">
-                    <div class="profile-avatar">
+                <div class="profile-summary d-flex flex-column flex-md-row align-items-center gap-4 pt-2">
+                    <div class="profile-avatar flex-shrink-0">
                         {% if user and user.profile_image %}
                             <img src="{{ user.profile_image.url }}" alt="{{ user.username }} profile" />
                         {% else %}
-                            <img src="https://ui-avatars.com/api/?name={{ user.username|default:'User' }}&background=2563EB&color=fff" alt="{{ user.username|default:'User' }} avatar" />
+                            <img src="https://ui-avatars.com/api/?name={{ user.username|default:'User' }}&background=2563EB&color=fff&size=128" alt="{{ user.username|default:'User' }} avatar" />
                         {% endif %}
                     </div>
-                    <div class="flex-grow-1">
-                        <h3 class="profile-name mb-1">{% if user and user.username %}{{ user.username }}{% else %}User{% endif %}</h3>
-                        <p class="profile-meta mb-2">{% if user and user.email %}{{ user.email }}{% else %}Email not provided{% endif %}</p>
-                        <p class="profile-meta mb-3">Role: {% if user and user.is_staff %}Moderator{% else %}Member{% endif %}</p>
+                    <div class="flex-grow-1 w-100">
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <h3 class="profile-name mb-0 h5 font-heading fw-bold">{% if user and user.username %}{{ user.username }}{% else %}User{% endif %}</h3>
+                            {% if user and user.is_staff %}
+                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle">Moderator</span>
+                            {% else %}
+                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle">Community Member</span>
+                            {% endif %}
+                        </div>
+                        <p class="profile-meta mb-3 text-muted small">
+                            <i class="bi bi-envelope me-1"></i>{% if user and user.email %}{{ user.email }}{% else %}No email connected{% endif %}
+                        </p>
+                        
                         <div class="row g-3">
-                            <div class="col-sm-6">
-                                <div class="profile-stat">
-                                    <span class="profile-stat-label">Total Posts</span>
-                                    <strong>{{ total_posts|default:0 }}</strong>
+                            <div class="col-6">
+                                <div class="profile-stat border rounded-3 p-3 bg-slate-50">
+                                    <span class="profile-stat-label text-muted small">Published Posts</span>
+                                    <strong class="fs-5 text-slate-900">{{ total_posts|default:0 }}</strong>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="profile-stat">
-                                    <span class="profile-stat-label">Total Comments</span>
-                                    <strong>{{ total_comments|default:0 }}</strong>
+                            <div class="col-6">
+                                <div class="profile-stat border rounded-3 p-3 bg-slate-50">
+                                    <span class="profile-stat-label text-muted small">Total Comments</span>
+                                    <strong class="fs-5 text-slate-900">{{ total_comments|default:0 }}</strong>
                                 </div>
                             </div>
                         </div>
@@ -311,16 +389,100 @@
                 </div>
             </article>
         </div>
+
+        <!-- Security & Privacy Status -->
         <div class="col-lg-4">
-            <article class="panel-card shadow-sm rounded-4 p-4 h-100">
-                <h2 class="panel-title mb-3">Security Notice</h2>
-                <p class="text-muted mb-3">Your activity is being analyzed in real time to keep the community safe.</p>
-                <div class="d-flex align-items-center gap-2 text-success">
-                    <i class="bi bi-shield-fill-check"></i>
-                    <span>Protection is active</span>
+            <article class="panel-card shadow-sm rounded-4 p-4 h-100 d-flex flex-direction-column justify-content-between">
+                <div>
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <i class="bi bi-shield-lock-fill fs-3 text-primary"></i>
+                        <h2 class="panel-title mb-0 font-heading fw-bold">Safety & Privacy</h2>
+                    </div>
+                    <p class="text-muted small mb-3">
+                        Your text submissions and posts are dynamically analyzed by our Natural Language Processing engine to promote respectful online dialogue.
+                    </p>
+                </div>
+
+                <div class="p-3 bg-success-subtle rounded-3 border border-success-subtle text-success d-flex align-items-center gap-2 mt-3">
+                    <i class="bi bi-check-circle-fill fs-5 flex-shrink-0"></i>
+                    <div class="small fw-semibold">
+                        Real-time AI Shield Active
+                    </div>
                 </div>
             </article>
         </div>
+
     </section>
+
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Chart.js Integration for Dashboard Visualization -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('detectionChart');
+        if (ctx) {
+            const safeCount = {{ safe_count|default:0 }};
+            const bullyingCount = {{ bullying_count|default:0 }};
+            
+            // If both metrics are 0, provide default placeholder visualization
+            const dataValues = (safeCount === 0 && bullyingCount === 0) ? [1, 0] : [safeCount, bullyingCount];
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Safe Content', 'Cyberbullying Flagged'],
+                    datasets: [{
+                        label: 'Analyzed Text Count',
+                        data: dataValues,
+                        backgroundColor: [
+                            'rgba(22, 163, 74, 0.75)',  // Success Green
+                            'rgba(220, 38, 38, 0.75)'   // Danger Red
+                        ],
+                        borderColor: [
+                            '#16A34A',
+                            '#DC2626'
+                        ],
+                        borderWidth: 1.5,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ' Submissions: ' + context.parsed.y;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            },
+                            grid: {
+                                color: 'rgba(226, 232, 240, 0.6)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    });
+</script>
 {% endblock %}

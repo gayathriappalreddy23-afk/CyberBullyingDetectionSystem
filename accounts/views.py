@@ -129,6 +129,8 @@ class RegisterView(View):
 
 
 # ---------------------------------------------------------------------------
+# Profile View — renders authenticated user's data and their posts
+# ---------------------------------------------------------------------------
 <<<<<<< HEAD
 # Profile View
 # ---------------------------------------------------------------------------
@@ -141,17 +143,17 @@ def profile_view(request):
     """User profile page — requires authentication."""
     from posts.models import Post
     from comments.models import Comment
-    user_posts = Post.objects.filter(author=request.user)
+
+    user_posts = Post.objects.filter(author=request.user).order_by('-created_at')
     post_count = user_posts.count()
     comment_count = Comment.objects.filter(author=request.user).count()
-    
+
     context = {
         'posts': user_posts,
         'post_count': post_count,
         'comment_count': comment_count,
     }
     return render(request, 'accounts/profile.html', context)
-
 
 
 # ---------------------------------------------------------------------------

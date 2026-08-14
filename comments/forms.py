@@ -1,6 +1,7 @@
 from django import forms
 from .models import Comment
 
+
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
@@ -8,9 +9,9 @@ class CommentForm(forms.ModelForm):
         widgets = {
             'content': forms.Textarea(attrs={
                 'class': 'form-control',
-                'rows': '3',
+                'rows': 3,
                 'placeholder': 'Write a respectful comment...',
                 'maxlength': '500',
-                'required': 'required',
+                'required': True,
             })
         }
