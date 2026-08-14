@@ -131,13 +131,7 @@ class RegisterView(View):
 # ---------------------------------------------------------------------------
 # Profile View — renders authenticated user's data and their posts
 # ---------------------------------------------------------------------------
-<<<<<<< HEAD
-# Profile View
-# ---------------------------------------------------------------------------
 
-@login_required
-def profile_view(request):
-=======
 @login_required
 def profile_view(request):
     """User profile page — requires authentication."""
@@ -157,15 +151,11 @@ def profile_view(request):
 
 
 # ---------------------------------------------------------------------------
-# Forgot Password (uses Django's built-in password reset URLs)
+# Forgot Password
 # ---------------------------------------------------------------------------
-def forgot_password_view(request):
->>>>>>> 6992ec5fd9a63d60a45e1acd7df7d8e8e9678870
-    """
-    User profile page.
-    """
 
-    return render(
-        request,
-        "accounts/profile.html"
-    )
+def forgot_password_view(request):
+    """
+    User forgot password view.
+    """
+    return render(request, 'accounts/forgot_password.html')

@@ -29,4 +29,4 @@ class PredictionAdmin(admin.ModelAdmin):
         "created_at",
     )
 
-    +
+    
