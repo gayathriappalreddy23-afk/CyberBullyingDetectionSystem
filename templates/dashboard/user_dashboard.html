@@ -97,14 +97,109 @@
             </article>
         </div>
         <div class="col-lg-8">
-            <article class="panel-card shadow-sm rounded-4 p-4 h-100">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h2 class="panel-title mb-0">Cyberbullying Detection Summary</h2>
+            <article class="panel-card shadow-sm rounded-4 p-4 h-100 nlp-visualization-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h2 class="panel-title mb-0" style="color: #ffffff;">NLP Analysis & Detection</h2>
                 </div>
-                <div class="chart-wrapper">
-                    <canvas id="detectionChart" aria-label="Detection summary chart"></canvas>
+                
+                <div class="nlp-visualization-container">
+                    <div class="orbit-container">
+                        <!-- Background Glow -->
+                        <div class="orbit-glow"></div>
+                        
+                        <!-- Concentric Orbit Rings -->
+                        <div class="orbit-ring ring-outer"></div>
+                        <div class="orbit-ring ring-middle"></div>
+                        <div class="orbit-ring ring-inner"></div>
+
+                        <!-- Central Shield -->
+                        <div class="shield-center">
+                            <div class="shield-icon-wrapper">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shield-svg">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                    <path d="M9 11l2 2 4-4"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Orbiting Keywords -->
+                        <div class="keyword-orbit">
+                            <!-- abuse (12 o'clock, index 0) -->
+                            <span class="keyword keyword-abuse" style="--index: 0;" data-tooltip="Potential toxic abuse indicator">
+                                <span class="keyword-text-wrapper">abuse</span>
+                            </span>
+                            <!-- kind (1:30, index 1) -->
+                            <span class="keyword keyword-kind" style="--index: 1;" data-tooltip="Positive communication indicator">
+                                <span class="keyword-text-wrapper">kind</span>
+                            </span>
+                            <!-- harm (3 o'clock, index 2) -->
+                            <span class="keyword keyword-harm" style="--index: 2;" data-tooltip="Harmful text indicator">
+                                <span class="keyword-text-wrapper">harm</span>
+                            </span>
+                            <!-- love (4:30, index 3) -->
+                            <span class="keyword keyword-love" style="--index: 3;" data-tooltip="Empathetic language indicator">
+                                <span class="keyword-text-wrapper">love</span>
+                            </span>
+                            <!-- hate (6 o'clock, index 4) -->
+                            <span class="keyword keyword-hate" style="--index: 4;" data-tooltip="Hate speech indicator">
+                                <span class="keyword-text-wrapper">hate</span>
+                            </span>
+                            <!-- bully (7:30, index 5) -->
+                            <span class="keyword keyword-bully" style="--index: 5;" data-tooltip="Bullying indicator">
+                                <span class="keyword-text-wrapper">bully</span>
+                            </span>
+                            <!-- threat (9 o'clock, index 6) -->
+                            <span class="keyword keyword-threat" style="--index: 6;" data-tooltip="Threatening language indicator">
+                                <span class="keyword-text-wrapper">threat</span>
+                            </span>
+                            <!-- safe (10:30, index 7) -->
+                            <span class="keyword keyword-safe" style="--index: 7;" data-tooltip="Safe/constructive text indicator">
+                                <span class="keyword-text-wrapper">safe</span>
+                            </span>
+                        </div>
+                    </div>
                 </div>
-                <p class="text-muted mt-3 mb-0">Detection statistics are based on analyzed content.</p>
+
+                <!-- NLP Analysis Box (exactly matching image structure) -->
+                <div class="nlp-analysis-box mt-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="nlp-title">NLP Analysis</span>
+                        <span class="nlp-status">Processing...</span>
+                    </div>
+
+                    <!-- Progress bar -->
+                    <div class="progress nlp-progress-bar-container mb-3">
+                        <div class="progress-bar nlp-progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+
+                    <!-- Input Text Area -->
+                    <div class="nlp-input-text-preview mb-3">
+                        <span class="nlp-label">Input Text:</span>
+                        <p class="nlp-preview-text">
+                            {% if latest_post %}
+                                "{{ latest_post.content|truncatewords:20 }}"
+                            {% else %}
+                                "Analyzing communication pattern for potential cyberbullying indicators..."
+                            {% endif %}
+                        </p>
+                    </div>
+
+                    <!-- Dynamic Results Columns -->
+                    <div class="row g-2 nlp-results-row">
+                        <div class="col-4">
+                            <span class="results-label">Toxic Score</span>
+                            <span class="results-value text-danger">{{ toxic_score|default:0.96 }}</span>
+                        </div>
+                        <div class="col-4">
+                            <span class="results-label">Sentiment</span>
+                            <span class="results-value text-warning">{{ sentiment|default:"Negative" }}</span>
+                        </div>
+                        <div class="col-4">
+                            <span class="results-label">Confidence</span>
+                            <span class="results-value text-success">{{ confidence|default:"High" }}</span>
+                        </div>
+                    </div>
+                </div>
             </article>
         </div>
     </section>
@@ -130,9 +225,15 @@
                                 {% for post in recent_posts %}
                                     <tr>
                                         <td>{{ post.content }}</td>
-                                        <td>{{ post.created_at }}</td>
-                                        <td><span class="status-badge">Analyzed</span></td>
-                                        <td><a href="#" class="text-primary text-decoration-none">View</a></td>
+                                        <td>{{ post.created_at|date:"M d, Y" }}</td>
+                                        <td>
+                                            {% if post.is_flagged %}
+                                                <span class="status-badge bg-danger-subtle text-danger border border-danger-subtle">Flagged</span>
+                                            {% else %}
+                                                <span class="status-badge">Analyzed</span>
+                                            {% endif %}
+                                        </td>
+                                        <td><a href="{% url 'posts:post_detail' pk=post.pk %}" class="text-primary text-decoration-none">View</a></td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
@@ -178,7 +279,7 @@
             <article class="panel-card shadow-sm rounded-4 p-4 h-100">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h2 class="panel-title mb-0">Profile Summary</h2>
-                    <a href="#" class="btn btn-sm btn-outline-primary">View Profile</a>
+                    <a href="{% url 'accounts:profile' %}" class="btn btn-sm btn-outline-primary">View Profile</a>
                 </div>
                 <div class="profile-summary d-flex flex-column flex-md-row align-items-center gap-4">
                     <div class="profile-avatar">

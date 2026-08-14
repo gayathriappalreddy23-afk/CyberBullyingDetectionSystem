@@ -102,13 +102,13 @@
 
                             <div class="action-stack">
                                 {# TODO: Replace this placeholder link with the actual detection URL once the prediction routes are configured. #}
-                                <a href="#" class="btn btn-primary w-100 mb-2">
+                                <a href="{% url 'prediction:detect' %}" class="btn btn-primary w-100 mb-2">
                                     <i class="bi bi-search-heart me-2"></i>Analyze Another Text
                                 </a>
                                 <a href="{% url 'dashboard:user_dashboard' %}" class="btn btn-outline-secondary w-100 mb-2">
                                     <i class="bi bi-speedometer2 me-2"></i>Back to Dashboard
                                 </a>
-                                <a href="#" class="btn btn-outline-secondary w-100 mb-2">
+                                <a href="{% url 'dashboard:user_dashboard' %}" class="btn btn-outline-secondary w-100 mb-2">
                                     <i class="bi bi-clock-history me-2"></i>Prediction History
                                 </a>
                                 {% if report_enabled %}
@@ -144,10 +144,9 @@
                     </div>
                     <h2>Prediction result is unavailable.</h2>
                     <p>No prediction data was passed to this page. Please try analyzing a new text sample.</p>
-                    <a href="#" class="btn btn-primary">
+                    <a href="{% url 'prediction:detect' %}" class="btn btn-primary">
                         <i class="bi bi-arrow-repeat me-2"></i>Try Again
                     </a>
-                    {# TODO: Replace this placeholder link with the actual detection URL once the prediction routes are configured. #}
                 </div>
             {% endif %}
         {% endwith %}

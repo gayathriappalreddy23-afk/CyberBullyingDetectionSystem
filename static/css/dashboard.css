@@ -247,3 +247,366 @@ body {
         height: 220px;
     }
 }
+
+/* =========================================================================
+   NLP Visualization and Orbit Section
+   ========================================================================= */
+
+.nlp-visualization-card {
+    background: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25) !important;
+    overflow: hidden;
+}
+
+.nlp-visualization-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 290px;
+    position: relative;
+    padding: 1.5rem 1rem;
+}
+
+/* Orbit Container */
+.orbit-container {
+    width: 260px;
+    height: 260px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Background Radial Glow */
+.orbit-glow {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+    filter: blur(15px);
+    z-index: 1;
+}
+
+/* Concentric Rings */
+.orbit-ring {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.ring-outer {
+    width: 240px;
+    height: 240px;
+    border: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.ring-middle {
+    width: 170px;
+    height: 170px;
+    border: 1px dotted rgba(255, 255, 255, 0.06);
+}
+
+.ring-inner {
+    width: 110px;
+    height: 110px;
+    border: 1px dashed rgba(255, 255, 255, 0.04);
+}
+
+/* Central Shield style */
+.shield-center {
+    position: absolute;
+    width: 84px;
+    height: 84px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0.02) 70%);
+    border: 2px dashed rgba(99, 102, 241, 0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    box-shadow: 0 0 25px rgba(99, 102, 241, 0.15);
+    animation: shield-pulse 3s ease-in-out infinite alternate;
+}
+
+.shield-icon-wrapper {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+}
+
+.shield-svg {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+}
+
+@keyframes shield-pulse {
+    from {
+        box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+        border-color: rgba(99, 102, 241, 0.3);
+    }
+    to {
+        box-shadow: 0 0 35px rgba(99, 102, 241, 0.35);
+        border-color: rgba(99, 102, 241, 0.7);
+    }
+}
+
+/* Orbit Path Animation */
+.keyword-orbit {
+    position: absolute;
+    width: 240px;
+    height: 240px;
+    animation: orbit-spin 30s linear infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes orbit-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Keyword Pills */
+.keyword {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* Position elements in a circle with a -90deg offset so Index 0 starts at 12 o'clock */
+    transform: translate(-50%, -50%) rotate(calc(var(--index) * 45deg - 90deg)) translate(120px) rotate(calc(var(--index) * -45deg + 90deg));
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+    user-select: none;
+}
+
+.keyword-text-wrapper {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 999px;
+    text-transform: lowercase;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    /* Counter-rotate text wrappers so labels stay upright */
+    animation: orbit-spin 30s linear infinite reverse;
+}
+
+/* Tooltip */
+.keyword::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%) scale(0.85);
+    background: rgba(15, 23, 42, 0.95);
+    color: #FFFFFF;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.18s ease-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+    z-index: 20;
+}
+
+.keyword:hover::after {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+}
+
+/* Exact Keyword Colors from Image */
+.keyword-abuse .keyword-text-wrapper {
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.45);
+    background: rgba(239, 68, 68, 0.1);
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.15);
+}
+
+.keyword-kind .keyword-text-wrapper {
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.45);
+    background: rgba(16, 185, 129, 0.1);
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+}
+
+.keyword-harm .keyword-text-wrapper {
+    color: #f97316;
+    border: 1px solid rgba(249, 115, 22, 0.45);
+    background: rgba(249, 115, 22, 0.1);
+    box-shadow: 0 0 10px rgba(249, 115, 22, 0.15);
+}
+
+.keyword-love .keyword-text-wrapper {
+    color: #06b6d4;
+    border: 1px solid rgba(6, 182, 212, 0.45);
+    background: rgba(6, 182, 212, 0.1);
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.15);
+}
+
+.keyword-hate .keyword-text-wrapper {
+    color: #ec4899;
+    border: 1px solid rgba(236, 72, 153, 0.45);
+    background: rgba(236, 72, 153, 0.1);
+    box-shadow: 0 0 10px rgba(236, 72, 153, 0.15);
+}
+
+.keyword-bully .keyword-text-wrapper {
+    color: #eab308;
+    border: 1px solid rgba(234, 179, 8, 0.45);
+    background: rgba(234, 179, 8, 0.1);
+    box-shadow: 0 0 10px rgba(234, 179, 8, 0.15);
+}
+
+.keyword-threat .keyword-text-wrapper {
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.45);
+    background: rgba(239, 68, 68, 0.1);
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.15);
+}
+
+.keyword-safe .keyword-text-wrapper {
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.45);
+    background: rgba(16, 185, 129, 0.1);
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+}
+
+/* Orbit Hover States */
+.orbit-container:hover .keyword-orbit,
+.orbit-container:hover .keyword-text-wrapper {
+    animation-play-state: paused;
+}
+
+.keyword:hover {
+    transform: translate(-50%, -50%) rotate(calc(var(--index) * 45deg - 90deg)) translate(120px) rotate(calc(var(--index) * -45deg + 90deg)) scale(1.15);
+    z-index: 15;
+}
+
+/* Accessibility reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .keyword-orbit,
+    .keyword-text-wrapper {
+        animation: none !important;
+    }
+    .shield-center {
+        animation: none !important;
+    }
+}
+
+/* NLP Analysis Card Elements (Exactly matching reference image) */
+.nlp-analysis-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 16px;
+    padding: 1.25rem;
+}
+
+.nlp-title {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.nlp-status {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.nlp-progress-bar-container {
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.nlp-progress-bar {
+    width: 85%;
+    height: 100%;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+.nlp-input-text-preview {
+    border-left: 2px solid rgba(255, 255, 255, 0.15);
+    padding-left: 0.75rem;
+    margin-top: 1rem;
+}
+
+.nlp-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+}
+
+.nlp-preview-text {
+    font-size: 0.85rem;
+    color: #cbd5e1;
+    line-height: 1.4;
+    margin-bottom: 0;
+}
+
+/* NLP Results Columns */
+.nlp-results-row {
+    margin-top: 1.25rem;
+}
+
+.results-label {
+    display: block;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.results-value {
+    display: block;
+    color: #ffffff !important;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+/* Responsive adjustment for Orbiting area */
+@media (max-width: 1200px) {
+    .orbit-container {
+        width: 240px;
+        height: 240px;
+    }
+    .keyword-orbit {
+        width: 200px;
+        height: 200px;
+    }
+    .keyword {
+        transform: translate(-50%, -50%) rotate(calc(var(--index) * 45deg - 90deg)) translate(100px) rotate(calc(var(--index) * -45deg + 90deg));
+    }
+    .keyword:hover {
+        transform: translate(-50%, -50%) rotate(calc(var(--index) * 45deg - 90deg)) translate(100px) rotate(calc(var(--index) * -45deg + 90deg)) scale(1.15);
+    }
+}
+
+@media (max-width: 768px) {
+    .nlp-results-row .col-4 {
+        width: 100%;
+        margin-bottom: 0.75rem;
+    }
+}
+
+
